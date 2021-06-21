@@ -1,13 +1,14 @@
 <?php
-    $host="localhost";
-    $user="root";
-    $pass="";
-    $data="waitlist";
-    $db = mysqli_connect($host,$user,$pass,$data);
-        //local
-    if (!$db) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
+    // $host="localhost";
+    // $user="root";
+    // $pass="";
+    // $data="waitlist";
+    // $db = mysqli_connect($host,$user,$pass,$data);
+    //     //local
+    // if (!$db) {
+    //     die("Connection failed: " . mysqli_connect_error());
+    // }
+    require 'conn.php';
     function displayTemplates($db){
         $query="SELECT * FROM emailtemplates";
         $result=mysqli_query($db,$query);
