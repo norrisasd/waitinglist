@@ -10,7 +10,7 @@
         $result=mysqli_query($db,$query);
         if($result){
             echo '<script>alert("success");
-                  window.location="../pages/widgets.php";
+                  window.location="../pages/emailtemplates.php";
             </script>';
             
         }else{

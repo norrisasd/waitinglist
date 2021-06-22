@@ -3,7 +3,7 @@
     require 'conn.php';
     $name=$_GET['name'];
     $type=$_GET['type'];
-    $query="SELECT * FROM waitlist";
+    $query="SELECT * FROM emailtemplates";
     $result=mysqli_query($db,$query);
     $str="";
     while($data=mysqli_fetch_assoc($result)){
@@ -11,18 +11,15 @@
             $str.='
                 <tr>
                     <th scope="row"><input type="checkbox" name="list[]" value=""></th>
-                    <td>'.$data['name'].'</td>
-                    <td>'.$data['phone'].'</td>
-                    <td>'.$data['email'].'</td>
-                    <td>'.$data['waitlist_activity_name'].'</td>
-                    <td>'.$data['waitlist_start_date'].'</td>
-                    <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['TemplateName'].'</td>
+                    <td>'.$data['subject'].'</td>
+                    <td>'.$data['message'].'</td>
                 </tr>
             ';
         }
     }  
     if($name === "" && $str ===""){
-        displayAllList($db);
+        displayAllTemplates($db);
     }
     echo $str === "" && $name !=""? 'No Results Found':$str;
 
