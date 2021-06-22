@@ -181,7 +181,7 @@
       <div class="container-fluid">
         <input type="checkbox" value="" onclick="selectAll(this)"> Select All
         
-        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px" data-toggle="modal" data-target="#emailTemplate">Send</button>
+        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkSend()">Send</button>
         <a href="../form.php" target="_blank"><i class="fa fa-plus" aria-hidden="true" style="float:right;margin-right:1.5rem;margin-top:0.5rem"></i></a>
         
         <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
@@ -214,6 +214,23 @@
     </section>
     
     <script>
+      function checkSend(){
+        checkboxes = document.getElementsByName('list[]');
+        ctr=0;
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            if(checkboxes[i].checked == true){
+                ctr++;
+            }
+        }
+        if(ctr==0){
+            alert("Nothing to Send");
+            return;
+        }else{
+          $(document).ready(function(){
+              $("#emailTemplate").modal();
+          });
+        }
+      }
       function selectAll(source) {
         checkboxes = document.getElementsByName('list[]');
         for(var i=0, n=checkboxes.length;i<n;i++) {

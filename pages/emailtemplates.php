@@ -211,6 +211,17 @@
     
     <script>
       function confirmDel(){
+        checkboxes = document.getElementsByName('list[]');
+        ctr=0;
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            if(checkboxes[i].checked == true){
+                ctr++;
+            }
+        }
+        if(ctr==0){
+            alert("Nothing to Delete");
+            return;
+        }
           if(confirm("are you sure you want to delete this template/s?")){
             document.getElementById("delTemp").click();
           }
