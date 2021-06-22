@@ -1,11 +1,18 @@
 <?php
     require 'conn.php';
+    $qdate="SELECT CURDATE() as curdate;";
+    $rdate=mysqli_query($db,$qdate);
+    $curdate =mysqli_fetch_assoc($rdate);
     if(isset($_POST['submit'])){
         $name=$_POST['name'];
         $phone=$_POST['phone'];
         $email=$_POST['email'];
         $sdate=$_POST['sdate'];
         $edate=$_POST['edate'];
+        if($edate<$sdate || $sdate<$curdate['curdate']){
+            echo '<script>alert("Date Error!")</script>;window.location="../form.php";';
+            return;
+        }
         $passengers=$_POST['passengers'];
         $aname=$_POST['aname'];
         $notes=$_POST['notes'];
