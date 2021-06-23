@@ -62,6 +62,10 @@
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         mail($email,$subject,$message,$headers);
     }
+    function updateStatus($db,$email){
+        $query = "UPDATE `waitlist` SET `waitlist_approval_sent`=1 WHERE `email`='$email'";
+        $result = mysqli_query($db,$query);
+    }
     if(isset($_POST['sendEmail'])){
         $subject=$_POST['subject1'];
         $message=$_POST['text1'];
@@ -70,6 +74,8 @@
                 $retval=sendEmail($list,$subject,$message);
                 if(!$retval){
                     break;
+                }else{
+                    updateStatus($db,$list);
                 }
             }
         }else{

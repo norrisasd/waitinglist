@@ -56,7 +56,7 @@
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">Additional Notes</label>
-                <textarea class="form-control" name="notes" required></textarea>
+                <textarea class="form-control" name="notes"></textarea>
             </div>
             <br><br>
             <button type="submit" class="btn btn-primary" name="submit">Submit Form</button>
