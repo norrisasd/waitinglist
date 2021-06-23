@@ -53,17 +53,32 @@
     function deleteTemplate($db,$tempname){
         $query="DELETE FROM `emailtemplates` WHERE `TemplateName`= '$tempname'";
         $result=mysqli_query($db,$query);
-        if(!$result){
-            echo '<script>alert("'.mysqli_error($db).'")</script>';
-        }
+        return $result;
+    }
+    function sendEmail($email,$subject,$message){
+        $headers="From: support@mauisnorkeling.com" . "\r\n" .
+                 "CC: support@mauisnorkeling.com"."\r\n";
+        $headers .= "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        mail($email,$subject,$message,$headers);
     }
     if(isset($_POST['sendEmail'])){
+        $subject=$_POST['subject1'];
+        $message=$_POST['text1'];
         if(!empty($_POST['list'])){
             foreach($_POST['list'] as $list){
-                echo '<script>alert("'.$list.'")</script>';//mailing 
+                $retval=sendEmail($list,$subject,$message);
+                if(!$retval){
+                    break;
+                }
             }
         }else{
             echo '';
+        }
+        if($retval){
+            echo '<script>alert("Email Sent!")</script>';
+        }else{
+            echo '<script>alert("'.mysqli_error($db).'")</script>';
         }
     }
 ?>
