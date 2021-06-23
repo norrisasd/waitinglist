@@ -78,7 +78,7 @@
         if($retval){
             echo '<script>alert("Email Sent!")</script>';
         }else{
-            echo '<script>alert("'.mysqli_error($db).'")</script>';
+            echo '<script>alert("Error")</script>';
         }
     }
 ?>
