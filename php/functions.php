@@ -57,7 +57,7 @@
     }
     function sendEmail($email,$subject,$message){
         $headers="From: support@mauisnorkeling.com" . "\r\n" .
-                 "CC: support@mauisnorkeling.com"."\r\n";
+                 "CC: support2@mauisnorkeling.com"."\r\n";
         $headers .= "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         mail($email,$subject,$message,$headers);
