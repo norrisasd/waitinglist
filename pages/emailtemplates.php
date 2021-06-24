@@ -105,7 +105,7 @@
           <img src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Client Name</a>
+          <a href="../accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
         </div>
       </div>
 
@@ -147,6 +147,14 @@
               <i class="nav-icon fa fa-file"></i>
               <p>
                 Email Templates
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../php/logout.php" class="nav-link">
+              <i class="nav-icon fa fa-file"></i>
+              <p>
+                Logout
               </p>
             </a>
           </li>

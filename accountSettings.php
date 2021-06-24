@@ -4,9 +4,6 @@
   
   <?php
     require "php/conn.php";
-    if(!isset($_SESSION['login'])){
-        header("Location: loginPage.php");
-    }
   ?>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,9 +34,6 @@
 <div class="wrapper">
 
   <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div>
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -133,7 +127,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
+          <a href="#" class="d-block"><?php echo $_SESSION['username'];?></a>
         </div>
       </div>
 
@@ -154,8 +148,8 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="index.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -200,12 +194,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Account Settings</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item active">Account Settings</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -218,66 +212,78 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>Oldest</h3>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>Today</h3>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>This Week</h3>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>Most Recent</h3>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
+        <table class="table" style="width:300px;margin:6rem auto;">
+            <thead>
+                <br><br>
+            </thead>
+            <tbody>
+            <br><br>
+                <tr>
+                    <td>Username</td>
+                    <td><?php echo $_SESSION['username']; ?></td>
+                    <td><a href="#" data-toggle="modal" data-target="#editUser" ><i class="fas fa-edit"></i></a></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><?php echo $_SESSION['pass']; ?></td>
+                    <td><a href="#" data-toggle="modal" data-target="#editPass"><i class="fas fa-edit"></i></a></td>
+                </tr> 
+            </tbody>
+            </table>
         </div>
         <!-- /.row -->
         <!-- Main row -->
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
-    <!-- /.content -->
+
+    <!--MODAL-->
+<div class="modal fade" id="editUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Username</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="./php/user/updateUsername.php" method="post">
+        <div class="modal-body">
+              <div class="form-group">
+                  <label for="exampleFormControlInput1">Username</label>
+                  <input type="text" class="form-control" name="username" placeholder="Username" required>
+              </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="editUser">Update Username</button>
+        </div>
+        </form>
+      </div>
+    </div>
   </div>
+  <div class="modal fade" id="editPass" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Password</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="./php/user/updatePassword.php" method="post">
+        <div class="modal-body">
+              <div class="form-group">
+                  <label for="exampleFormControlInput1">Password</label>
+                  <input type="text" class="form-control" name="password" placeholder="Password" required>
+              </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="editPass">Update Password</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <!-- content end-->
+</div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <strong>MAUI SNORKELING &copy; 2020.</strong>
