@@ -189,7 +189,7 @@
       <div class="container-fluid">
         <input type="checkbox" value="" onclick="selectAll(this)"> Select All
         
-        <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="window.location='../php/export_data.php'">Export</button>
+        <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportData()">Export</button>
         <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkSend()">Send</button>
         <a href="../form.php" target="_blank"><i class="fa fa-plus" aria-hidden="true" style="float:right;margin-right:1.5rem;margin-top:0.5rem"></i></a>
         
@@ -239,6 +239,30 @@
               $("#emailTemplate").modal();
           });
         }
+      }
+      function exportData(){
+        var list=[];
+        var ctr = 0;
+        var checkbox = document.getElementsByName('list[]');
+        for(var i=0, n=checkbox.length;i<n;i++) {
+          if(checkbox[i].checked == true){
+            list[ctr]=checkbox[i].value;
+            ctr++;
+          }
+        }
+        if(ctr==0){
+          alert("Nothing to Export!");
+          return;
+        }
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function() {
+            if (this.readyState==4 && this.status==200) {
+              window.location="../php/export.php";
+            }
+        }
+        xmlhttp.open("GET","../php/export_data.php?list="+list,true);
+        xmlhttp.send();
+
       }
       function selectAll(source) {
         checkboxes = document.getElementsByName('list[]');

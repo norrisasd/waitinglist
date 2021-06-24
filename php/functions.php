@@ -66,6 +66,20 @@
         $query = "UPDATE `waitlist` SET `waitlist_approval_sent`=1 WHERE `email`='$email'";
         $result = mysqli_query($db,$query);
     }
+    function getListByEmail($db,$email){
+        $query="SELECT * FROM `waitlist` where `email` = '$email'";
+        $result=mysqli_query($db,$query);
+        if(mysqli_num_rows($result)===1){
+            $data= mysqli_fetch_assoc($result);
+            return $data;
+        }
+    }
+    function exportFunction($data){
+        $filename="data_".date("ymd").".xls";
+        header('Content-type: application/vnd-ms-excel');
+        header("Content-Disposition:attachment;filename=\"$filename\"");
+        echo $data;
+    }
     if(isset($_POST['sendEmail'])){
         $subject=$_POST['subject1'];
         $message=$_POST['text1'];
