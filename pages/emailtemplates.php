@@ -151,6 +151,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="./mailbox/mailbox.php" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Mailbox
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="../php/logout.php" class="nav-link">
               <i class="nav-icon fa fa-file"></i>
               <p>

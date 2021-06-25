@@ -20,30 +20,30 @@
 <body>
 <center><h1>Waitinglist Form</h1></center>
     <div class="col-sm-8" style="margin:1rem auto">
-        <form action="./php/addList.php" method="post">
+        <form action="./php/addList.php" method="post" autocomplete="off">
             <div class="form-group">
                 <label for="exampleFormControlInput1">Name</label>
-                <input type="text" class="form-control" name="name" placeholder="" required>
+                <input type="text" class="form-control" name="name" placeholder="" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">Phone</label>
-                <input type="number" class="form-control" name="phone" required>
+                <input type="number" class="form-control" name="phone" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">Email</label>
-                <input type="email" class="form-control" name="email" required>
+                <input type="email" class="form-control" name="email" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">Start Date</label>
-                <input type="date" class="form-control" name="sdate" required>
+                <input type="date" class="form-control" name="sdate" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">End Date</label>
-                <input type="date" class="form-control" name="edate" required>
+                <input type="date" class="form-control" name="edate" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">Number of Passengers</label>
-                <input type="number" class="form-control" name="passengers" required>
+                <input type="number" class="form-control" name="passengers" autocomplete="off" required>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">Activity Name</label>
@@ -56,7 +56,7 @@
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput1">Additional Notes</label>
-                <textarea class="form-control" name="notes"></textarea>
+                <textarea class="form-control" name="notes" autocomplete="off">qwe&#13;qwe</textarea>
             </div>
             <br><br>
             <button type="submit" class="btn btn-primary" name="submit">Submit Form</button>

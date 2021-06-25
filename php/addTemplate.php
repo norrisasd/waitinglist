@@ -8,8 +8,8 @@
         $result=mysqli_query($db,$query);
         if($result){
             echo '<script>alert("success");
-                  window.location="../pages/emailtemplates.php";
-            </script>';
+                    window.location="../pages/emailtemplates.php";
+                  </script>';
             
         }else{
             echo mysqli_error($db);

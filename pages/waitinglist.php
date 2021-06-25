@@ -1,10 +1,10 @@
+<?php include '../php/functions.php';?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Maui Snorkeling</title>
-  <?php include '../php/functions.php';?>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -151,6 +151,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="./mailbox/mailbox.php" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Mailbox
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="../php/logout.php" class="nav-link">
               <i class="nav-icon fa fa-file"></i>
               <p>
@@ -189,7 +197,7 @@
       <div class="container-fluid">
         <input type="checkbox" value="" onclick="selectAll(this)"> Select All
         
-        <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportData()">Export</button>
+        <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkSend()">Send</button>
         <a href="../form.php" target="_blank"><i class="fa fa-plus" aria-hidden="true" style="float:right;margin-right:1.5rem;margin-top:0.5rem"></i></a>
         
@@ -240,29 +248,44 @@
           });
         }
       }
-      function exportData(){
+      function exportDataModal(){
         var list=[];
         var ctr = 0;
         var checkbox = document.getElementsByName('list[]');
+        var checkbox1= document.getElementsByName('waitlist_id[]');
         for(var i=0, n=checkbox.length;i<n;i++) {
           if(checkbox[i].checked == true){
-            list[ctr]=checkbox[i].value;
+            list[ctr]=checkbox1[i].value;
             ctr++;
           }
         }
         if(ctr==0){
-          alert("Nothing to Export!");
-          return;
-        }
-        var xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
-            if (this.readyState==4 && this.status==200) {
-              window.location="../php/export.php";
+          $(document).ready(function(){
+              $("#exportData").modal();
+          });
+        }else{
+          if(confirm("Are you sure you want to export selected item?")){
+            var xmlhttp=new XMLHttpRequest();
+            xmlhttp.onreadystatechange=function() {
+                if (this.readyState==4 && this.status==200) {
+                  window.location="../php/export.php";
+                }
             }
+            xmlhttp.open("GET","../php/export_data.php?list="+list,true);
+            xmlhttp.send();
+          } 
         }
-        xmlhttp.open("GET","../php/export_data.php?list="+list,true);
-        xmlhttp.send();
-
+      }
+      function exportDataByService(){
+        var serv = document.getElementById("sname").value;
+        var xmlhttp=new XMLHttpRequest();
+            xmlhttp.onreadystatechange=function() {
+                if (this.readyState==4 && this.status==200) {
+                  window.location="../php/export.php";
+                }
+            }
+            xmlhttp.open("GET","../php/exportDataByService.php?service="+serv,true);
+            xmlhttp.send();
       }
       function selectAll(source) {
         checkboxes = document.getElementsByName('list[]');
@@ -285,7 +308,9 @@
         var xmlhttp=new XMLHttpRequest();
         xmlhttp.onreadystatechange=function() {
             if (this.readyState==4 && this.status==200) {
-                eval(this.responseText);
+              document.getElementById("confirmTemplate").innerHTML=this.responseText;
+              document.getElementById("subject1").value =document.getElementById("emailsub").value;
+              document.getElementById("text1").value =document.getElementById("emailmes").value;
             }
         }
         xmlhttp.open("GET","../php/getTemplates.php?tempName="+str,true);
@@ -304,7 +329,7 @@
           <h5 class="modal-title" id="exampleModalLabel">Send Email</h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" >
           <div class="form-group">
               <label for="exampleFormControlInput1">Template Name</label>
               <select id="tempname" onchange="setEmail(this.value)">
@@ -313,6 +338,7 @@
               </select>
           </div>
           <div id="confirmTemplate">
+          </div>
               <div class="form-group">
                   <label for="exampleFormControlInput1">Subject</label>
                   <input type="text" class="form-control" id="subject1" name="subject1" placeholder="Subject" required>
@@ -321,13 +347,39 @@
                   <label for="exampleFormControlTextarea1">Message</label>
                   <textarea class="form-control" name="text1" id="text1" rows="3" required></textarea>
               </div>
-          </div>
+          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" name="sendEmail">Send Email</button>
+          <!-- add button for export -->
         </div>
       </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exportData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Export By Activity Name</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" >
+          <div class="form-group">
+              <label for="exampleFormControlInput1">Activity Name</label>
+              <select id="sname" required>
+                    <option selected disabled>Select</option>
+                    <option value="MORNING SNORKELING TOURS">MORNING SNORKELING TOURS</option>
+                    <option value="AFTERNOON SNORKELING TOURS">AFTERNOON SNORKELING TOURS</option>
+                    <option value="GROUPS & PRIVATE CHARTERS">GROUPS & PRIVATE CHARTERS</option>
+              </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="exportDataByService()">Export Data</button>
+        </div>
       </div>
     </div>
   </div>

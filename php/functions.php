@@ -21,7 +21,7 @@
             while($data = mysqli_fetch_assoc($result)){
                 echo'
                 <tr class="tableItem">
-                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['email'].'"></th>
+                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
                     <td>'.$data['name'].'</td>
                     <td>'.$data['phone'].'</td>
                     <td>'.$data['email'].'</td>
@@ -56,18 +56,32 @@
         return $result;
     }
     function sendEmail($email,$subject,$message){
-        $headers="From: support@mauisnorkeling.com" . "\r\n" .
-                 "CC: support2@mauisnorkeling.com"."\r\n";
-        $headers .= "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        mail($email,$subject,$message,$headers);
+        require '../phpmailer/PHPMailerAutoload.php';
+        $mail = new PHPMailer;
+        $mail->isSMTP();
+        $mail->Host='smtp.gmail.com';
+        $mail->Port=587;
+        $mail->SMTPAuth=true;
+        $mail->SMTPSecure='tls';
+
+        $mail->Username='info.mauisnorkeling@gmail.com';
+        $mail->Password='Mauisnorkeling21';
+        $mail->setFrom('info.mauisnorkeling@gmail.com','Maui Snorkeling');
+        $mail->addAddress($email);
+        $mail->addReplyTo('info.mauisnorkeling@gmail.com');
+
+        $mail->isHTML(true);
+        $mail->Subject=$subject;
+        $mail->Body=nl2br($message);
+        $check = $mail->send();
+        return $check;
     }
     function updateStatus($db,$email){
         $query = "UPDATE `waitlist` SET `waitlist_approval_sent`=1 WHERE `email`='$email'";
         $result = mysqli_query($db,$query);
     }
-    function getListByEmail($db,$email){
-        $query="SELECT * FROM `waitlist` where `email` = '$email'";
+    function getListById($db,$id){
+        $query="SELECT * FROM `waitlist` where `waitlist_id` = '$id'";
         $result=mysqli_query($db,$query);
         if(mysqli_num_rows($result)===1){
             $data= mysqli_fetch_assoc($result);
