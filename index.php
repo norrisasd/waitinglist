@@ -3,10 +3,11 @@
 <head>
   
   <?php
-    require "php/conn.php";
+    require "php/functions.php";
     if(!isset($_SESSION['login'])){
         header("Location: loginPage.php");
     }
+    $count = getNotificationCount($db);
   ?>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -78,27 +79,19 @@
       </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+      <!-- SET ON CLICK HERE -->
+        <a class="nav-link" data-toggle="dropdown" onclick="updateStatus()" href="#"> 
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge" id="notifCnt"><?php echo $count !=0 ?$count :''; ?></span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="text-align:center">
+          <span class="dropdown-item dropdown-header">Notifications</span>
+          <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+            <i class="fas fa-users mr-2"></i> <?php echo $count !=0 ?$count.' Added' :'No Notification'; ?>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
@@ -116,7 +109,18 @@
     </ul>
   </nav>
   <!-- /.navbar -->
-
+    <script>
+    function updateStatus(){
+      var xmlhttp=new XMLHttpRequest();
+      xmlhttp.onreadystatechange=function() {
+          if (this.readyState==4 && this.status==200) {
+              document.getElementById("notifCnt").innerHTML=this.responseText;
+          }
+      }
+      xmlhttp.open("GET","./php/updateNotificationStatus.php",true);
+      xmlhttp.send();
+    }
+    </script>
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -243,7 +247,8 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>Today</h3>
+                <h2>Today</h2>
+                <h3 style="text-align:center">wew</h3>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>

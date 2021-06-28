@@ -94,6 +94,20 @@
         header("Content-Disposition:attachment;filename=\"$filename\"");
         echo $data;
     }
+    function getNotificationCount($db){
+        $query="SELECT * FROM notification where notification_status=0";
+        $result=mysqli_query($db,$query);
+        if($result){
+            $count = mysqli_num_rows($result);
+            return $count;
+        }
+    }
+    function getCountLastWeek($db){
+        $query="SELECT * FROM `waitlist` where waitlist_date_created > curdate() - INTERVAL 7 day";
+        $result =mysqli_query($db,$query);
+        $count = mysqli_num_rows($result);
+        return $count;
+    }
     if(isset($_POST['sendEmail'])){
         $subject=$_POST['subject1'];
         $message=$_POST['text1'];
