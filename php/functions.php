@@ -108,6 +108,18 @@
         $count = mysqli_num_rows($result);
         return $count;
     }
+    function getCountYesterday($db){
+        $query="SELECT * FROM `waitlist` where waitlist_date_created = curdate() - INTERVAL 1 day";
+        $result =mysqli_query($db,$query);
+        $count = mysqli_num_rows($result);
+        return $count;
+    }
+    function getCountToday($db){
+        $query="SELECT * FROM `waitlist` where waitlist_date_created = curdate()";
+        $result =mysqli_query($db,$query);
+        $count = mysqli_num_rows($result);
+        return $count;
+    }
     if(isset($_POST['sendEmail'])){
         $subject=$_POST['subject1'];
         $message=$_POST['text1'];
