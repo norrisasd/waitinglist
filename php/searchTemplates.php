@@ -1,6 +1,5 @@
 <?php 
     include '../php/functions.php';
-    require 'conn.php';
     $name=$_GET['name'];
     $type=$_GET['type'];
     $query="SELECT * FROM emailtemplates";

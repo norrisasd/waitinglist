@@ -13,7 +13,25 @@
             echo mysqli_error($db);
         }
     }
-
+    function displayAllClients($db){
+        $query="SELECT * FROM clients";
+        $result=mysqli_query($db,$query);
+        if($result){
+            while($data = mysqli_fetch_assoc($result)){
+                echo'
+                <tr class="tableItem" onclick="info()">
+                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['client_id'].'"></th>
+                    <td>'.$data['client_name'].'</td>
+                    <td>'.$data['client_phone'].'</td>
+                    <td>'.$data['client_email'].'</td>
+                    <td>'.$data['client_date_created'].'</td>
+                    <td>'.$data['client_dnd'].'</td>
+                    <td>'.$data['client_enabled'].'</td>
+                </tr>
+                ';
+            }
+        }
+    }
     function displayAllList($db){
         $query ="SELECT * FROM waitlist";
         $result=mysqli_query($db,$query);
@@ -22,7 +40,7 @@
                 echo'
                 <tr class="tableItem">
                     <th scope="row"><input type="checkbox" name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
-                    <td>'.$data['name'].'</td>
+                    <td onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info""><a href="#">'.$data['name'].'</a></td>
                     <td>'.$data['phone'].'</td>
                     <td>'.$data['email'].'</td>
                     <td>'.$data['waitlist_activity_name'].'</td>
@@ -119,6 +137,19 @@
         $result =mysqli_query($db,$query);
         $count = mysqli_num_rows($result);
         return $count;
+    }
+    function deleteClient($db,$id){
+        $query="DELETE FROM clients where client_id=$id";
+        $result=mysqli_query($db,$query);
+        return $result;
+    }
+    function getClientById($db,$id){
+        $query="SELECT * FROM clients where client_id=$id";
+        $result=mysqli_query($db,$query);
+        if(mysqli_num_rows($result)==1){
+            $data = mysqli_fetch_assoc($result);
+            return $data;
+        }
     }
     if(isset($_POST['sendEmail'])){
         $subject=$_POST['subject1'];

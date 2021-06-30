@@ -39,7 +39,7 @@
         $result = mysqli_query($db,$query);
 
         if($result){
-            echo '<script>alert("Success");window.location="../form.php";</script>';
+            echo '<script>alert("Success");window.location="../waitlistForm.php";</script>';
         }else{
             echo mysqli_error($db);
         }

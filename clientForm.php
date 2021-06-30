@@ -1,3 +1,7 @@
+<?php
+//connection
+    require './php/conn.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,15 +16,10 @@
     }
 </style>
 </head>
-<?php
-//connection
-    
-    require './php/conn.php';
-?>
 <body>
-<center><h1>Waitinglist Form</h1></center>
+<center><h1>Client Form</h1></center>
     <div class="col-sm-8" style="margin:1rem auto">
-        <form action="./php/addList.php" method="post" autocomplete="off">
+        <form action="./php/addClient.php" method="post" autocomplete="off">
             <div class="form-group">
                 <label for="exampleFormControlInput1">Name</label>
                 <input type="text" class="form-control" name="name" placeholder="" autocomplete="off" required>
@@ -33,32 +32,7 @@
                 <label for="exampleFormControlInput1">Email</label>
                 <input type="email" class="form-control" name="email" autocomplete="off" required>
             </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Start Date</label>
-                <input type="date" class="form-control" name="sdate" autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">End Date</label>
-                <input type="date" class="form-control" name="edate" autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Number of Passengers</label>
-                <input type="number" class="form-control" name="passengers" autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Activity Name</label>
-                <select name="aname" required>
-                    <option selected disabled>Select</option>
-                    <option value="MORNING SNORKELING TOURS">MORNING SNORKELING TOURS</option>
-                    <option value="AFTERNOON SNORKELING TOURS">AFTERNOON SNORKELING TOURS</option>
-                    <option value="GROUPS & PRIVATE CHARTERS">GROUPS & PRIVATE CHARTERS</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Additional Notes</label>
-                <textarea class="form-control" name="notes" autocomplete="off">qwe&#13;qwe</textarea>
-            </div>
-            <br><br>
+            <br>
             <button type="submit" class="btn btn-primary" name="submit">Submit Form</button>
         </form>
     </div>

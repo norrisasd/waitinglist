@@ -139,16 +139,16 @@ $count = getNotificationCount($db);?>
               </p>
             </a>
           </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="waitinglist.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Waitlist
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="client.php" class="nav-link">
+          <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Client List
@@ -201,12 +201,12 @@ $count = getNotificationCount($db);?>
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Waitlist</h1>
+            <h1>Client List</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Waitlist</li>
+              <li class="breadcrumb-item active">Client List</li>
             </ol>
           </div>
         </div>
@@ -219,18 +219,17 @@ $count = getNotificationCount($db);?>
         <input type="checkbox" value="" onclick="selectAll(this)"> Select All
         
         <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
-        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkSend()">Send</button>
-        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Waiting List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
-        <a href="../waitlistForm.php" target="_blank" data-toggle="tooltip" title="Waitinglist Form" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
-        
+        <button type="button" class="btn btn-danger" style="float:right;margin-bottom:5px"  onclick="checkDelete()">Delete</button>
+        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Client List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
+        <a href="../clientForm.php" target="_blank" data-toggle="tooltip" title="Client List Form" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
         
         <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
-                  <option value="name">Name</option>
-                  <option value="phone">Phone</option>
-                  <option value="email">Email</option>
-                  <option value="waitlist_activity_name">Activity Name</option>
-                  <option value="waitlist_start_date">Start Date</option>
-                  <option value="waitlist_end_date">End Date</option>
+                  <option value="client_name">Name</option>
+                  <option value="client_phone">Phone</option>
+                  <option value="client_email">Email</option>
+                  <option value="client_date_created">Date Created</option>
+                  <option value="client_dnd">DND</option>
+                  <option value="client_enabled">Enabled</option>
         </select>
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label>
         <table class="table" id="myTable">
@@ -240,21 +239,23 @@ $count = getNotificationCount($db);?>
               <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Name</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Phone</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Email</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Activity Name</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">Start Date</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">End Date</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Date Created</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">DND</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Enabled</th>
             </tr>
           </thead>
-          <form method="post">
+          <form method="post" action="../php/deleteClient.php">
           <tbody id="searchTable">
-            <?php displayAllList($db)?>
+            <?php displayAllClients($db)?>
           </tbody>
+          <button type="submit" name="deleteClient" id="delCli" style="display:none"></button>
+          </form>
         </table>
       </div>
     </section>
     
     <script>
-      function copyToClip(){
+        function copyToClip(){
         str="url";
         const el = document.createElement('textarea');
         el.value = str;
@@ -264,17 +265,7 @@ $count = getNotificationCount($db);?>
         document.body.removeChild(el);
         alert("Copied the text: " + el.value);
       }
-      function info(id){
-        var xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
-          if (this.readyState==4 && this.status==200) {
-            document.getElementById("informationBody").innerHTML=this.responseText;
-          }
-        }
-        xmlhttp.open("GET","../php/printWaitlistInfo.php?id="+id,true);
-        xmlhttp.send();
-      }
-      function checkSend(){
+      function checkDelete(){
         checkboxes = document.getElementsByName('list[]');
         ctr=0;
         for(var i=0, n=checkboxes.length;i<n;i++) {
@@ -283,12 +274,12 @@ $count = getNotificationCount($db);?>
             }
         }
         if(ctr==0){
-            alert("Nothing to Send");
+            alert("Nothing to Delete");
             return;
         }else{
-          $(document).ready(function(){
-              $("#emailTemplate").modal();
-          });
+          if(confirm("Are you sure you want to delete this clients?")){
+            document.getElementById("delCli").click();
+          }
         }
       }
       function exportDataModal(){
@@ -298,14 +289,12 @@ $count = getNotificationCount($db);?>
         var checkbox1= document.getElementsByName('waitlist_id[]');
         for(var i=0, n=checkbox.length;i<n;i++) {
           if(checkbox[i].checked == true){
-            list[ctr]=checkbox1[i].value;
+            list[ctr]=checkbox[i].value;
             ctr++;
           }
         }
         if(ctr==0){
-          $(document).ready(function(){
-              $("#exportData").modal();
-          });
+          alert("Nothing to Export");
         }else{
           if(confirm("Are you sure you want to export selected item?")){
             var xmlhttp=new XMLHttpRequest();
@@ -314,21 +303,10 @@ $count = getNotificationCount($db);?>
                   window.location="../php/export.php";
                 }
             }
-            xmlhttp.open("GET","../php/export_data.php?list="+list,true);
+            xmlhttp.open("GET","../php/exportClient.php?list="+list,true);
             xmlhttp.send();
           } 
         }
-      }
-      function exportDataByService(){
-        var serv = document.getElementById("sname").value;
-        var xmlhttp=new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function() {
-                if (this.readyState==4 && this.status==200) {
-                  window.location="../php/export.php";
-                }
-            }
-            xmlhttp.open("GET","../php/exportDataByService.php?service="+serv,true);
-            xmlhttp.send();
       }
       function selectAll(source) {
         checkboxes = document.getElementsByName('list[]');
@@ -344,7 +322,7 @@ $count = getNotificationCount($db);?>
                 document.getElementById("searchTable").innerHTML=this.responseText;
             }
         }
-        xmlhttp.open("GET","../php/search.php?name="+name+"&type="+type,true);
+        xmlhttp.open("GET","../php/searchClient.php?name="+name+"&type="+type,true);
         xmlhttp.send();
     }
       function setEmail(str){
@@ -363,115 +341,6 @@ $count = getNotificationCount($db);?>
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
       <i class="fas fa-chevron-up"></i>
     </a>
-  </div>
-  <!-- /.MODAL -->
-  <div class="modal fade" id="emailTemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Send Email</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" >
-          <div class="form-group">
-              <label for="exampleFormControlInput1">Template Name</label>
-              <select id="tempname" onchange="setEmail(this.value)">
-                  <option value="" disabled selected>Select Template</option>
-                  <?php displayTemplates($db)?>
-              </select>
-          </div>
-          <div id="confirmTemplate">
-          </div>
-              <div class="form-group">
-                  <label for="exampleFormControlInput1">Subject</label>
-                  <input type="text" class="form-control" id="subject1" name="subject1" placeholder="Subject" required>
-              </div>
-              <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Message</label>
-                  <textarea class="form-control" name="text1" id="text1" rows="3" required></textarea>
-              </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" name="sendEmail">Send Email</button>
-        </div>
-      </form>
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="exportData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Export By Activity Name</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" >
-          <div class="form-group">
-              <label for="exampleFormControlInput1">Activity Name</label>
-              <select id="sname" required>
-                    <option selected disabled>Select</option>
-                    <option value="MORNING SNORKELING TOURS">MORNING SNORKELING TOURS</option>
-                    <option value="AFTERNOON SNORKELING TOURS">AFTERNOON SNORKELING TOURS</option>
-                    <option value="GROUPS & PRIVATE CHARTERS">GROUPS & PRIVATE CHARTERS</option>
-              </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="exportDataByService()">Export Data</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="addemailTemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Email Template</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form action="../php/addTemplate.php" method="post">
-          <div class="form-group">
-              <label for="exampleFormControlInput1">Template Name</label>
-              <input type="text" class="form-control" name="TemplateName" placeholder="Template Name" required>
-          </div>
-              <div class="form-group">
-                  <label for="exampleFormControlInput1">Subject</label>
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>
-              </div>
-              <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Message</label>
-                  <textarea class="form-control" name="message" rows="3" required></textarea required>
-              </div>
-          </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" name="addTemplate">Add Template</button>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Information</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" style="margin:0 auto">
-          <div id="informationBody">
-            
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
   </div>
   <!-- /.content -->
   <!-- /.content-wrapper -->

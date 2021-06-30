@@ -1,6 +1,5 @@
 <?php 
     include '../php/functions.php';
-    require 'conn.php';
     $name=$_GET['name'];
     $type=$_GET['type'];
     $query="SELECT * FROM waitlist";
@@ -10,7 +9,7 @@
         if(stristr($name,substr($data[$type],0,strlen($name)))){
             $str.='
                 <tr>
-                    <th scope="row"><input type="checkbox" name="list[]" value=""></th>
+                    <th scope="row"><input type="checkbox" name="list[]" value=""><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
                     <td>'.$data['name'].'</td>
                     <td>'.$data['phone'].'</td>
                     <td>'.$data['email'].'</td>

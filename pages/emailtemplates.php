@@ -142,6 +142,22 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="client.php" class="nav-link">
+                <i class="nav-icon fas fa-user-tie"></i>
+              <p>
+                Client List
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="user.php" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+              <p>
+                User
+              </p>
+            </a>
+          </li>
           <li class="nav-item menu-open">
             <a href="#" class="nav-link active">
               <i class="nav-icon fa fa-file"></i>
