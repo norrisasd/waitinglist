@@ -147,16 +147,16 @@ $count = getNotificationCount($db);?>
               </p>
             </a>
           </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Client List
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="user.php" class="nav-link">
+          <li class="nav-item menu-open">
+            <a href="user.php" class="nav-link active">
                 <i class="nav-icon fas fa-user"></i>
               <p>
                 User
@@ -201,12 +201,12 @@ $count = getNotificationCount($db);?>
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Client List</h1>
+            <h1>User List</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Client List</li>
+              <li class="breadcrumb-item active">User List</li>
             </ol>
           </div>
         </div>
@@ -236,17 +236,14 @@ $count = getNotificationCount($db);?>
           <thead>
             <tr>
               <th scope="col"></th>
-              <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Name</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Phone</th>
+              <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Username</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Email</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Date Created</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">DND</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Enabled</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Admin</th>
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return deleteClient();">
           <tbody id="searchTable">
-            <?php displayAllClients($db)?>
+            <?php displayAllUser($db)?>
           </tbody>
           <button type="submit" id="delCli" style="display:none"></button>
           </form>

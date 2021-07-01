@@ -165,6 +165,22 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="pages/client.php" class="nav-link">
+                <i class="nav-icon fas fa-user-tie"></i>
+              <p>
+                Client List
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/user.php" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+              <p>
+                User
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="pages/emailtemplates.php" class="nav-link">
               <i class="nav-icon fa fa-file"></i>
               <p>
@@ -228,6 +244,11 @@
                     <td><?php echo $_SESSION['pass']; ?></td>
                     <td><a href="#" data-toggle="modal" data-target="#editPass"><i class="fas fa-edit"></i></a></td>
                 </tr> 
+                <tr>
+                    <td>Email</td>
+                    <td><?php echo $_SESSION['email']; ?></td>
+                    <td><a href="#" data-toggle="modal" data-target="#editEmail"><i class="fas fa-edit"></i></a></td>
+                </tr> 
             </tbody>
             </table>
         </div>
@@ -236,6 +257,59 @@
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
+    <script>
+      function updateEmail(){
+        var email = document.getElementById("email").value;
+          $.ajax({
+            type: 'post',
+            url: './php/user/updateEmail.php',
+            data:{
+              email:email,
+            },
+            success:function(response){
+              alert(response);
+              if(response == 'Email Updated'){
+                  location.reload();
+              }
+            }
+          });
+          return false;
+      }
+      function updateUsername(){
+        var username = document.getElementById("username").value;
+          $.ajax({
+            type: 'post',
+            url: './php/user/updateUsername.php',
+            data:{
+              username:username,
+            },
+            success:function(response){
+              alert(response);
+              if(response == 'Username Updated'){
+                  location.reload();
+              }
+            }
+          });
+          return false;
+      }
+      function updatePassword(){
+        var password = document.getElementById("password").value;
+          $.ajax({
+            type: 'post',
+            url: './php/user/updatePassword.php',
+            data:{
+              password:password,
+            },
+            success:function(response){
+              alert(response);
+              if(response == 'Password Updated'){
+                  location.reload();
+              }
+            }
+          });
+          return false;
+      }
+    </script>
 
     <!--MODAL-->
 <div class="modal fade" id="editUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -245,11 +319,11 @@
           <h5 class="modal-title" id="exampleModalLabel">Update Username</h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="./php/user/updateUsername.php" method="post">
+        <form action="" method="post" onsubmit="return updateUsername();">
         <div class="modal-body">
               <div class="form-group">
                   <label for="exampleFormControlInput1">Username</label>
-                  <input type="text" class="form-control" name="username" placeholder="Username" required>
+                  <input type="text" class="form-control" id="username" placeholder="Username" required>
               </div>
           </div>
         <div class="modal-footer">
@@ -267,16 +341,38 @@
           <h5 class="modal-title" id="exampleModalLabel">Update Password</h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="./php/user/updatePassword.php" method="post">
+        <form action="" method="post" onsubmit="return updatePassword();">
         <div class="modal-body">
               <div class="form-group">
                   <label for="exampleFormControlInput1">Password</label>
-                  <input type="text" class="form-control" name="password" placeholder="Password" required>
+                  <input type="text" class="form-control" id="password" placeholder="Password" required>
               </div>
           </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" name="editPass">Update Password</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade" id="editEmail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Email</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="" method="post" onsubmit="return updateEmail();">
+        <div class="modal-body">
+              <div class="form-group">
+                  <label for="exampleFormControlInput1">Email</label>
+                  <input type="text" class="form-control" id="email" placeholder="Password" required>
+              </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="editPass">Update Email</button>
         </div>
       </div>
       </form>

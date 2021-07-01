@@ -14,16 +14,13 @@
     $nAI=mysqli_fetch_assoc($nAI);
     $nAI=$nAI['AI'];//notification Auto Increment
 
-
-
-    if(isset($_POST['submit'])){
         $name=$_POST['name'];
         $phone=$_POST['phone'];
         $email=$_POST['email'];
         $sdate=$_POST['sdate'];
         $edate=$_POST['edate'];
         if($edate<$sdate || $sdate<$curdate['curdate']){
-            echo '<script>alert("Date Error!")</script>;window.location="../form.php";';
+            echo 'Date Error';
             return;
         }
         $passengers=$_POST['passengers'];
@@ -39,9 +36,8 @@
         $result = mysqli_query($db,$query);
 
         if($result){
-            echo '<script>alert("Success");window.location="../waitlistForm.php";</script>';
+            echo 'Success';
         }else{
             echo mysqli_error($db);
         }
-    }
 ?>

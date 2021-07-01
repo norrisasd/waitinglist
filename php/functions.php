@@ -13,6 +13,23 @@
             echo mysqli_error($db);
         }
     }
+    function displayAllUser($db){
+        $query="SELECT * FROM user";
+        $result=mysqli_query($db,$query);
+        if($result){
+            while($data = mysqli_fetch_assoc($result)){
+                echo'
+                <tr class="tableItem" onclick="info()">
+                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['username'].'"></th>
+                    <td>'.$data['username'].'</td>
+                    <td>'.$data['email'].'</td>
+                    <td>'.$data['isAdmin'].'</td>
+                    <td><a href="#" onclick="editUser(\"'.$data['username'].'\")" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i></a></td>
+                </tr>
+                ';
+            }
+        }
+    }
     function displayAllClients($db){
         $query="SELECT * FROM clients";
         $result=mysqli_query($db,$query);
@@ -27,6 +44,7 @@
                     <td>'.$data['client_date_created'].'</td>
                     <td>'.$data['client_dnd'].'</td>
                     <td>'.$data['client_enabled'].'</td>
+                    <td><a href="#" onclick="editClient('.$data['client_id'].')" data-toggle="modal" data-target="#clientInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
                 ';
             }
@@ -46,10 +64,34 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
                 ';
             }
         }
+    }
+    function displayAllListString($db){
+        $query ="SELECT * FROM waitlist";
+        $str ='';
+        $result=mysqli_query($db,$query);
+        if($result){
+            while($data = mysqli_fetch_assoc($result)){
+                $str='
+                <tr class="tableItem">
+                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
+                    <td onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info""><a href="#">'.$data['name'].'</a></td>
+                    <td>'.$data['phone'].'</td>
+                    <td>'.$data['email'].'</td>
+                    <td>'.$data['waitlist_activity_name'].'</td>
+                    <td>'.$data['waitlist_start_date'].'</td>
+                    <td>'.$data['waitlist_end_date'].'</td>
+                    <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
+                </tr>
+                ';
+            }
+            
+        }
+        return $str;
     }
     function displayAllTemplates($db){
         $query ="SELECT * FROM emailtemplates";
@@ -150,6 +192,10 @@
             $data = mysqli_fetch_assoc($result);
             return $data;
         }
+    }
+    function getWaitListDateCreated($db,$id){
+        $data = getListById($db,$id);
+        return $data['waitlist_date_created'];
     }
     if(isset($_POST['sendEmail'])){
         $subject=$_POST['subject1'];

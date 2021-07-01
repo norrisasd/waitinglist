@@ -30,13 +30,13 @@
                         <h3 class="panel-title">Please sign in</h3>
                     </div>
                     <div class="panel-body">
-                        <form accept-charset="UTF-8" role="form" action="./php/login.php" method="post">
+                        <form accept-charset="UTF-8" role="form" action="" method="post" onsubmit="return setLogin();">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Username" name="username" type="text">
+                                <input class="form-control" placeholder="Username" id="username" type="text">
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                <input class="form-control" placeholder="Password" id="password" type="password" value="">
                             </div>
                             <div class="checkbox">
                                 <label>
@@ -53,6 +53,27 @@
     </div>
 </body>
 <script>
+    function setLogin(){
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+          $.ajax({
+            type: 'post',
+            url: './php/login.php',
+            data:{
+              username:username,
+              password:password,
+            },
+            success:function(response){
+              
+              if(response == ''){
+                  window.location.href="index.php";
+              }else{
+                  alert(response);
+              }
+            }
+          });
+          return false;
+    }
     $(document).ready(function(){
     $(document).mousemove(function(e){
         TweenLite.to($('body'), 

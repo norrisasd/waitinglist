@@ -1,18 +1,22 @@
 <?php
     require 'conn.php';
-    if(isset($_POST['login'])){
-        $user=$_POST['username'];
-        $pass=$_POST['password'];
-        $query="SELECT * FROM user where username='$user' AND password='$pass'";
-        $result=mysqli_query($db,$query);
-        if(mysqli_num_rows($result) == 1){
+    $user=$_POST['username'];
+    $pass=$_POST['password'];
+    $query="SELECT * FROM user where username='$user'";
+    $result=mysqli_query($db,$query);
+    $data = mysqli_fetch_assoc($result);
+    if(mysqli_num_rows($result) == 1){
+        if(password_verify($pass,$data['password'])){
             $_SESSION['login']=true;
             $_SESSION['username']=$user;
             $_SESSION['pass']=$pass;
-            echo '<script>window.location="../index.php";</script>';
+            $_SESSION['email']=$data['email'];
         }else{
-            echo '<script>alert("Invalid Credentials");window.location="../loginPage.php"</script>';
+            echo 'Invalid Password';
         }
-        
+    }else{
+        echo 'Invalid Username';
     }
+        
+
 ?>

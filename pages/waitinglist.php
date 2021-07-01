@@ -15,6 +15,7 @@ $count = getNotificationCount($db);?>
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
+
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
@@ -254,6 +255,53 @@ $count = getNotificationCount($db);?>
     </section>
     
     <script>
+      function updateListInfo(){
+        var waitID=document.getElementById('waitID').value;
+        var name=document.getElementById('name').value;
+        var phone=document.getElementById('phone').value;
+        var email=document.getElementById('email').value;
+        var sdate=document.getElementById('sdate').value;
+        var edate=document.getElementById('edate').value;
+        var passengers=document.getElementById('passengers').value;
+        var aname=document.getElementById('aname').value;
+        var notes=document.getElementById('notes').value;
+
+        $.ajax({
+          type: 'post',
+          url: '../php/updateList.php',
+          data:{
+            waitID:waitID,
+            name:name,
+            phone:phone,
+            email:email,
+            sdate:sdate,
+            edate:edate,
+            passengers:passengers,
+            aname:aname,
+            notes:notes
+          },
+          success:function(response){
+            alert(response);
+            if(response == 'Success'){
+              $(function () {
+                $('#waitInfo').modal('toggle');
+              });
+              location.reload();
+            }
+          }
+        });
+        return false;
+      }
+      function editList(id){
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function() {
+          if (this.readyState==4 && this.status==200) {
+            document.getElementById("editInfoBody").innerHTML=this.responseText;
+          }
+        }
+        xmlhttp.open("GET","../php/editWaitlistInfo.php?id="+id,true);
+        xmlhttp.send();
+      }
       function copyToClip(){
         str="url";
         const el = document.createElement('textarea');
@@ -469,6 +517,28 @@ $count = getNotificationCount($db);?>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="waitInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Information</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+        </div>
+        <div class="modal-body" style="margin:0 auto">
+        <form method="post" action="" onsubmit="return updateListInfo();">
+          <div id="editInfoBody">
+          
+          </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" >Update</button>
+          </form>
         </div>
       </div>
     </div>
