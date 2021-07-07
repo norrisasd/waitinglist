@@ -1,5 +1,5 @@
 <?php
-    require 'functions.php';
+    require '../functions.php';
     $id =$_POST['id'];
     $name=$_POST['name'];
     $phone=$_POST['phone'];

@@ -1,5 +1,5 @@
 <?php
-    require 'functions.php';
+    require '../functions.php';
     $data = getListById($db,$_GET['id']);
     echo '<input type="text" name="waitID" id="waitID" value="'.$data['waitlist_id'].'" style="display:none">
         <div class="form-group">
@@ -29,11 +29,9 @@
         <div class="form-group">
             <label for="exampleFormControlInput1">Activity Name</label>
             <select name="aname" id="aname" required>
-                <option value="'.$data['waitlist_activity_name'].'" selected hidden>'.$data['waitlist_activity_name'].'</option>
-                <option value="MORNING SNORKELING TOURS">MORNING SNORKELING TOURS</option>
-                <option value="AFTERNOON SNORKELING TOURS">AFTERNOON SNORKELING TOURS</option>
-                <option value="GROUPS & PRIVATE CHARTERS">GROUPS & PRIVATE CHARTERS</option>
-            </select>
+                <option value="'.$data['waitlist_activity_name'].'" selected hidden>'.$data['waitlist_activity_name'].'</option>';
+                getAllActivity($db);
+         echo' </select>
         </div>
         <div class="form-group">
             <label for="exampleFormControlInput1">Additional Notes</label>

@@ -1,10 +1,38 @@
+<?php
+    require "../php/functions.php";
+    if(!isset($_SESSION['login'])){
+        header("Location: ../loginPage.php");
+    }
+    $count = getNotificationCount($db);
+    $countW = getNotificationCountWait($db);
+    $countC = getNotificationCountClient($db);
+    $countU = getNotificationCountUser($db);
+    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 ){
+      $_SESSION['countNotifW']=$countW;
+    }
+    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 ){
+      $_SESSION['countNotifC']=$countC;
+    }
+    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 ){
+      $_SESSION['countNotifU']=$countU;
+    }
+    // insertion during access
+    if(isset($_SESSION['countNotifC']) && $_SESSION['countNotifC'] !=$countC){
+      $_SESSION['countNotifC']+=$countC;
+    }
+    if(isset($_SESSION['countNotifW']) && $_SESSION['countNotifW'] !=$countU){
+      $_SESSION['countNotifW']+=$countW;
+    }
+    if(isset($_SESSION['countNotifU']) && $_SESSION['countNotifU'] !=$countU){
+      $_SESSION['countNotifU']+=$countU;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Maui Snorkeling</title>
-  <?php include '../php/functions.php';?>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -24,7 +52,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="../index3.html" class="nav-link">Home</a>
+        <a href="../index.php" class="nav-link">Home</a>
       </li>
     </ul>
 
@@ -50,29 +78,26 @@
       </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+      <!-- SET ON CLICK HERE -->
+        <a class="nav-link" data-toggle="dropdown" href="#"> 
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge" id="notifCnt"><?php echo $count !=0 ?$count :''; ?></span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="text-align:center">
+          <span class="dropdown-item dropdown-header">Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <div class="dropdown-divider"></div>
+          <a href="waitinglist.php" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotifW'] !=0 ?$_SESSION['countNotifW'].' Wait Added' :'No Notification'; ?>
+          </a>
+          <a href="client.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user-tie"></i> <?php echo $_SESSION['countNotifC'] !=0 ?$_SESSION['countNotifC'].' Clients Added' :'No Notification'; ?>
+          </a>
+          <a href="user.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user"></i> <?php echo $_SESSION['countNotifU'] !=0 ?$_SESSION['countNotifU'].' Users Added' :'No Notification'; ?>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
       <li class="nav-item">
@@ -88,7 +113,18 @@
     </ul>
   </nav>
   <!-- /.navbar -->
-
+  <script>
+    function updateStatus(){
+      var xmlhttp=new XMLHttpRequest();
+      xmlhttp.onreadystatechange=function() {
+          if (this.readyState==4 && this.status==200) {
+              document.getElementById("notifCnt").innerHTML=this.responseText;
+          }
+      }
+      xmlhttp.open("GET","../php/updateNotificationStatus.php",true);
+      xmlhttp.send();
+    }
+    </script>
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -102,7 +138,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="../dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="../accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
@@ -167,12 +203,33 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="./mailbox/mailbox.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon far fa-envelope"></i>
               <p>
-                Mailbox
+                Forms
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../forms/waitlistForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Waitlist Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../forms/clientForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../forms/userForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>User Form</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="../php/logout.php" class="nav-link">
@@ -213,9 +270,7 @@
       <div class="container-fluid">
         <input type="checkbox" value="" onclick="selectAll(this)"> Select All
         <button type="button" class="btn btn-danger" style="float:right;margin-bottom:5px" onclick="confirmDel()">Delete</button>
-        
-        <a href="#"><i class="fa fa-plus" aria-hidden="true" style="float:right;margin-right:1.5rem;margin-top:0.5rem" data-toggle="modal" data-target="#addemailTemplate"></i></a>
-        
+        <a href="#" style="float:right;margin-right:1.5rem;margin-top:0.2rem" data-toggle="modal" data-target="#addemailTemplate">FORM</a>
         <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="TemplateName">Template Name</option>
                   <option value="subject">Subject</option>
@@ -231,7 +286,7 @@
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Message</th>
             </tr>
           </thead>
-          <form action="../php/deleteTemplate.php" method="post">
+          <form action="" method="post" onsubmit="return deleteTemplate();">
           <tbody id="searchTable">
             <?php displayAllTemplates($db)?>
             <button type="submit" id="delTemp" name="delTemp" style="display:none"></button>
@@ -242,6 +297,73 @@
     </section>
     
     <script>
+      function editTemplate(id){
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function() {
+          if (this.readyState==4 && this.status==200) {
+            document.getElementById("editTempBody").innerHTML=this.responseText;
+          }
+        }
+        xmlhttp.open("GET","../php/emailTemplates/editTemplate.php?id="+id,true);
+        xmlhttp.send();
+
+      }
+      function addTemplate(){
+        var TemplateName=document.getElementById("TemplateName").value;
+        var subject=document.getElementById("subject").value;
+        var message=document.getElementById("message").value;
+        $.ajax({
+            type: 'post',
+            url: '../php/emailTemplates/addTemplate.php',
+            data:{
+              TemplateName:TemplateName,
+              subject:subject,
+              message:message,
+            },
+            success:function(response){
+              alert(response);
+              if(response == 'Success'){
+                  location.reload();
+              }
+            }
+          });
+          return false;
+      }
+      
+      function deleteTemplate(){
+        var list=[];
+        var ctr=0;
+        var checkboxes = document.getElementsByName('list[]');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            if(checkboxes[i].checked == true){
+                list[ctr++]=checkboxes[i].value;
+            }
+        }
+        $.ajax({
+            type: 'post',
+            url: '../php/emailTemplates/deleteTemplate.php',
+            data:{
+              list:list,
+            },
+            success:function(response){
+              alert(response);
+              if(response == 'Deleted'){
+                  location.reload();
+              }
+            }
+          });
+          return false;
+      }
+      function info(id){
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function() {
+          if (this.readyState==4 && this.status==200) {
+            document.getElementById("templateInfo").innerHTML=this.responseText;
+          }
+        }
+        xmlhttp.open("GET","../php/emailTemplates/printEmailTemplateInfo.php?id="+id,true);
+        xmlhttp.send();
+    }
       function confirmDel(){
         checkboxes = document.getElementsByName('list[]');
         ctr=0;
@@ -272,7 +394,7 @@
                 document.getElementById("searchTable").innerHTML=this.responseText;
             }
         }
-        xmlhttp.open("GET","../php/searchTemplates.php?name="+name+"&type="+type,true);
+        xmlhttp.open("GET","../php/emailTemplates/searchTemplates.php?name="+name+"&type="+type,true);
         xmlhttp.send();
     }
       function setEmail(str){
@@ -282,7 +404,7 @@
                 eval(this.responseText);
             }
         }
-        xmlhttp.open("GET","../php/getTemplates.php?tempName="+str,true);
+        xmlhttp.open("GET","../php/emailTemplates/getTemplates.php?tempName="+str,true);
         xmlhttp.send();
     }
     </script>
@@ -299,25 +421,64 @@
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="../php/addTemplate.php" method="post">
+          <form action="" method="post" onsubmit="return addTemplate();">
           <div class="form-group">
               <label for="exampleFormControlInput1">Template Name</label>
-              <input type="text" class="form-control" name="TemplateName" placeholder="Template Name" required>
+              <input type="text" class="form-control" id="TemplateName" placeholder="Template Name" required>
           </div>
               <div class="form-group">
                   <label for="exampleFormControlInput1">Subject</label>
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                  <input type="text" class="form-control" id="subject" placeholder="Subject" required>
               </div>
               <div class="form-group">
                   <label for="exampleFormControlTextarea1">Message</label>
-                  <textarea class="form-control" name="message" rows="3" required></textarea required>
+                  <textarea class="form-control" id="message" rows="3" required></textarea required>
               </div>
           </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" name="addTemplate">Add Template</button>
+          <button type="submit" class="btn btn-primary">Add Template</button>
         </div>
         </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="editTemp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Email Template</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <form action="" method="post" onsubmit="return updateEmailTemplate();">
+          <div id="editTempBody">
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Update Template</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Email Template Info</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="templateInfo">
+
+          </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -342,6 +503,29 @@
 
 <!-- jQuery -->
 <script>
+    function updateEmailTemplate(){
+        var  id = document.getElementById("tempID").value;
+        var  tname = document.getElementById("etname").value;
+        var  sub = document.getElementById("esub").value;
+        var  mes = document.getElementById("emes").value;
+        $.ajax({
+            type: 'post',
+            url: '../php/emailTemplates/updateEmailTemplate.php',
+            data:{
+              tempid:id,
+              tname:tname,
+              sub:sub,
+              mes:mes,
+            },
+            success:function(response){
+              alert(response);
+              if(response == 'Updated'){
+                  location.reload();
+              }
+            }
+          });
+          return false;
+      }
   if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
   }

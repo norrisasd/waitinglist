@@ -1,7 +1,8 @@
 <?php
-    require 'functions.php';
+    require '../functions.php';
     $id=$_GET['id'];
     $data=getListById($db,$id);
+    $notes = $data['waitlist_notes'] == ''?"None": $data['waitlist_notes'];
     echo '<table>
                 <tr>
                 <td>ID:</td>
@@ -37,7 +38,12 @@
                 </tr>
                 <tr>
                 <td>Notes:</td>
-                <td>'.$data['waitlist_notes'].'</td>
+                <td>'.$notes.'</td>
+                </tr>
+                <tr>
+                <tr>
+                <td>Client ID:</td>
+                <td>'.$data['client_id'].'</td>
                 </tr>
                 <tr>
                 <td>Date Created: </td>

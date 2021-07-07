@@ -1,10 +1,35 @@
+<?php
+    require "php/functions.php";
+    if(!isset($_SESSION['login'])){
+        header("Location: loginPage.php");
+    }
+    $count = getNotificationCount($db);
+    $countW = getNotificationCountWait($db);
+    $countC = getNotificationCountClient($db);
+    $countU = getNotificationCountUser($db);
+    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 ){
+      $_SESSION['countNotifW']=$countW;
+    }
+    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 ){
+      $_SESSION['countNotifC']=$countC;
+    }
+    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 ){
+      $_SESSION['countNotifU']=$countU;
+    }
+    // insertion during access
+    if(isset($_SESSION['countNotifC']) && $_SESSION['countNotifC'] !=$countC){
+      $_SESSION['countNotifC']+=$countC;
+    }
+    if(isset($_SESSION['countNotifW']) && $_SESSION['countNotifW'] !=$countU){
+      $_SESSION['countNotifW']+=$countW;
+    }
+    if(isset($_SESSION['countNotifU']) && $_SESSION['countNotifU'] !=$countU){
+      $_SESSION['countNotifU']+=$countU;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-  <?php
-    require "php/conn.php";
-  ?>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Maui Snorkeling</title>
@@ -43,7 +68,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="index.php" class="nav-link">Home</a>
       </li>
     </ul>
 
@@ -72,29 +97,26 @@
       </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+      <!-- SET ON CLICK HERE -->
+        <a class="nav-link" data-toggle="dropdown" href="#"> 
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge" id="notifCnt"><?php echo $count !=0 ?$count :''; ?></span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="text-align:center">
+          <span class="dropdown-item dropdown-header">Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <div class="dropdown-divider"></div>
+          <a href="./pages/waitinglist.php" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotifW'] !=0 ?$_SESSION['countNotifW'].' Wait Added' :'No Notification'; ?>
+          </a>
+          <a href="./pages/client.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user-tie"></i> <?php echo $_SESSION['countNotifC'] !=0 ?$_SESSION['countNotifC'].' Clients Added' :'No Notification'; ?>
+          </a>
+          <a href="./pages/user.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user"></i> <?php echo $_SESSION['countNotifU'] !=0 ?$_SESSION['countNotifU'].' Users Added' :'No Notification'; ?>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
       <li class="nav-item">
@@ -110,7 +132,18 @@
     </ul>
   </nav>
   <!-- /.navbar -->
-
+  <script>
+    function updateStatus(){
+      var xmlhttp=new XMLHttpRequest();
+      xmlhttp.onreadystatechange=function() {
+          if (this.readyState==4 && this.status==200) {
+              document.getElementById("notifCnt").innerHTML=this.responseText;
+          }
+      }
+      xmlhttp.open("GET","./php/updateNotificationStatus.php",true);
+      xmlhttp.send();
+    }
+    </script>
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -124,7 +157,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo $_SESSION['username'];?></a>
@@ -189,6 +222,35 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Forms
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./forms/waitlistForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Waitlist Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./forms/clientForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./forms/userForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>User Form</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
             <a href="php/logout.php" class="nav-link">
               <i class="nav-icon fa fa-file"></i>
               <p>
@@ -249,6 +311,11 @@
                     <td><?php echo $_SESSION['email']; ?></td>
                     <td><a href="#" data-toggle="modal" data-target="#editEmail"><i class="fas fa-edit"></i></a></td>
                 </tr> 
+                <tr>
+                    <td>Profile Photo</td>
+                    <td><?php echo $_SESSION['img']; ?></td>
+                    <td><a href="#" data-toggle="modal" data-target="#editImage"><i class="fas fa-edit"></i></a></td>
+                </tr> 
             </tbody>
             </table>
         </div>
@@ -262,7 +329,7 @@
         var email = document.getElementById("email").value;
           $.ajax({
             type: 'post',
-            url: './php/user/updateEmail.php',
+            url: './php/accnt/updateEmail.php',
             data:{
               email:email,
             },
@@ -279,7 +346,7 @@
         var username = document.getElementById("username").value;
           $.ajax({
             type: 'post',
-            url: './php/user/updateUsername.php',
+            url: './php/accnt/updateUsername.php',
             data:{
               username:username,
             },
@@ -296,7 +363,7 @@
         var password = document.getElementById("password").value;
           $.ajax({
             type: 'post',
-            url: './php/user/updatePassword.php',
+            url: './php/accnt/updatePassword.php',
             data:{
               password:password,
             },
@@ -307,6 +374,31 @@
               }
             }
           });
+          return false;
+      }
+      function updateProfile(){
+        var name = document.getElementById("file").value;
+        name = name.split("\\").pop();
+        document.getElementById("title").value=name;
+        $("form#data").submit(function(e) {
+        e.preventDefault();    
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: './php/accnt/updateProfile.php',
+            type: 'POST',
+            data: formData,
+            success: function (data) {
+                alert(data)
+                if(data == "File Sucessfully uploaded"){
+                  location.reload();
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+            });
+        });
           return false;
       }
     </script>
@@ -367,12 +459,34 @@
         <div class="modal-body">
               <div class="form-group">
                   <label for="exampleFormControlInput1">Email</label>
-                  <input type="text" class="form-control" id="email" placeholder="Password" required>
+                  <input type="text" class="form-control" id="email" placeholder="Email" required>
               </div>
           </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" name="editPass">Update Email</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade" id="editImage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Profile</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="" id="data" method="post" enctype="multipart/form-data">
+        <div class="modal-body" >
+              <div class="form-group" >
+                  <input type="file" accept="image/png, image/jpeg" name="file" id="file" required>
+                  <input type="text" name="title" id="title" style="display:none">
+              </div>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" onclick="updateProfile()" name="editPass">Update Photo</button>
         </div>
       </div>
       </form>

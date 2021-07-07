@@ -1,6 +1,6 @@
 <?php
 //  require 'conn.php';
- include '../php/functions.php';
+ include '../functions.php';
  $list=explode(",",$_GET['list']);
  $fields = array('ID', 'NAME', 'PHONE', 'EMAIL', 'START DATE', 'END DATE','Number of Passenger', 'Activity Name','Notes','Date Created','Waitlist_Enabled','Waitlist_Approval_Sent'); 
  

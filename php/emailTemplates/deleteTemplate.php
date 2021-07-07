@@ -1,18 +1,16 @@
 <?php
-    require 'functions.php';
+    include '../functions.php';
     if(!empty($_POST['list'])){
         foreach($_POST['list'] as $list){
-            $retval=deleteClient($db,$list);
+            $retval=deleteTemplate($db,$list);
             if(!$retval){
                 break;
             }
         }
-    }else{
-        echo '';
     }
-    if($retval){
-        echo 'Deleted';
+    if(!$retval){
+        echo mysqli_error($db);
     }else{
-        echo 'Error';
+        echo 'Deleted';
     }
 ?>

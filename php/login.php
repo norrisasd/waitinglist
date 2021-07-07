@@ -6,11 +6,19 @@
     $result=mysqli_query($db,$query);
     $data = mysqli_fetch_assoc($result);
     if(mysqli_num_rows($result) == 1){
-        if(password_verify($pass,$data['password'])){
-            $_SESSION['login']=true;
-            $_SESSION['username']=$user;
-            $_SESSION['pass']=$pass;
-            $_SESSION['email']=$data['email'];
+        if($pass == $data['password']){
+            if($data['isAdmin'] != NULL){
+                $_SESSION['login']=true;
+                $_SESSION['username']=$user;
+                $_SESSION['pass']=$pass;
+                $_SESSION['email']=$data['email'];
+                $_SESSION['access']=$data['isAdmin'];
+                $_SESSION['img']=$data['image_file'];
+                if($data['isAdmin']){
+                }
+            }else{
+                echo 'Not an Admin';
+            }
         }else{
             echo 'Invalid Password';
         }

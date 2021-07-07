@@ -1,5 +1,5 @@
 <?php
-    require 'functions.php';
+    require '../functions.php';
     $data = getClientById($db,$_GET['id']);
     echo '<input type="text" name="waitID" id="clientID" value="'.$data['client_id'].'" style="display:none">
         <div class="form-group">

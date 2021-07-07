@@ -1,5 +1,32 @@
-<?php include '../php/functions.php';
-$count = getNotificationCount($db);?>
+<?php
+    require "../php/functions.php";
+    if(!isset($_SESSION['login'])){
+        header("Location: ../loginPage.php");
+    }
+    $count = getNotificationCount($db);
+    $countW = getNotificationCountWait($db);
+    $countC = getNotificationCountClient($db);
+    $countU = getNotificationCountUser($db);
+    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 ){
+      $_SESSION['countNotifW']=$countW;
+    }
+    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 ){
+      $_SESSION['countNotifC']=$countC;
+    }
+    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 ){
+      $_SESSION['countNotifU']=$countU;
+    }
+    // insertion during access
+    if(isset($_SESSION['countNotifC']) && $_SESSION['countNotifC'] !=$countC){
+      $_SESSION['countNotifC']+=$countC;
+    }
+    if(isset($_SESSION['countNotifW']) && $_SESSION['countNotifW'] !=$countU){
+      $_SESSION['countNotifW']+=$countW;
+    }
+    if(isset($_SESSION['countNotifU']) && $_SESSION['countNotifU'] !=$countU){
+      $_SESSION['countNotifU']+=$countU;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +52,7 @@ $count = getNotificationCount($db);?>
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="../index3.html" class="nav-link">Home</a>
+        <a href="../index.php" class="nav-link">Home</a>
       </li>
     </ul>
 
@@ -52,7 +79,7 @@ $count = getNotificationCount($db);?>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
       <!-- SET ON CLICK HERE -->
-        <a class="nav-link" data-toggle="dropdown" onclick="updateStatus()" href="#"> 
+        <a class="nav-link" data-toggle="dropdown" href="#"> 
           <i class="far fa-bell"></i>
           <span class="badge badge-warning navbar-badge" id="notifCnt"><?php echo $count !=0 ?$count :''; ?></span>
         </a>
@@ -60,12 +87,17 @@ $count = getNotificationCount($db);?>
           <span class="dropdown-item dropdown-header">Notifications</span>
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
+          <a href="waitinglist.php" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotifW'] !=0 ?$_SESSION['countNotifW'].' Wait Added' :'No Notification'; ?>
+          </a>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotif'] !=0 ?$_SESSION['countNotif'].' Added' :'No Notification'; ?>
+          <i class="nav-icon fas fa-user-tie"></i> <?php echo $_SESSION['countNotifC'] !=0 ?$_SESSION['countNotifC'].' Clients Added' :'No Notification'; ?>
+          </a>
+          <a href="user.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user"></i> <?php echo $_SESSION['countNotifU'] !=0 ?$_SESSION['countNotifU'].' Users Added' :'No Notification'; ?>
           </a>
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
       <li class="nav-item">
@@ -107,7 +139,7 @@ $count = getNotificationCount($db);?>
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="../dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="../accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
@@ -172,12 +204,33 @@ $count = getNotificationCount($db);?>
             </a>
           </li>
           <li class="nav-item">
-            <a href="./mailbox/mailbox.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon far fa-envelope"></i>
               <p>
-                Mailbox
+                Forms
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../forms/waitlistForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Waitlist Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../forms/clientForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../forms/userForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>User Form</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="../php/logout.php" class="nav-link">
@@ -220,8 +273,7 @@ $count = getNotificationCount($db);?>
         
         <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         <button type="button" class="btn btn-danger" style="float:right;margin-bottom:5px"  onclick="checkDelete()">Delete</button>
-        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Client List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
-        <a href="../clientForm.php" target="_blank" data-toggle="tooltip" title="Client List Form" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
+        <a href="#" data-toggle="modal" data-target="#addClient" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
         
         <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="client_name">Name</option>
@@ -242,11 +294,16 @@ $count = getNotificationCount($db);?>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Date Created</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">DND</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Enabled</th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return deleteClient();">
           <tbody id="searchTable">
-            <?php displayAllClients($db)?>
+            <?php 
+              displayAllClients($db);
+              updateNotificationStatusClient($db);
+            ?>
           </tbody>
           <button type="submit" id="delCli" style="display:none"></button>
           </form>
@@ -255,6 +312,44 @@ $count = getNotificationCount($db);?>
     </section>
     
     <script>
+    function updateDND(id){
+      if(confirm("Are you sure you want to update DND?")){
+        $.ajax({
+          type:'post',
+          url: '../php/client/updateDND.php',
+          data:{
+            id:id
+          },
+          success:function(response){
+              alert(response);
+              if(response == 'Updated')
+                location.reload();
+            }
+       });
+      }
+      
+    }
+    function addClient(){
+        var name=document.getElementById('name').value;
+        var phone=document.getElementById('phone').value;
+        var email=document.getElementById('email').value;
+
+        $.ajax({
+          type: 'post',
+          url: '../php/client/addClient.php',
+          data:{
+            name:name,
+            phone:phone,
+            email:email,
+          },
+          success:function(response){
+            alert(response);
+            if(response == 'Success')
+              location.reload();
+          }
+        });
+        return false;
+      }
       function editClientInfo(){
         var clientID=document.getElementById("clientID").value;
         var name=document.getElementById("name").value;
@@ -263,7 +358,7 @@ $count = getNotificationCount($db);?>
 
         $.ajax({
             type: 'post',
-            url: '../php/updateClient.php',
+            url: '../php/client/updateClient.php',
             data:{
               id:clientID,
               name:name,
@@ -286,7 +381,17 @@ $count = getNotificationCount($db);?>
             document.getElementById("editInfoBody").innerHTML=this.responseText;
           }
         }
-        xmlhttp.open("GET","../php/editClientInfo.php?id="+id,true);
+        xmlhttp.open("GET","../php/client/editClientInfo.php?id="+id,true);
+        xmlhttp.send();
+      }
+      function info(id){
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function() {
+          if (this.readyState==4 && this.status==200) {
+            document.getElementById("informationBody").innerHTML=this.responseText;
+          }
+        }
+        xmlhttp.open("GET","../php/client/printClientInfo.php?id="+id,true);
         xmlhttp.send();
       }
       function deleteClient(){
@@ -300,7 +405,7 @@ $count = getNotificationCount($db);?>
         }
         $.ajax({
             type: 'post',
-            url: '../php/deleteClient.php',
+            url: '../php/client/deleteClient.php',
             data:{
               list:list,
             },
@@ -312,16 +417,6 @@ $count = getNotificationCount($db);?>
             }
           });
           return false;
-      }
-        function copyToClip(){
-        str="url";
-        const el = document.createElement('textarea');
-        el.value = str;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-        alert("Copied the text: " + el.value);
       }
       function checkDelete(){
         checkboxes = document.getElementsByName('list[]');
@@ -361,7 +456,7 @@ $count = getNotificationCount($db);?>
                   window.location="../php/export.php";
                 }
             }
-            xmlhttp.open("GET","../php/exportClient.php?list="+list,true);
+            xmlhttp.open("GET","../php/client/exportClient.php?list="+list,true);
             xmlhttp.send();
           } 
         }
@@ -380,7 +475,7 @@ $count = getNotificationCount($db);?>
                 document.getElementById("searchTable").innerHTML=this.responseText;
             }
         }
-        xmlhttp.open("GET","../php/searchClient.php?name="+name+"&type="+type,true);
+        xmlhttp.open("GET","../php/client/searchClient.php?name="+name+"&type="+type,true);
         xmlhttp.send();
     }
     </script>
@@ -397,7 +492,7 @@ $count = getNotificationCount($db);?>
           <h5 class="modal-title" id="exampleModalLabel">Edit Information</h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
         </div>
-        <div class="modal-body" style="margin:0 auto">
+        <div class="modal-body">
         <form method="post" action="" onsubmit="return editClientInfo();">
           <div id="editInfoBody">
           
@@ -407,6 +502,54 @@ $count = getNotificationCount($db);?>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" >Update</button>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="addClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Client</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+        </div>
+        <div class="modal-body">
+        <form action="" method="post" onsubmit="return addClient();" autocomplete="off" id="clientForm">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Name</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="" autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Phone</label>
+                <input type="number" class="form-control" name="phone" id="phone" autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Email</label>
+                <input type="email" class="form-control" name="email" id="email" autocomplete="off" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" >Add</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Information</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="margin:0 auto">
+          <div id="informationBody">
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

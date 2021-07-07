@@ -18,14 +18,27 @@
         $result=mysqli_query($db,$query);
         if($result){
             while($data = mysqli_fetch_assoc($result)){
+                $access= $data['isAdmin']==NULL?"FALSE":"TRUE";
                 echo'
-                <tr class="tableItem" onclick="info()">
+                <tr class="tableItem">
                     <th scope="row"><input type="checkbox" name="list[]" value="'.$data['username'].'"></th>
-                    <td>'.$data['username'].'</td>
+                    <td><a href="#" onclick="info(\''.$data['username'].'\')" data-toggle="modal" data-target="#info">'.$data['username'].'</a></td>
                     <td>'.$data['email'].'</td>
-                    <td>'.$data['isAdmin'].'</td>
-                    <td><a href="#" onclick="editUser(\"'.$data['username'].'\")" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i></a></td>
-                </tr>
+                    <td>'.$access.'</td>';
+                    if($_SESSION['access'] == 1){
+                        if($data['isAdmin']== NULL ){
+                            echo '
+                             <td><a href="#" onclick="makeAdmin(\''.$data['username'].'\')">Grant Access</a></td>';
+                         }else if($data['isAdmin'] == 0){
+                             echo '
+                             <td><a href="#" onclick="removeAdmin(\''.$data['username'].'\')">Remove Access</a></td>';
+                         }else{
+                            echo '<td></td>';
+                         }
+                    }else{
+                        echo'<td></td>';
+                    }
+                echo '</tr>
                 ';
             }
         }
@@ -35,30 +48,41 @@
         $result=mysqli_query($db,$query);
         if($result){
             while($data = mysqli_fetch_assoc($result)){
+                $dnd = $data['client_dnd'] == 1 ?"TRUE":"FALSE";
+                $disp = $data['client_dnd'] == 1 ?"":"Update DND";
+                $enable = $data['client_enabled'] == 1?"Disabled":"Enabled";
                 echo'
-                <tr class="tableItem" onclick="info()">
+                <tr class="tableItem">
                     <th scope="row"><input type="checkbox" name="list[]" value="'.$data['client_id'].'"></th>
-                    <td>'.$data['client_name'].'</td>
+                    <td><a href="#" onclick="info('.$data['client_id'].')" data-toggle="modal" data-target="#info">'.$data['client_name'].'</a></td>
                     <td>'.$data['client_phone'].'</td>
                     <td>'.$data['client_email'].'</td>
                     <td>'.$data['client_date_created'].'</td>
-                    <td>'.$data['client_dnd'].'</td>
-                    <td>'.$data['client_enabled'].'</td>
+                    <td>'.$dnd.'</td>
+                    <td>'.$enable.'</td>
                     <td><a href="#" onclick="editClient('.$data['client_id'].')" data-toggle="modal" data-target="#clientInfo"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="#" onclick="updateDND('.$data['client_id'].')">'.$disp.'</a></td>
                 </tr>
                 ';
             }
         }
     }
-    function displayAllList($db){
-        $query ="SELECT * FROM waitlist";
+    function displayAllList($db){//read
+        $query ="SELECT waitlist.* ,notification.notification_status
+        FROM waitlist,notification
+        INNER JOIN waitlist_notfication
+        ON waitlist_notfication.waitlist_id=waitlist_id
+        AND notification.notification_id = waitlist_notfication.notification_id
+        WHERE waitlist_notfication.waitlist_id= waitlist.waitlist_id AND waitlist.waitlist_approval_sent = 0
+        GROUP BY waitlist.waitlist_id desc;";
         $result=mysqli_query($db,$query);
         if($result){
             while($data = mysqli_fetch_assoc($result)){
+                $color = $data['notification_status'] == 1?"gray":"black";
                 echo'
-                <tr class="tableItem">
-                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
-                    <td onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info""><a href="#">'.$data['name'].'</a></td>
+                <tr class="tableItem" style="color:'.$color.';">
+                    <th scope="row"><input type="checkbox"  name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
+                    <td><a href="#" onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info">'.$data['name'].'</a></td>
                     <td>'.$data['phone'].'</td>
                     <td>'.$data['email'].'</td>
                     <td>'.$data['waitlist_activity_name'].'</td>
@@ -70,6 +94,18 @@
             }
         }
     }
+    function updateNotificationStatusWait($db){
+        $query = "UPDATE `notification` SET `notification_status` = 1 WHERE notification.notification_status = 0 and notification.notification_subject = 'waitlist'";
+        $result = mysqli_query($db,$query);
+    }
+    function updateNotificationStatusClient($db){
+        $query = "UPDATE `notification` SET `notification_status` = 1 WHERE notification.notification_status = 0 and notification.notification_subject = 'client'";
+        $result = mysqli_query($db,$query);
+    }
+    function updateNotificationStatusUser($db){
+        $query = "UPDATE `notification` SET `notification_status` = 1 WHERE notification.notification_status = 0 and notification.notification_subject = 'user'";
+        $result = mysqli_query($db,$query);
+    }
     function displayAllListString($db){
         $query ="SELECT * FROM waitlist";
         $str ='';
@@ -79,7 +115,7 @@
                 $str='
                 <tr class="tableItem">
                     <th scope="row"><input type="checkbox" name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
-                    <td onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info""><a href="#">'.$data['name'].'</a></td>
+                    <td><a href="#" onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info">'.$data['name'].'</a></td>
                     <td>'.$data['phone'].'</td>
                     <td>'.$data['email'].'</td>
                     <td>'.$data['waitlist_activity_name'].'</td>
@@ -100,25 +136,24 @@
             while($data=mysqli_fetch_assoc($result)){
                 echo'
                 <tr class="tableItem">
-                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['TemplateName'].'"></th>
-                    <td>'.$data['TemplateName'].'</td>
+                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['template_id'].'"></th>
+                    <td><a href="#" onclick="info('.$data['template_id'].')" data-toggle="modal" data-target="#info">'.$data['TemplateName'].'</a></td>
                     <td>'.$data['subject'].'</td>
                     <td>'.$data['message'].'</td>
+                    <td><a href="#" onclick="editTemplate('.$data['template_id'].')" data-toggle="modal" data-target="#editTemp"><i class="fas fa-edit"></i></a></td>
                 </tr>
-
                     ';
             }
         }
     }
-    function deleteTemplate($db,$tempname){
-        $query="DELETE FROM `emailtemplates` WHERE `TemplateName`= '$tempname'";
+    function deleteTemplate($db,$id){
+        $query="DELETE FROM `emailtemplates` WHERE `template_id`= $id";
         $result=mysqli_query($db,$query);
         return $result;
     }
     function sendEmail($email,$subject,$message){
-        require '../phpmailer/PHPMailerAutoload.php';
         $mail = new PHPMailer;
-        $mail->isSMTP();
+        $mail->isSMTP();//remove when hosting
         $mail->Host='smtp.gmail.com';
         $mail->Port=587;
         $mail->SMTPAuth=true;
@@ -136,9 +171,14 @@
         $check = $mail->send();
         return $check;
     }
-    function updateStatus($db,$email){
-        $query = "UPDATE `waitlist` SET `waitlist_approval_sent`=1 WHERE `email`='$email'";
+    function updateStatus($db,$id){
+        $query = "UPDATE `waitlist` SET `waitlist_approval_sent`=1 WHERE `waitlist_id`='$id'";
         $result = mysqli_query($db,$query);
+        if($result){
+            return true;
+        }else{
+            return false;
+        }
     }
     function getListById($db,$id){
         $query="SELECT * FROM `waitlist` where `waitlist_id` = '$id'";
@@ -156,6 +196,30 @@
     }
     function getNotificationCount($db){
         $query="SELECT * FROM notification where notification_status=0";
+        $result=mysqli_query($db,$query);
+        if($result){
+            $count = mysqli_num_rows($result);
+            return $count;
+        }
+    }
+    function getNotificationCountWait($db){
+        $query="SELECT * FROM notification where notification_subject ='waitlist' AND notification_status=0";
+        $result=mysqli_query($db,$query);
+        if($result){
+            $count = mysqli_num_rows($result);
+            return $count;
+        }
+    }
+    function getNotificationCountClient($db){
+        $query="SELECT * FROM notification where notification_subject ='client' AND notification_status=0";
+        $result=mysqli_query($db,$query);
+        if($result){
+            $count = mysqli_num_rows($result);
+            return $count;
+        }
+    }
+    function getNotificationCountUser($db){
+        $query="SELECT * FROM notification where notification_subject ='user' AND notification_status=0";
         $result=mysqli_query($db,$query);
         if($result){
             $count = mysqli_num_rows($result);
@@ -193,29 +257,33 @@
             return $data;
         }
     }
+    function getUserByUsername($db,$id){
+        $query="SELECT * FROM user where username='$id'";
+        $result=mysqli_query($db,$query);
+        if(mysqli_num_rows($result)==1){
+            $data = mysqli_fetch_assoc($result);
+            return $data;
+        }
+    }
     function getWaitListDateCreated($db,$id){
         $data = getListById($db,$id);
         return $data['waitlist_date_created'];
     }
-    if(isset($_POST['sendEmail'])){
-        $subject=$_POST['subject1'];
-        $message=$_POST['text1'];
-        if(!empty($_POST['list'])){
-            foreach($_POST['list'] as $list){
-                $retval=sendEmail($list,$subject,$message);
-                if(!$retval){
-                    break;
-                }else{
-                    updateStatus($db,$list);
-                }
+    function getAllActivity($db){
+        $query="SELECT * FROM activity";
+        $result=mysqli_query($db,$query);
+        if($result){
+            while($data=mysqli_fetch_assoc($result)){
+                echo '<option value="'.$data['activity_name'].'">'.$data['activity_name'].'</option>';
             }
-        }else{
-            echo '';
         }
-        if($retval){
-            echo '<script>alert("Email Sent!")</script>';
-        }else{
-            echo '<script>alert("Error")</script>';
+    }
+    function getEmailTemplateById($db,$id){
+        $query="SELECT * FROM emailtemplates WHERE template_id=$id";
+        $result=mysqli_query($db,$query);
+        if($result && mysqli_num_rows($result) == 1){
+            $data = mysqli_fetch_assoc($result);
+            return $data;
         }
     }
 ?>

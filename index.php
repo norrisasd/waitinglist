@@ -4,8 +4,27 @@
         header("Location: loginPage.php");
     }
     $count = getNotificationCount($db);
-    if(!isset($_SESSION['countNotif']) || $_SESSION['countNotif']==0 ){
-      $_SESSION['countNotif']=$count;
+    $countW = getNotificationCountWait($db);
+    $countC = getNotificationCountClient($db);
+    $countU = getNotificationCountUser($db);
+    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 ){
+      $_SESSION['countNotifW']=$countW;
+    }
+    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 ){
+      $_SESSION['countNotifC']=$countC;
+    }
+    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 ){
+      $_SESSION['countNotifU']=$countU;
+    }
+    // insertion during access
+    if(isset($_SESSION['countNotifC']) && $_SESSION['countNotifC'] !=$countC){
+      $_SESSION['countNotifC']+=$countC;
+    }
+    if(isset($_SESSION['countNotifW']) && $_SESSION['countNotifW'] !=$countW){
+      $_SESSION['countNotifW']+=$countW;
+    }
+    if(isset($_SESSION['countNotifU']) && $_SESSION['countNotifU'] !=$countU){
+      $_SESSION['countNotifU']+=$countU;
     }
 ?>
 <!DOCTYPE html>
@@ -35,7 +54,7 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -53,7 +72,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Home</a>
       </li>
     </ul>
 
@@ -83,7 +102,7 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
       <!-- SET ON CLICK HERE -->
-        <a class="nav-link" data-toggle="dropdown" onclick="updateStatus()" href="#"> 
+        <a class="nav-link" data-toggle="dropdown" href="#"> 
           <i class="far fa-bell"></i>
           <span class="badge badge-warning navbar-badge" id="notifCnt"><?php echo $count !=0 ?$count :''; ?></span>
         </a>
@@ -91,12 +110,17 @@
           <span class="dropdown-item dropdown-header">Notifications</span>
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotif'] !=0 ?$_SESSION['countNotif'].' Added' :'No Notification'; ?>
+          <a href="./pages/waitinglist.php" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotifW'] !=0 ?$_SESSION['countNotifW'].' Wait Added' :'No Notification'; ?>
+          </a>
+          <a href="./pages/client.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user-tie"></i> <?php echo $_SESSION['countNotifC'] !=0 ?$_SESSION['countNotifC'].' Clients Added' :'No Notification'; ?>
+          </a>
+          <a href="./pages/user.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user"></i> <?php echo $_SESSION['countNotifU'] !=0 ?$_SESSION['countNotifU'].' Users Added' :'No Notification'; ?>
           </a>
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
       <li class="nav-item">
@@ -137,7 +161,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
@@ -202,12 +226,33 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/mailbox/mailbox.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon far fa-envelope"></i>
               <p>
-                Mailbox
+                Forms
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./forms/waitlistForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Waitlist Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./forms/clientForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./forms/userForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>User Form</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="php/logout.php" class="nav-link">
@@ -245,7 +290,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" >
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
@@ -268,7 +313,6 @@
             <div class="small-box bg-success">
               <div class="inner">
                 <h3><?php echo getCountToday($db);?></h3>
-
                 <p>Today</p>
               </div>
               <div class="icon">
@@ -283,7 +327,6 @@
             <div class="small-box bg-warning">
               <div class="inner">
                 <h3><?php echo getCountLastWeek($db);?></h3>
-
                 <p>This Week</p>
               </div>
               <div class="icon">
@@ -297,7 +340,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3><?php echo $_SESSION['countNotif'];?></h3>
+                <h3><?php echo $_SESSION['countNotifW'];?></h3>
                 <p>Most Recent</p>
               </div>
               <div class="icon">
@@ -314,7 +357,7 @@
           <!-- Left col -->
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-5 connectedSortable">
+          <section class="col-lg-5 connectedSortable" style="margin: 0 auto">
             <!-- Map card -->
             <div class="card bg-gradient-primary" style="display:none;">
               <div class="card-header border-0">
@@ -354,10 +397,10 @@
 
             <!-- solid sales graph -->
             <!-- /.card -->
-
+            <canvas id="myChart" style="width:100%;max-width:700px;margin:0 auto"></canvas>
+            <br><br>
             <!-- Calendar -->
-            <div><canvas id="myChart" style="width:100%;max-width:600px;margin-left:3rem"></canvas><br></div>
-            <div class="card bg-gradient-success">
+            <div class="card bg-gradient-success" style="margin:0 auto">
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="far fa-calendar-alt"></i>
@@ -371,6 +414,7 @@
               </div>
               <!-- /.card-body -->
             </div>
+            <br>
             
             <!-- /.card -->
           </section>
@@ -386,8 +430,8 @@
 
 <script>
 var xValues = ["Yesterday", "Today", "This Week", "Most Recent"];
-var yValues = [<?php echo $_SESSION['countNotif'] ?>, <?php echo getCountToday($db); ?>, <?php echo getCountYesterday($db); ?>, <?php echo getCountLastWeek($db); ?>];
-var barColors = ["red", "green","blue","orange"];
+var yValues = [<?php echo getCountYesterday($db); ?>, <?php echo getCountToday($db); ?>,  <?php echo getCountLastWeek($db); ?>,<?php echo $_SESSION['countNotifW']; ?>];
+var barColors = ["blue", "green","orange","red"];
 
 new Chart("myChart", {
   type: "bar",

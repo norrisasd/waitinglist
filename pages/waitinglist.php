@@ -1,5 +1,32 @@
-<?php include '../php/functions.php';
-$count = getNotificationCount($db);?>
+<?php
+    require "../php/functions.php";
+    if(!isset($_SESSION['login'])){
+        header("Location: ../loginPage.php");
+    }
+    $count = getNotificationCount($db);
+    $countW = getNotificationCountWait($db);
+    $countC = getNotificationCountClient($db);
+    $countU = getNotificationCountUser($db);
+    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 ){
+      $_SESSION['countNotifW']=$countW;
+    }
+    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 ){
+      $_SESSION['countNotifC']=$countC;
+    }
+    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 ){
+      $_SESSION['countNotifU']=$countU;
+    }
+    // insertion during access
+    if(isset($_SESSION['countNotifC']) && $_SESSION['countNotifC'] !=$countC){
+      $_SESSION['countNotifC']+=$countC;
+    }
+    if(isset($_SESSION['countNotifW']) && $_SESSION['countNotifW'] !=$countW){
+      $_SESSION['countNotifW']+=$countW;
+    }
+    if(isset($_SESSION['countNotifU']) && $_SESSION['countNotifU'] !=$countU){
+      $_SESSION['countNotifU']+=$countU;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +53,7 @@ $count = getNotificationCount($db);?>
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="../index3.html" class="nav-link">Home</a>
+        <a href="../index.php" class="nav-link">Home</a>
       </li>
     </ul>
 
@@ -53,7 +80,7 @@ $count = getNotificationCount($db);?>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
       <!-- SET ON CLICK HERE -->
-        <a class="nav-link" data-toggle="dropdown" onclick="updateStatus()" href="#"> 
+        <a class="nav-link" data-toggle="dropdown" href="#"> 
           <i class="far fa-bell"></i>
           <span class="badge badge-warning navbar-badge" id="notifCnt"><?php echo $count !=0 ?$count :''; ?></span>
         </a>
@@ -62,11 +89,16 @@ $count = getNotificationCount($db);?>
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotif'] !=0 ?$_SESSION['countNotif'].' Added' :'No Notification'; ?>
+            <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotifW'] !=0 ?$_SESSION['countNotifW'].' Wait Added' :'No Notification'; ?>
+          </a>
+          <a href="client.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user-tie"></i> <?php echo $_SESSION['countNotifC'] !=0 ?$_SESSION['countNotifC'].' Clients Added' :'No Notification'; ?>
+          </a>
+          <a href="user.php" class="dropdown-item">
+          <i class="nav-icon fas fa-user"></i> <?php echo $_SESSION['countNotifU'] !=0 ?$_SESSION['countNotifU'].' Users Added' :'No Notification'; ?>
           </a>
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
       <li class="nav-item">
@@ -108,7 +140,7 @@ $count = getNotificationCount($db);?>
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="../dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="../accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
@@ -173,12 +205,33 @@ $count = getNotificationCount($db);?>
             </a>
           </li>
           <li class="nav-item">
-            <a href="./mailbox/mailbox.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon far fa-envelope"></i>
               <p>
-                Mailbox
+                Forms
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../forms/waitlistForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Waitlist Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../forms/clientForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../forms/userForm.php" target="_blank" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>User Form</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="../php/logout.php" class="nav-link">
@@ -217,12 +270,13 @@ $count = getNotificationCount($db);?>
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" onclick="selectAll(this)"> Select All
+        <input type="checkbox" value="" id="selectAll" onclick="selectAll(this)"> Select All
         
         <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
-        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkSend()">Send</button>
+        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px;margin-left:5px;"  onclick="checkSend()">Send</button>
+        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkApprove()">Approve</button>
         <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Waiting List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
-        <a href="../waitlistForm.php" target="_blank" data-toggle="tooltip" title="Waitinglist Form" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
+        <a href="../forms/waitlistForm.php" target="_blank" data-toggle="tooltip" title="Waitinglist Form" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
         
         
         <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
@@ -246,15 +300,47 @@ $count = getNotificationCount($db);?>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">End Date</th>
             </tr>
           </thead>
-          <form method="post">
+          <form method="post" action="" onsubmit="return sendEmail();">
           <tbody id="searchTable">
-            <?php displayAllList($db)?>
+            <?php 
+            displayAllList($db);
+            updateNotificationStatusWait($db);
+            ?>
           </tbody>
         </table>
       </div>
     </section>
     
     <script>
+      function sendEmail(){
+        var list=[];
+        var ctr=0;
+        var subject = document.getElementById("subject1").value;
+        var message = document.getElementById("text1").value;
+        var checkboxes = document.getElementsByName('list[]');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            if(checkboxes[i].checked == true){
+                list[ctr++]=checkboxes[i].value;
+            }
+        }
+        // alert(subject,message);
+        $.ajax({
+            type: 'post',
+            url: '../php/waitlist/sendEmail.php',
+            data:{
+              subject:subject,
+              message:message,
+              list:list,
+            },
+            success:function(response){
+              alert(response);
+              if(response == 'Email Sent'){
+                  location.reload();
+              }
+            }
+          });
+          return false;
+      }
       function updateListInfo(){
         var waitID=document.getElementById('waitID').value;
         var name=document.getElementById('name').value;
@@ -268,7 +354,7 @@ $count = getNotificationCount($db);?>
 
         $.ajax({
           type: 'post',
-          url: '../php/updateList.php',
+          url: '../php/waitlist/updateList.php',
           data:{
             waitID:waitID,
             name:name,
@@ -299,7 +385,7 @@ $count = getNotificationCount($db);?>
             document.getElementById("editInfoBody").innerHTML=this.responseText;
           }
         }
-        xmlhttp.open("GET","../php/editWaitlistInfo.php?id="+id,true);
+        xmlhttp.open("GET","../php/waitlist/editWaitlistInfo.php?id="+id,true);
         xmlhttp.send();
       }
       function copyToClip(){
@@ -319,7 +405,7 @@ $count = getNotificationCount($db);?>
             document.getElementById("informationBody").innerHTML=this.responseText;
           }
         }
-        xmlhttp.open("GET","../php/printWaitlistInfo.php?id="+id,true);
+        xmlhttp.open("GET","../php/waitlist/printWaitlistInfo.php?id="+id,true);
         xmlhttp.send();
       }
       function checkSend(){
@@ -337,6 +423,39 @@ $count = getNotificationCount($db);?>
           $(document).ready(function(){
               $("#emailTemplate").modal();
           });
+        }
+      }
+      function checkApprove(){
+        var list=[];
+        var ctr = 0;
+        var checkbox = document.getElementsByName('list[]');
+        var checkbox1= document.getElementsByName('waitlist_id[]');
+        for(var i=0, n=checkbox.length;i<n;i++) {
+          if(checkbox[i].checked == true){
+            list[ctr]=checkbox1[i].value;
+            ctr++;
+          }
+        }
+        if(ctr==0){
+            alert("Nothing to Approve");
+            return;
+        }else{
+          if(confirm("Are you sure you want to approve?")){
+            $.ajax({
+          type: 'post',
+          url: '../php/waitlist/updateApproval.php',
+          data:{
+            list:list,
+          },
+          success:function(response){
+            alert(response);
+            if(response == 'Approved'){
+              location.reload();
+            }
+          }
+        });
+        return false;
+          }
         }
       }
       function exportDataModal(){
@@ -362,7 +481,7 @@ $count = getNotificationCount($db);?>
                   window.location="../php/export.php";
                 }
             }
-            xmlhttp.open("GET","../php/export_data.php?list="+list,true);
+            xmlhttp.open("GET","../php/waitlist/exportWaitlist.php?list="+list,true);
             xmlhttp.send();
           } 
         }
@@ -375,7 +494,7 @@ $count = getNotificationCount($db);?>
                   window.location="../php/export.php";
                 }
             }
-            xmlhttp.open("GET","../php/exportDataByService.php?service="+serv,true);
+            xmlhttp.open("GET","../php/waitlist/exportDataByService.php?service="+serv,true);
             xmlhttp.send();
       }
       function selectAll(source) {
@@ -392,7 +511,7 @@ $count = getNotificationCount($db);?>
                 document.getElementById("searchTable").innerHTML=this.responseText;
             }
         }
-        xmlhttp.open("GET","../php/search.php?name="+name+"&type="+type,true);
+        xmlhttp.open("GET","../php/waitlist/searchWaitlist.php?name="+name+"&type="+type,true);
         xmlhttp.send();
     }
       function setEmail(str){
@@ -404,7 +523,7 @@ $count = getNotificationCount($db);?>
               document.getElementById("text1").value =document.getElementById("emailmes").value;
             }
         }
-        xmlhttp.open("GET","../php/getTemplates.php?tempName="+str,true);
+        xmlhttp.open("GET","../php/emailTemplates/getTemplates.php?tempName="+str,true);
         xmlhttp.send();
     }
     </script>
@@ -441,7 +560,7 @@ $count = getNotificationCount($db);?>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" name="sendEmail">Send Email</button>
+          <button type="submit" class="btn btn-primary">Send Email</button>
         </div>
       </form>
       </div>
@@ -458,10 +577,7 @@ $count = getNotificationCount($db);?>
           <div class="form-group">
               <label for="exampleFormControlInput1">Activity Name</label>
               <select id="sname" required>
-                    <option selected disabled>Select</option>
-                    <option value="MORNING SNORKELING TOURS">MORNING SNORKELING TOURS</option>
-                    <option value="AFTERNOON SNORKELING TOURS">AFTERNOON SNORKELING TOURS</option>
-                    <option value="GROUPS & PRIVATE CHARTERS">GROUPS & PRIVATE CHARTERS</option>
+                    <?php getAllActivity($db)?>
               </select>
           </div>
         </div>

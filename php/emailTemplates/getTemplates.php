@@ -1,5 +1,5 @@
 <?php 
-    require 'conn.php';
+    require '../conn.php';
     $tempName =$_GET['tempName'];
     $query ="SELECT * FROM emailtemplates WHERE TemplateName = '$tempName'";
     $result=mysqli_query($db,$query);
