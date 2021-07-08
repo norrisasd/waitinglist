@@ -272,6 +272,7 @@
         
         <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
+        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
         
         <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="username">Username</option>
@@ -367,7 +368,7 @@
         }
       }
         function copyToClip(){
-        str="url";
+        str="https://waitinglist.klbsolutionsllc.com/forms/userForm.php";
         const el = document.createElement('textarea');
         el.value = str;
         document.body.appendChild(el);

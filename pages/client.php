@@ -274,6 +274,7 @@
         <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         <button type="button" class="btn btn-danger" style="float:right;margin-bottom:5px"  onclick="checkDelete()">Delete</button>
         <a href="#" data-toggle="modal" data-target="#addClient" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
+        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Client Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
         
         <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="client_name">Name</option>
@@ -312,6 +313,16 @@
     </section>
     
     <script>
+    function copyToClip(){
+        str="https://waitinglist.klbsolutionsllc.com/forms/clientForm.php";
+        const el = document.createElement('textarea');
+        el.value = str;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert("Copied the text: " + el.value);
+      }
     function updateDND(id){
       var cb = document.getElementById(id);
       dnd = cb.checked?1:0;

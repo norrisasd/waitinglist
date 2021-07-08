@@ -276,18 +276,26 @@
         <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px;margin-left:5px;"  onclick="checkSend()">Send</button>
         <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkApprove()">Approve</button>
         <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Waiting List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
-        <a href="../forms/waitlistForm.php" target="_blank" data-toggle="tooltip" title="Waitinglist Form" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
         
         
+        <input type="date" id="endDate" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;margin-top:0.25rem;width:125px">
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">End Date</label>
+        <input type="date" id="startDate" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;margin-top:0.25rem;width:125px">
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Start Date</label>
+        <select id="actName" onchange="searchBy('')" style="float:right;margin-right:1rem;margin-top:0.25rem;width:100px">
+          <option value="" selected>Select</option>
+          <?php getAllActivity($db);?>
+        </select>
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Activity Name</label>
         <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="name">Name</option>
                   <option value="phone">Phone</option>
                   <option value="email">Email</option>
-                  <option value="waitlist_activity_name">Activity Name</option>
-                  <option value="waitlist_start_date">Start Date</option>
-                  <option value="waitlist_end_date">End Date</option>
+
         </select>
+        
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label>
+        
         <table class="table" id="myTable">
           <thead>
             <tr>
@@ -301,7 +309,7 @@
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return sendEmail();">
-          <tbody id="searchTable">
+          <tbody id="searchTable" style="color:gray">
             <?php 
             displayAllList($db);
             updateNotificationStatusWait($db);
@@ -389,7 +397,7 @@
         xmlhttp.send();
       }
       function copyToClip(){
-        str="url";
+        str="https://waitinglist.klbsolutionsllc.com/forms/waitlistForm.php";
         const el = document.createElement('textarea');
         el.value = str;
         document.body.appendChild(el);
@@ -503,16 +511,27 @@
           checkboxes[i].checked = source.checked;
         }
       }
-      function searchBy(name){
+      function searchBy(name){//change to ajax
         var type = document.getElementById("type").value;
-        var xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
-            if (this.readyState==4 && this.status==200) {
-                document.getElementById("searchTable").innerHTML=this.responseText;
-            }
-        }
-        xmlhttp.open("GET","../php/waitlist/searchWaitlist.php?name="+name+"&type="+type,true);
-        xmlhttp.send();
+        var aname = document.getElementById("actName").value;
+        var sdate = document.getElementById("startDate").value;
+        var edate = document.getElementById("endDate").value;
+        $.ajax({
+          type: 'get',
+          url: '../php/waitlist/searchWaitlist.php',
+          data:{
+            name:name,
+            type:type,
+            aname:aname,
+            sdate:sdate,
+            edate:edate,
+
+          },
+          success:function(response){
+            document.getElementById("searchTable").innerHTML=response;
+          }
+        });
+        return false;
     }
       function setEmail(str){
         var xmlhttp=new XMLHttpRequest();
