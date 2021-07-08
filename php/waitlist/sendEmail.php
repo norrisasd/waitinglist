@@ -10,6 +10,7 @@
                 break;
             }
             else{
+                $_SESSION['emailSent'].="\t\t".$list."\r\n";
             }
         }
     }

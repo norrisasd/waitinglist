@@ -14,7 +14,11 @@
                 $_SESSION['email']=$data['email'];
                 $_SESSION['access']=$data['isAdmin'];
                 $_SESSION['img']=$data['image_file'];
-                if($data['isAdmin']){
+                if($data['isAdmin'] == 0){
+                    $_SESSION['clientDeleted']='';
+                    $_SESSION['emailSent']='';
+                    $_SESSION['approvalSent']='';
+                    $_SESSION['dndUpdated']='';
                 }
             }else{
                 echo 'Not an Admin';

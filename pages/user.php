@@ -421,6 +421,40 @@
         xmlhttp.open("GET","../php/user/searchUser.php?name="+name+"&type="+type,true);
         xmlhttp.send();
     }
+    function editUserInfo(){
+      var username = document.getElementById("username1").value;
+      var password = document.getElementById("password1").value;
+      var email = document.getElementById("email1").value;
+      var prevUser = document.getElementById("prevUser").value;
+      $.ajax({
+        type: 'post',
+        url: '../php/user/updateUser.php',
+        data:{
+          password:password,
+          username:username,
+          email:email,
+          prevUser:prevUser
+        },
+        success:function(response){
+          alert(response);
+          if(response == 'Updated'){
+              location.reload();
+          }
+        }
+      });
+      return false;
+    }
+    
+    function editUser(username){
+      var xmlhttp=new XMLHttpRequest();
+        xmlhttp.onreadystatechange=function() {
+          if (this.readyState==4 && this.status==200) {
+            document.getElementById("editInfoBody").innerHTML=this.responseText;
+          }
+        }
+        xmlhttp.open("GET","../php/user/editUserInfo.php?user="+username,true);
+        xmlhttp.send();
+    }
     </script>
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
       <i class="fas fa-chevron-up"></i>
@@ -476,6 +510,27 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="userInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Information</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+        </div>
+        <div class="modal-body">
+        <form method="post" action=""  onsubmit="return editUserInfo();" >
+          <div id="editInfoBody">
+          
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" onclick="" >Update</button>
+          </form>
         </div>
       </div>
     </div>

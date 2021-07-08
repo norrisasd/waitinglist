@@ -313,19 +313,30 @@
     
     <script>
     function updateDND(id){
+      var cb = document.getElementById(id);
+      dnd = cb.checked?1:0;
       if(confirm("Are you sure you want to update DND?")){
         $.ajax({
           type:'post',
           url: '../php/client/updateDND.php',
           data:{
-            id:id
+            id:id,
+            dnd:dnd
           },
           success:function(response){
-              alert(response);
-              if(response == 'Updated')
-                location.reload();
-            }
+              if(response != 'Updated'){
+                alert(response);
+              }else{
+                cb.value= dnd;
+              }
+          }
        });
+      }else{
+        if(cb.value == 1){
+          cb.checked = true;
+        }else{
+          cb.checked = false;
+        }
       }
       
     }
@@ -355,7 +366,8 @@
         var name=document.getElementById("name").value;
         var phone=document.getElementById("phone").value;
         var email=document.getElementById("email").value;
-
+        var cb =document.getElementById("dnd");
+        cb = cb.checked?1:0;
         $.ajax({
             type: 'post',
             url: '../php/client/updateClient.php',
@@ -364,6 +376,7 @@
               name:name,
               phone:phone,
               email:email,
+              dnd:cb,
             },
             success:function(response){
               alert(response);

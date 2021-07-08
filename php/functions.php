@@ -19,11 +19,16 @@
         if($result){
             while($data = mysqli_fetch_assoc($result)){
                 $access= $data['isAdmin']==NULL?"FALSE":"TRUE";
+                $edit=$data['isAdmin']==1 ?'':'';
                 echo'
                 <tr class="tableItem">
-                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['username'].'"></th>
-                    <td><a href="#" onclick="info(\''.$data['username'].'\')" data-toggle="modal" data-target="#info">'.$data['username'].'</a></td>
-                    <td>'.$data['email'].'</td>
+                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['username'].'"></th>';
+                    if($_SESSION['access']==1){
+                        echo'<td><a href="#" onclick="info(\''.$data['username'].'\')" data-toggle="modal" data-target="#info">'.$data['username'].'</a></td>';
+                    }else{
+                        echo '<td>'.$data['username'].'</td>';
+                    }
+                echo '<td>'.$data['email'].'</td>
                     <td>'.$access.'</td>';
                     if($_SESSION['access'] == 1){
                         if($data['isAdmin']== NULL ){
@@ -35,10 +40,12 @@
                          }else{
                             echo '<td></td>';
                          }
+                         echo '<td><a href="#" onclick="editUser(\''.$data['username'].'\')" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i></a></td>';
                     }else{
                         echo'<td></td>';
                     }
-                echo '</tr>
+                echo $edit .'
+                </tr>
                 ';
             }
         }
@@ -48,8 +55,7 @@
         $result=mysqli_query($db,$query);
         if($result){
             while($data = mysqli_fetch_assoc($result)){
-                $dnd = $data['client_dnd'] == 1 ?"TRUE":"FALSE";
-                $disp = $data['client_dnd'] == 1 ?"":"Update DND";
+                $check = $data['client_dnd'] == 1?"checked":"";
                 $enable = $data['client_enabled'] == 1?"Disabled":"Enabled";
                 echo'
                 <tr class="tableItem">
@@ -58,10 +64,9 @@
                     <td>'.$data['client_phone'].'</td>
                     <td>'.$data['client_email'].'</td>
                     <td>'.$data['client_date_created'].'</td>
-                    <td>'.$dnd.'</td>
+                    <td><input type="checkbox" class="form-check-input" style="margin : 0.4rem 0.5rem;height:15px;width:15px" id="'.$data['client_id'].'" value="'.$data['client_dnd'].'" onclick="updateDND('.$data['client_id'].')" autocomplete="off" '.$check.'></td>
                     <td>'.$enable.'</td>
                     <td><a href="#" onclick="editClient('.$data['client_id'].')" data-toggle="modal" data-target="#clientInfo"><i class="fas fa-edit"></i></a></td>
-                    <td><a href="#" onclick="updateDND('.$data['client_id'].')">'.$disp.'</a></td>
                 </tr>
                 ';
             }

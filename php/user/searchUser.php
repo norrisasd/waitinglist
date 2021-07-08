@@ -7,20 +7,34 @@
     $str="";
     while($data=mysqli_fetch_assoc($result)){
         if(stristr($name,substr($data[$type],0,strlen($name)))){
+                $access= $data['isAdmin']==NULL?"FALSE":"TRUE";
+                $edit=$data['isAdmin']==1 ?'':'';
                 $str.='
                 <tr class="tableItem">
-                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['username'].'"></th>
-                    <td><a href="#" onclick="info(\''.$data['username'].'\')" data-toggle="modal" data-target="#info">'.$data['username'].'</a></td>
-                    <td>'.$data['email'].'</td>';
-                    if($data['isAdmin']== 0 ){
-                       $str.= '<td>False</td>
-                        <td><a href="#" onclick="makeAdmin(\''.$data['username'].'\')">Grant Access</a></td>';
+                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['username'].'"></th>';
+                    if($_SESSION['access']==1){
+                        $str.='<td><a href="#" onclick="info(\''.$data['username'].'\')" data-toggle="modal" data-target="#info">'.$data['username'].'</a></td>';
                     }else{
-                        $str.= '<td>True</td>
-                            <td><a href="#" onclick="removeAdmin(\''.$data['username'].'\')">Remove Access</a></td>';
+                        $str.= '<td>'.$data['username'].'</td>';
                     }
-                    
-                $str.= '</tr>
+                $str.= '<td>'.$data['email'].'</td>
+                    <td>'.$access.'</td>';
+                    if($_SESSION['access'] == 1){
+                        if($data['isAdmin']== NULL ){
+                            $str.= '
+                             <td><a href="#" onclick="makeAdmin(\''.$data['username'].'\')">Grant Access</a></td>';
+                         }else if($data['isAdmin'] == 0){
+                             $str.= '
+                             <td><a href="#" onclick="removeAdmin(\''.$data['username'].'\')">Remove Access</a></td>';
+                         }else{
+                            $str.= '<td></td>';
+                         }
+                         $str.= '<td><a href="#" onclick="editUser(\''.$data['username'].'\')" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i></a></td>';
+                    }else{
+                        $str.='<td></td>';
+                    }
+                $str.= $edit .'
+                </tr>
                 ';
         }
     }  
