@@ -67,6 +67,14 @@
           <form class="form-inline">
             <div class="input-group input-group-sm">
               <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" onkeyup="searchBy(this.value)">
+              <select id="type" style="float:right;margin-right:1rem;">
+                  <option value="client_name">Name</option>
+                  <option value="client_phone">Phone</option>
+                  <option value="client_email">Email</option>
+                  <!-- <option value="client_date_created">Date Created</option>
+                  <option value="client_dnd">DND</option>
+                  <option value="client_enabled">Enabled</option> -->
+              </select>
               <div class="input-group-append">
                 <button class="btn btn-navbar" type="button" data-widget="navbar-search">
                   <i class="fas fa-times"></i>
@@ -273,18 +281,26 @@
         
         <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         <button type="button" class="btn btn-danger" style="float:right;margin-bottom:5px"  onclick="checkDelete()">Delete</button>
-        <a href="#" data-toggle="modal" data-target="#addClient" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
-        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Client Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
+        <select id="dndFilter" onchange="searchBy('')" style="float:right;margin-right:1rem;margin-top:0.25rem;width:100px">
+          <option value="" selected>Select</option>
+          <option value="1">Check</option>
+          <option value="0">Uncheck</option>
+        </select>
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Filter DND</label>
         
-        <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
+        <input type="date" id="dateCreated" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Date Created</label>
+        <!-- <a href="#" data-toggle="modal" data-target="#addClient" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
+        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Client Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
+        
+        <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="client_name">Name</option>
                   <option value="client_phone">Phone</option>
                   <option value="client_email">Email</option>
                   <option value="client_date_created">Date Created</option>
                   <option value="client_dnd">DND</option>
                   <option value="client_enabled">Enabled</option>
-        </select>
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label>
+        </select> -->
         <table class="table" id="myTable">
           <thead>
             <tr>
@@ -493,14 +509,23 @@
       }
       function searchBy(name){
         var type = document.getElementById("type").value;
-        var xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
-            if (this.readyState==4 && this.status==200) {
-                document.getElementById("searchTable").innerHTML=this.responseText;
-            }
-        }
-        xmlhttp.open("GET","../php/client/searchClient.php?name="+name+"&type="+type,true);
-        xmlhttp.send();
+        var dnd = document.getElementById("dndFilter").value;
+        var cdate = document.getElementById("dateCreated").value;
+        $.ajax({
+          type: 'get',
+          url: '../php/client/searchClient.php',
+          data:{
+            name:name,
+            type:type,
+            dnd:dnd,
+            cdate:cdate,
+
+          },
+          success:function(response){
+            document.getElementById("searchTable").innerHTML=response;
+          }
+        });
+        return false;
     }
     </script>
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
