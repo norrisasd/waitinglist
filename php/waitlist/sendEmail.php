@@ -7,6 +7,7 @@
     if(!empty($_POST['list'])){
         foreach($_POST['list'] as $id){
             $email =getEmailById($db,$id);
+            //add dnd check
             $retval=sendEmail($email,$subject,$message);
             if(!$retval){
                 break;
