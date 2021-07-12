@@ -20,6 +20,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -35,6 +36,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -50,6 +52,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -65,6 +68,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -80,6 +84,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -95,6 +100,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -110,6 +116,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -125,6 +132,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -140,6 +148,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -155,6 +164,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -170,6 +180,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -185,6 +196,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -200,6 +212,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -215,6 +228,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';
@@ -229,6 +243,7 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
             ';

@@ -68,6 +68,11 @@
           <form class="form-inline">
             <div class="input-group input-group-sm">
               <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" onkeyup="searchBy(this.value)">
+              <select id="type" style="margin-right:1rem;">
+                  <option value="name">Name</option>
+                  <option value="phone">Phone</option>
+                  <option value="email">Email</option>
+              </select>
               <div class="input-group-append">
                 <button class="btn btn-navbar" type="button" data-widget="navbar-search">
                   <i class="fas fa-times"></i>
@@ -76,6 +81,7 @@
             </div>
           </form>
         </div>
+        
       </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
@@ -158,6 +164,7 @@
           </div>
         </div>
       </div>
+        
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -274,27 +281,25 @@
         
         <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px;margin-left:5px;"  onclick="checkSend()">Send</button>
-        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkApprove()">Approve</button>
-        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Waiting List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
+        <!-- <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkApprove()">Approve</button> -->
+        <!-- <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Waiting List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
         
         
-        <input type="date" id="endDate" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;margin-top:0.25rem;width:125px">
+        <input type="date" id="endDate" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">End Date</label>
-        <input type="date" id="startDate" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;margin-top:0.25rem;width:125px">
+        <input type="date" id="startDate" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Start Date</label>
         <select id="actName" onchange="searchBy('')" style="float:right;margin-right:1rem;margin-top:0.25rem;width:100px">
           <option value="" selected>Select</option>
           <?php getAllActivity($db);?>
         </select>
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Activity Name</label>
-        <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
+        <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="name">Name</option>
                   <option value="phone">Phone</option>
                   <option value="email">Email</option>
-
         </select>
-        
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label>
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label> -->
         
         <table class="table" id="myTable">
           <thead>
@@ -306,6 +311,7 @@
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Activity Name</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">Start Date</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">End Date</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(8)')">Passengers</th>
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return sendEmail();">
@@ -326,9 +332,10 @@
         var subject = document.getElementById("subject1").value;
         var message = document.getElementById("text1").value;
         var checkboxes = document.getElementsByName('list[]');
+        var checkboxes1 = document.getElementsByName('waitlist_id[]');
         for(var i=0, n=checkboxes.length;i<n;i++) {
             if(checkboxes[i].checked == true){
-                list[ctr++]=checkboxes[i].value;
+                list[ctr++]=checkboxes1[i].value;
             }
         }
         // alert(subject,message);

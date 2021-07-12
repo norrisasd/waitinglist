@@ -66,6 +66,10 @@
           <form class="form-inline">
             <div class="input-group input-group-sm">
               <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" onkeyup="searchBy(this.value)">
+              <select id="type" style="float:right;margin-right:1rem">
+                  <option value="username">Username</option>
+                  <option value="email">email</option>
+              </select>
               <div class="input-group-append">
                 <button class="btn btn-navbar" type="button" data-widget="navbar-search">
                   <i class="fas fa-times"></i>
@@ -271,14 +275,14 @@
         <input type="checkbox" value="" onclick="selectAll(this)"> Select All
         
         <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
-        <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
-        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
+        <!-- <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
+        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
         
-        <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
+        <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="username">Username</option>
                   <option value="email">email</option>
-        </select>
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label>
+        </select> -->
+        <!-- <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label> -->
         <table class="table" id="myTable">
           <thead>
             <tr>
@@ -286,6 +290,7 @@
               <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Username</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Email</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Admin</th>
+              <th scope="col"></th>
               <th scope="col"></th>
             </tr>
           </thead>

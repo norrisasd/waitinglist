@@ -93,10 +93,20 @@
                     <td>'.$data['waitlist_activity_name'].'</td>
                     <td>'.$data['waitlist_start_date'].'</td>
                     <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
                     <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
                 </tr>
                 ';
             }
+        }
+    }
+    function getEmailById($db,$id){
+        $query ="SELECT * FROM waitlist WHERE waitlist_id = $id ";
+        $result = mysqli_query($db,$query);
+        if(mysqli_num_rows($result) == 1){
+            $data = mysqli_fetch_assoc($result);
+            $data = $data['email'];
+            return $data;
         }
     }
     function updateNotificationStatusWait($db){
@@ -110,29 +120,6 @@
     function updateNotificationStatusUser($db){
         $query = "UPDATE `notification` SET `notification_status` = 1 WHERE notification.notification_status = 0 and notification.notification_subject = 'user'";
         $result = mysqli_query($db,$query);
-    }
-    function displayAllListString($db){
-        $query ="SELECT * FROM waitlist";
-        $str ='';
-        $result=mysqli_query($db,$query);
-        if($result){
-            while($data = mysqli_fetch_assoc($result)){
-                $str='
-                <tr class="tableItem">
-                    <th scope="row"><input type="checkbox" name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
-                    <td><a href="#" onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info">'.$data['name'].'</a></td>
-                    <td>'.$data['phone'].'</td>
-                    <td>'.$data['email'].'</td>
-                    <td>'.$data['waitlist_activity_name'].'</td>
-                    <td>'.$data['waitlist_start_date'].'</td>
-                    <td>'.$data['waitlist_end_date'].'</td>
-                    <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
-                </tr>
-                ';
-            }
-            
-        }
-        return $str;
     }
     function displayAllTemplates($db){
         $query ="SELECT * FROM emailtemplates";

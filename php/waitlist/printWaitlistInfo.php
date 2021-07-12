@@ -54,7 +54,7 @@
                 <td>'.$data['waitlist_enabled'].'</td>
                 </tr>
                 <tr>
-                <td>Approval Sent: </td>
+                <td>Email Sent: </td>
                 <td>'.$data['waitlist_approval_sent'].'</td>
                 </tr>
             </table>';

@@ -151,7 +151,6 @@
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Maui Snorkeling</span>
     </a>
-
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
@@ -163,7 +162,6 @@
           <a href="#" class="d-block"><?php echo $_SESSION['username'];?></a>
         </div>
       </div>
-
       <!-- SidebarSearch Form -->
       <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
@@ -175,7 +173,6 @@
           </div>
         </div>
       </div>
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -264,7 +261,6 @@
     </div>
     <!-- /.sidebar -->
   </aside>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -290,7 +286,8 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-        <table class="table" style="width:300px;margin:6rem auto;">
+        <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:400px;max-width:400px;width: expression(this.width > 500 ? 500: true);margin:0 0 0 auto" class="img-thumbmail" alt="User Image">
+        <table class="table" style="width:300px;margin:6rem auto 6rem 3rem;">
             <thead>
                 <br><br>
             </thead>

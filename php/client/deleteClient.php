@@ -7,7 +7,10 @@
             if(!$retval){
                 break;
             }else{
-                $_SESSION['clientDeleted'].="\t\t".$data['client_id']."\t\t".$data['client_name']."\t\t".$data['client_phone']."\t\t".$data['client_email']."\r\n";
+                if($_SESSION['access'] == 0){
+                    $_SESSION['clientDeleted'].="\t\t".$data['client_id']."\t\t".$data['client_name']."\t\t".$data['client_phone']."\t\t".$data['client_email']."\r\n";
+                }
+                
             }
         }
     }else{

@@ -3,14 +3,20 @@
     require '../../phpmailer/PHPMailerAutoload.php';
     $subject=$_POST['subject'];
     $message=$_POST['message'];
+    $retval = false;
     if(!empty($_POST['list'])){
-        foreach($_POST['list'] as $list){
-            $retval=sendEmail($list,$subject,$message);
+        foreach($_POST['list'] as $id){
+            $email =getEmailById($db,$id);
+            $retval=sendEmail($email,$subject,$message);
             if(!$retval){
                 break;
             }
             else{
-                $_SESSION['emailSent'].="\t\t".$list."\r\n";
+                if($_SESSION['access']==0){
+                    $_SESSION['emailSent'].="\t\t".$email."\r\n";
+                }
+                    
+                updateStatus($db,$id);
             }
         }
     }

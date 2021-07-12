@@ -67,6 +67,11 @@
           <form class="form-inline">
             <div class="input-group input-group-sm">
               <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" onkeyup="searchBy(this.value)">
+              <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
+                  <option value="TemplateName">Template Name</option>
+                  <option value="subject">Subject</option>
+                  <option value="message">Message</option>
+        </select>
               <div class="input-group-append">
                 <button class="btn btn-navbar" type="button" data-widget="navbar-search">
                   <i class="fas fa-times"></i>
@@ -270,13 +275,13 @@
       <div class="container-fluid">
         <input type="checkbox" value="" onclick="selectAll(this)"> Select All
         <button type="button" class="btn btn-danger" style="float:right;margin-bottom:5px" onclick="confirmDel()">Delete</button>
-        <a href="#" style="float:right;margin-right:1.5rem;margin-top:0.2rem" data-toggle="modal" data-target="#addemailTemplate">FORM</a>
-        <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
+        <a href="#" style="float:right;margin-right:1.5rem;margin-top:0.2rem" data-toggle="modal" data-target="#addemailTemplate">Add Template</a>
+        <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="TemplateName">Template Name</option>
                   <option value="subject">Subject</option>
                   <option value="message">Message</option>
         </select>
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label>
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label> -->
         <table class="table" id="myTable">
           <thead>
             <tr>
@@ -284,6 +289,7 @@
               <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Template Name</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Subject</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Message</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <form action="" method="post" onsubmit="return deleteTemplate();">
