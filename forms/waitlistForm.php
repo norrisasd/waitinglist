@@ -214,39 +214,39 @@
 <div class="container-fluid px-1 py-5 mx-auto">
     <div class="row d-flex justify-content-center">
         <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
-            <h3>Waitinglist Form</h3>
-            <p class="blue-text">Just answer a few questions<br> so that we can personalize the right experience for you.</p>
+            <h3>MAUISNORKELING</h3>
+            <p class="blue-text">This information is required to be added to the <br> Waiting List in Mauisnokeling so that we can personalize the right experience for you.</p>
             <div class="card">
-                <h5 class="text-center mb-4">MAUISNORKELING </h5>
+                <h5 class="text-center mb-4">FORM </h5>
                 <form method="post" action="" onsubmit="return addListInfo();" id="myForm" autocomplete="off">
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Full Name<span class="text-danger"> *</span></label> 
-                            <input type="text" name="name" id="name" placeholder="Enter your Full Name"  autocomplete="off" onblur="validate(1)" required> 
+                            <input type="text" name="name" id="name" autocomplete="off" placeholder="Enter your Full Name"  autocomplete="off" onblur="validate(1)" required> 
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Number of Passengers<span class="text-danger"> *</span></label> 
-                            <input type="number" id="passengers" name="passengers" placeholder="0" onblur="validate(2)" required> 
+                            <input type="number" id="passengers" name="passengers" autocomplete="off" placeholder="0" onblur="validate(2)" required> 
                         </div>
                     </div>
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Email<span class="text-danger"> *</span></label> 
-                            <input type="email" id="email" name="email" placeholder="youremail@email.com" onblur="validate(3)" required> 
+                            <input type="email" id="email" name="email" autocomplete="off" placeholder="youremail@email.com" onblur="validate(3)" required> 
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Phone number<span class="text-danger"> *</span></label> 
-                            <input type="text" id="phone" name="phone" placeholder="Phone Number" onblur="validate(4)" required> 
+                            <input type="number" id="phone" name="phone" autocomplete="off" placeholder="Phone Number" onblur="validate(4)" required> 
                         </div>
                     </div>
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Start Date<span class="text-danger"> *</span></label> 
-                            <input type="date" id="sdate" name="sdate" placeholder="" onblur="validate(5)" required> 
+                            <input type="date" id="sdate" name="sdate" autocomplete="off" placeholder="" onblur="validate(5)" required> 
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">End Date<span class="text-danger"> *</span></label> 
-                            <input type="date" id="edate" name="edate" placeholder="" onblur="validate(6)" required> 
+                            <input type="date" id="edate" name="edate" autocomplete="off" placeholder="" onblur="validate(6)" required> 
                         </div>
                     </div>
                     <div class="row justify-content-between text-left">
@@ -262,8 +262,20 @@
                             <textarea class="form-control" name="notes" id="notes" autocomplete="off" placeholder="Additional Notes" ></textarea>
                         </div>
                     </div>
+                    <div class="row justify-content-center"> 
+                        <div class="form-group col-sm-6"> 
+                            
+                            <p style="font-size:12px">
+                            <input class="form-check-input" type="checkbox" value="" style="margin: 0;" required>
+                            By checking this box, I agree that the Mauisnorkeling will contact &nbsp;&nbsp;&nbsp;&nbsp; me through my email or phone number regarding this matter
+                            </p>
+                            
+                        </div>
+                    </div>
                     <div class="row justify-content-center">
-                        <div class="form-group col-sm-6"> <button type="submit" class="btn-block btn-primary">SUBMIT</button> </div>
+                        <div class="form-group col-sm-6"> 
+                            <button type="submit" class="btn-block btn-primary">SUBMIT</button> 
+                        </div>
                     </div>
                 </form>
             </div>

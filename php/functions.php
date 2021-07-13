@@ -100,6 +100,130 @@
             }
         }
     }
+    function displayAllListToday($db){//read
+        $query ="SELECT waitlist.* ,notification.notification_status
+        FROM waitlist,notification
+        INNER JOIN waitlist_notfication
+        ON waitlist_notfication.waitlist_id=waitlist_id
+        AND notification.notification_id = waitlist_notfication.notification_id
+        WHERE waitlist_notfication.waitlist_id= waitlist.waitlist_id AND waitlist.waitlist_approval_sent = 0 AND waitlist.waitlist_date_created = curdate()
+        GROUP BY waitlist.waitlist_id desc;";
+        $result=mysqli_query($db,$query);
+        if($result){
+            while($data = mysqli_fetch_assoc($result)){
+                $color = $data['notification_status'] == 1?"gray":"black";
+                echo'
+                <tr class="tableItem" style="color:'.$color.';">
+                    <th scope="row"><input type="checkbox"  name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
+                    <td><a href="#" onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info">'.$data['name'].'</a></td>
+                    <td>'.$data['phone'].'</td>
+                    <td>'.$data['email'].'</td>
+                    <td>'.$data['waitlist_activity_name'].'</td>
+                    <td>'.$data['waitlist_start_date'].'</td>
+                    <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
+                    <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
+                </tr>
+                ';
+            }
+        }
+    }
+    function displayAllListYesterday($db){//read
+        $query ="SELECT waitlist.* ,notification.notification_status
+        FROM waitlist,notification
+        INNER JOIN waitlist_notfication
+        ON waitlist_notfication.waitlist_id=waitlist_id
+        AND notification.notification_id = waitlist_notfication.notification_id
+        WHERE waitlist_notfication.waitlist_id= waitlist.waitlist_id AND waitlist.waitlist_approval_sent = 0 AND waitlist.waitlist_date_created = curdate() - INTERVAL 1 day
+        GROUP BY waitlist.waitlist_id desc;";
+        $result=mysqli_query($db,$query);
+        if($result){
+            while($data = mysqli_fetch_assoc($result)){
+                $color = $data['notification_status'] == 1?"gray":"black";
+                echo'
+                <tr class="tableItem" style="color:'.$color.';">
+                    <th scope="row"><input type="checkbox"  name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
+                    <td><a href="#" onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info">'.$data['name'].'</a></td>
+                    <td>'.$data['phone'].'</td>
+                    <td>'.$data['email'].'</td>
+                    <td>'.$data['waitlist_activity_name'].'</td>
+                    <td>'.$data['waitlist_start_date'].'</td>
+                    <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
+                    <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
+                </tr>
+                ';
+            }
+        }
+    }
+    function displayAllListThisMonth($db){
+        $query ="SELECT waitlist.* ,notification.notification_status
+        FROM waitlist,notification
+        INNER JOIN waitlist_notfication
+        ON waitlist_notfication.waitlist_id=waitlist_id
+        AND notification.notification_id = waitlist_notfication.notification_id
+        WHERE waitlist_notfication.waitlist_id= waitlist.waitlist_id AND waitlist.waitlist_approval_sent = 0 AND waitlist_date_created > curdate() - INTERVAL 30 day
+        GROUP BY waitlist.waitlist_id desc;";
+        $result=mysqli_query($db,$query);
+        if($result){
+            while($data = mysqli_fetch_assoc($result)){
+                $color = $data['notification_status'] == 1?"gray":"black";
+                echo'
+                <tr class="tableItem" style="color:'.$color.';">
+                    <th scope="row"><input type="checkbox"  name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
+                    <td><a href="#" onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info">'.$data['name'].'</a></td>
+                    <td>'.$data['phone'].'</td>
+                    <td>'.$data['email'].'</td>
+                    <td>'.$data['waitlist_activity_name'].'</td>
+                    <td>'.$data['waitlist_start_date'].'</td>
+                    <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
+                    <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
+                </tr>
+                ';
+            }
+        }
+    }
+    function displayAllListWeek($db){//read
+        $query ="SELECT waitlist.* ,notification.notification_status
+        FROM waitlist,notification
+        INNER JOIN waitlist_notfication
+        ON waitlist_notfication.waitlist_id=waitlist_id
+        AND notification.notification_id = waitlist_notfication.notification_id
+        WHERE waitlist_notfication.waitlist_id= waitlist.waitlist_id AND waitlist.waitlist_approval_sent = 0 AND waitlist_date_created > curdate() - INTERVAL 7 day
+        GROUP BY waitlist.waitlist_id desc;";
+        $result=mysqli_query($db,$query);
+        if($result){
+            while($data = mysqli_fetch_assoc($result)){
+                $color = $data['notification_status'] == 1?"gray":"black";
+                echo'
+                <tr class="tableItem" style="color:'.$color.';">
+                    <th scope="row"><input type="checkbox"  name="list[]" value="'.$data['email'].'"><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
+                    <td><a href="#" onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info">'.$data['name'].'</a></td>
+                    <td>'.$data['phone'].'</td>
+                    <td>'.$data['email'].'</td>
+                    <td>'.$data['waitlist_activity_name'].'</td>
+                    <td>'.$data['waitlist_start_date'].'</td>
+                    <td>'.$data['waitlist_end_date'].'</td>
+                    <td>'.$data['waitlist_num_passengers'].'</td>
+                    <td><a href="#" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i></a></td>
+                </tr>
+                ';
+            }
+        }
+    }
+    function getClientDNDByWaitId($db,$id){
+        $query = "SELECT * 
+                FROM `clients` 
+                INNER JOIN waitlist 
+                ON clients.client_id=waitlist.client_id 
+                WHERE waitlist.waitlist_id=$id";
+        $result = mysqli_query($db,$query);
+        if(mysqli_num_rows($result) == 1){
+            $data = mysqli_fetch_assoc($result);
+            return $data['client_dnd'];
+        }
+    }
     function getEmailById($db,$id){
         $query ="SELECT * FROM waitlist WHERE waitlist_id = $id ";
         $result = mysqli_query($db,$query);
@@ -217,6 +341,12 @@
             $count = mysqli_num_rows($result);
             return $count;
         }
+    }
+    function getCountThisMonth($db){
+        $query="SELECT * FROM `waitlist` where waitlist_date_created > curdate() - INTERVAL 30 day";
+        $result =mysqli_query($db,$query);
+        $count = mysqli_num_rows($result);
+        return $count;
     }
     function getCountLastWeek($db){
         $query="SELECT * FROM `waitlist` where waitlist_date_created > curdate() - INTERVAL 7 day";

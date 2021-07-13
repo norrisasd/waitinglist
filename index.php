@@ -1,5 +1,8 @@
 <?php
-    require "php/functions.php";
+
+use function PHPSTORM_META\type;
+
+require "php/functions.php";
     if(!isset($_SESSION['login'])){
         header("Location: loginPage.php");
     }
@@ -281,7 +284,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -304,7 +307,7 @@
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="./pages/waitinglist.php" onclick="displayType('yesterday')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -318,7 +321,7 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="./pages/waitinglist.php" onclick="displayType('today')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -332,7 +335,7 @@
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="./pages/waitinglist.php" onclick="displayType('week')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -340,13 +343,13 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3><?php echo $_SESSION['countNotifW'];?></h3>
-                <p>Most Recent</p>
+                <h3><?php echo getCountThisMonth($db);?></h3>
+                <p>This Month</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="./pages/waitinglist.php" onclick="displayType('month')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -429,8 +432,8 @@
         
 
 <script>
-var xValues = ["Yesterday", "Today", "This Week", "Most Recent"];
-var yValues = [<?php echo getCountYesterday($db); ?>, <?php echo getCountToday($db); ?>,  <?php echo getCountLastWeek($db); ?>,<?php echo $_SESSION['countNotifW']; ?>];
+var xValues = ["Yesterday", "Today", "This Week", "This Month"];
+var yValues = [<?php echo getCountYesterday($db); ?>, <?php echo getCountToday($db); ?>,  <?php echo getCountLastWeek($db); ?>,<?php echo getCountThisMonth($db) ?>];
 var barColors = ["blue", "green","orange","red"];
 
 new Chart("myChart", {
@@ -450,6 +453,18 @@ new Chart("myChart", {
     }
   }
 });
+function displayType(type){
+    $.ajax({
+    type: 'post',
+    url: './php/waitlist/setWaitlistDisplay.php',
+    data:{
+      type:type,
+    },
+    success:function(response){
+    }
+  });
+  return false;
+}
 </script>
         <!-- Main row -->
         <!-- /.row (main row) -->
@@ -462,9 +477,6 @@ new Chart("myChart", {
   <footer class="main-footer">
     <strong>MAUI SNORKELING &copy; 2020.</strong>
     All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0
-    </div>
   </footer>
 
   <!-- Control Sidebar -->

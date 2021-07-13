@@ -317,7 +317,21 @@
           <form method="post" action="" onsubmit="return sendEmail();">
           <tbody id="searchTable" style="color:gray">
             <?php 
-            displayAllList($db);
+            if(isset($_SESSION['yesterday']) && $_SESSION['yesterday']){
+              displayAllListYesterday($db);
+              $_SESSION['yesterday']= false;
+            }else if(isset($_SESSION['today']) && $_SESSION['today'] ){
+              displayAllListToday($db);
+              $_SESSION['today'] = false;
+            }else if(isset($_SESSION['week']) && $_SESSION['week'] ){
+              displayAllListWeek($db);
+              $_SESSION['week'] = false;
+            }else if (isset($_SESSION['month']) && $_SESSION['month'] ){
+              displayAllListThisMonth($db);
+              $_SESSION['month'] = false;
+            }else
+              displayAllList($db);
+
             updateNotificationStatusWait($db);
             ?>
           </tbody>
@@ -691,9 +705,6 @@
   <footer class="main-footer">
     <strong>MAUI SNORKELING &copy; 2020.</strong>
     All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0
-    </div>
   </footer>
 
   <!-- Control Sidebar -->
