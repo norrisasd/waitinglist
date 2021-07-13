@@ -269,7 +269,7 @@
     }
     function sendEmail($email,$subject,$message){
         $mail = new PHPMailer;
-        $mail->isSMTP();//remove when hosting
+        $mail->isSMTP();
         $mail->Host='smtp.gmail.com';
         $mail->Port=587;
         $mail->SMTPAuth=true;
