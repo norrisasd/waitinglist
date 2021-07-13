@@ -6,7 +6,7 @@
 <html>
 <head>
 <title>Waitinglist Form</title>
-
+<link rel="icon" href="../dist/img/TURTLE.png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 <style>
     input::-webkit-outer-spin-button,
@@ -16,7 +16,7 @@
     }
     body {
     color: #000;
-    overflow: hidden;
+    overflow-x: hidden;
     height: 100%;
     background-color:#f2f3f4;
     background-repeat: no-repeat;
@@ -211,13 +211,13 @@
     }
 </script>
 <body>
-<div class="container-fluid px-1 py-5 mx-auto">
+<div class="container-fluid px-1 py-5 mx-auto" style="margin:0;padding:0">
     <div class="row d-flex justify-content-center">
         <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
-            <h3>MAUISNORKELING</h3>
-            <p class="blue-text">This information is required to be added to the <br> Waiting List in Mauisnokeling so that we can personalize the right experience for you.</p>
-            <div class="card">
-                <h5 class="text-center mb-4">FORM </h5>
+        <img src="../dist/img/logo-dark.png" style="height:auto;max-width:400px;padding:10px" class="img-thumbmail" alt="User Image">
+            <h3>Maui Snorkeling Lani Kai</h3>
+            <p class="blue-text">Was the activity you're looking for not available? <br> Fill out this waitlist and get notified when there is availability!</p>
+            <div class="card">  
                 <form method="post" action="" onsubmit="return addListInfo();" id="myForm" autocomplete="off">
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex"> 
@@ -241,11 +241,11 @@
                     </div>
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex"> 
-                            <label class="form-control-label px-3">Start Date<span class="text-danger"> *</span></label> 
+                            <label class="form-control-label px-3">First Date Available<span class="text-danger"> *</span></label> 
                             <input type="date" id="sdate" name="sdate" autocomplete="off" placeholder="" onblur="validate(5)" required> 
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex"> 
-                            <label class="form-control-label px-3">End Date<span class="text-danger"> *</span></label> 
+                            <label class="form-control-label px-3">Last Date Available<span class="text-danger"> *</span></label> 
                             <input type="date" id="edate" name="edate" autocomplete="off" placeholder="" onblur="validate(6)" required> 
                         </div>
                     </div>
@@ -253,7 +253,6 @@
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Activity Name<span class="text-danger"> *</span></label> 
                             <select name="aname" id="aname" onblur="validate(7)" required>
-                                <option value="" selected hidden>Select</option>
                                 <?php getAllActivity($db);?>
                             </select>
                         </div>

@@ -32,7 +32,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Maui Snorkeling</title>
+  <title>Maui Snorkeling Lani Kai</title>
+  <link rel="icon" href="dist/img/TURTLE.png">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -138,8 +139,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="../index.php" class="brand-link">
-      <img src="../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Maui Snorkeling</span>
+      <img src="../dist/img/TURTLE.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8;margin-top:7px">
+      <span class="brand-text font-weight-bold" >Maui Snorkeling<br> Lani Kai</span>
     </a>
 
     <!-- Sidebar -->
@@ -605,7 +606,7 @@
   </div>
 
   <footer class="main-footer">
-    <strong>MAUI SNORKELING &copy; 2020.</strong>
+    <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
   </footer>
 

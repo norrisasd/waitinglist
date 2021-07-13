@@ -24,10 +24,10 @@
         $email=$_POST['email'];
         $sdate=$_POST['sdate'];
         $edate=$_POST['edate'];
-        if($edate<$sdate || $sdate<$curdate['curdate']){
-            echo 'Date Error';
-            return;
-        }
+        // if($edate<$sdate || $sdate<$curdate['curdate']){
+        //     echo 'Date Error';
+        //     return;
+        // }
         $passengers=$_POST['passengers'];
         $aname=$_POST['aname'];
         $notes=$_POST['notes'];
