@@ -253,6 +253,7 @@
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Activity Name<span class="text-danger"> *</span></label> 
                             <select name="aname" id="aname" onblur="validate(7)" required>
+                                <option value="" selected>Choose Activity</option>
                                 <?php getAllActivity($db);?>
                             </select>
                         </div>
@@ -261,14 +262,15 @@
                             <textarea class="form-control" name="notes" id="notes" autocomplete="off" placeholder="Additional Notes" ></textarea>
                         </div>
                     </div>
+                    <br>
                     <div class="row justify-content-center"> 
                         <div class="form-group col-sm-6"> 
-                            
-                            <p style="font-size:12px">
-                            <input class="form-check-input" type="checkbox" value="" style="margin: 0;" required>
-                            By checking this box, I agree that the Mauisnorkeling will contact &nbsp;&nbsp;&nbsp;&nbsp; me through my email or phone number regarding this matter
-                            </p>
-                            
+                            <div style="display:flex">
+                                <input class="form-check-input" type="checkbox" value="" style="margin: 0;" required>
+                                <p style="font-size:12px" >
+                                By checking this box, I agree that the Mauisnorkeling will contact me through my email or phone number regarding this matter
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
