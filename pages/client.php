@@ -313,7 +313,6 @@
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">DND</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Enabled</th>
               <th></th>
-              <th></th>
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return deleteClient();">

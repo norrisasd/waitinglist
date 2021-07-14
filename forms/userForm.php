@@ -29,7 +29,7 @@
 
         $.ajax({
           type: 'post',
-          url: './php/user/addUser.php',
+          url: '../php/user/addUser.php',
           data:{
             username:username,
             password:password,
@@ -45,31 +45,143 @@
         });
         return false;
       }
+      function validate(val) {
+        v1 = document.getElementById("username");
+        v2 = document.getElementById("email");
+        v3 = document.getElementById("password");
+        v4 = document.getElementById("cpassword");
+        
+
+        flag1 = true;
+        flag2 = true;
+        flag3 = true;
+        flag4 = true;
+
+        if(val>=1 || val==0) {
+            if(v1.value == "") {
+                v1.style.borderColor = "red";
+                flag1 = false;
+            }
+            else {
+                v1.style.borderColor = "green";
+                flag1 = true;
+            }
+        }
+
+        if(val>=2 || val==0) {
+            if(v2.value == "") {
+                v2.style.borderColor = "red";
+                flag2 = false;
+            }
+            else {
+                v2.style.borderColor = "green";
+                flag2 = true;
+            }
+        }
+        if(val>=3 || val==0) {
+            if(v3.value == "") {
+                v3.style.borderColor = "red";
+                flag3 = false;
+            }
+            else {
+                v3.style.borderColor = "green";
+                flag3 = true;
+            }
+        }
+        if(val>=4 || val==0) {
+            if(v4.value == "") {
+                v4.style.borderColor = "red";
+                flag4 = false;
+            }
+            else {
+                v4.style.borderColor = "green";
+                flag4 = true;
+            }
+        }
+
+        flag = flag1 && flag2 && flag3 && flag4;
+
+        return flag;
+    }
 </script>
 <body>
-<center><h1>User Form</h1></center>
-    <div class="col-sm-8" style="margin:1rem auto">
-        <form action="" method="post" onsubmit="return addUser();" autocomplete="off" id="myForm">
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Username</label>
-                <input type="text" class="form-control" name="name" id="username" placeholder="" autocomplete="off" required>
+<section class="vh-100" style="background-color: #eee;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+
+                <form class="mx-1 mx-md-4" method="post" action="" onsubmit="return addUser();" id="myForm" autocomplete="off">
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <input type="text" id="username" class="form-control" onblur="validate(1)" required/>
+                      <label class="form-label" for="form3Example1c">Your Username</label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <input type="email" id="email" class="form-control" onblur="validate(2)" required />
+                      <label class="form-label" for="form3Example3c">Your Email</label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <input type="password" id="password" class="form-control" onblur="validate(3)" required />
+                      <label class="form-label" for="form3Example4c">Password</label>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                      <input type="password" id="cpassword" class="form-control" onblur="validate(4)" required />
+                      <label class="form-label" for="form3Example4cd">Repeat your password</label>
+                    </div>
+                  </div>
+
+                  <div class="form-check d-flex justify-content-center mb-5">
+                    <input
+                      class="form-check-input me-2"
+                      type="checkbox"
+                      value=""
+                      id="form2Example3c"
+                      required
+                    />
+                    <label class="form-check-label" for="form2Example3">
+                      I agree all statements in <a href="#">Terms of service</a>
+                    </label>
+                  </div>
+
+                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                  </div>
+
+                </form>
+
+              </div>
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+
+                <img src="../dist/img/logo-dark.png" class="img-fluid" alt="Sample image">
+
+              </div>
             </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Password</label>
-                <input type="password" class="form-control" name="password" id="password" autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Confirm Password</label>
-                <input type="password" class="form-control"  id="cpassword" autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Email</label>
-                <input type="email" class="form-control" name="email" id="email" autocomplete="off" required>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary" name="submit">Submit Form</button>
-        </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 </body>
 <script src="https://www.w3schools.com/lib/w3.js"></script>
 <script src="../plugins/jquery/jquery.min.js"></script>
