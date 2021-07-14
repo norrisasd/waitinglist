@@ -3,11 +3,6 @@
     $user="root";
     $pass="";
     $data="waitlist";
-//heroku
-    // $host="remotemysql.com";
-    // $user="GuUtM46wKG";
-    // $pass="a6wDOZNQrQ";
-    // $data="GuUtM46wKG";
 //siteground
 //     $host="localhost";
 //     $user="uarg4jgrrxrfe";
@@ -19,5 +14,6 @@
         die("Connection failed: " . mysqli_connect_error());
     }
     session_start();
+    $_SESSION['db']=$data;
     
 ?>

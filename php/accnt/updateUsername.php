@@ -1,5 +1,5 @@
 <?php
-    require '../conn.php';
+    require '../functions.php';
     $prevUser=$_SESSION['username'];
     $user=$_POST['username'];
     $query="UPDATE `user` SET `username`='$user' WHERE username='$prevUser'";

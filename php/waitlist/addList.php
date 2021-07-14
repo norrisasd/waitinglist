@@ -3,18 +3,18 @@
     $qdate="SELECT CURDATE() as curdate;";
     $rdate=mysqli_query($db,$qdate);
     $curdate =mysqli_fetch_assoc($rdate);// currentdate
-
-    $qAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'waitlist' AND TABLE_NAME = 'waitlist';";
+    $dbName=$_SESSION['db'];
+    $qAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$dbName' AND TABLE_NAME = 'waitlist';";
     $rAI=mysqli_query($db,$qAI);
     $ai=mysqli_fetch_assoc($rAI);
     $ai=$ai['AI'];  //Auto Increment of waitlist
 
-    $nAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'waitlist' AND TABLE_NAME = 'notification';";
+    $nAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$dbName' AND TABLE_NAME = 'notification';";
     $nAI=mysqli_query($db,$nAI);
     $nAI=mysqli_fetch_assoc($nAI);
     $nAI=$nAI['AI'];//notification Auto Increment
 
-    $cAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'waitlist' AND TABLE_NAME = 'clients';";
+    $cAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$dbName' AND TABLE_NAME = 'clients';";
     $cAI=mysqli_query($db,$cAI);
     $cAI=mysqli_fetch_assoc($cAI);
     $cAI=$cAI['AI'];//notification Auto Increment

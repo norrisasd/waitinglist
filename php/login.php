@@ -1,5 +1,5 @@
 <?php
-    require 'conn.php';
+    require 'functions.php';
     $user=$_POST['username'];
     $pass=$_POST['password'];
     $query="SELECT * FROM user where username='$user'";

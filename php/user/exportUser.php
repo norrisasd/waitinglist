@@ -1,5 +1,4 @@
 <?php
-//  require 'conn.php';
  include '../functions.php';
  $list=explode(",",$_GET['list']);
  $fields = array('USERNAME', 'PASSWORD', 'EMAIL', 'ISADMIN'); 

@@ -1,6 +1,6 @@
 <?php
 //connection
-    require '../php/conn.php';
+    require '../php/functions.php';
 ?>
 <!DOCTYPE html>
 <html>

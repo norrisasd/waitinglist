@@ -1,5 +1,4 @@
 <?php
-//  require 'conn.php';
  include '../functions.php';
  $list=explode(",",$_GET['list']);
  $fields = array('ID', 'NAME', 'PHONE', 'EMAIL', 'DATE CREATED', 'DND','ENABLED'); 
