@@ -35,7 +35,7 @@
         $result=mysqli_query($db,$query);
 
         if($result){
-            $query="INSERT INTO `clients`( `client_name`, `client_phone`, `client_email`, `client_date_created`, `client_dnd`, `client_enabled`) VALUES ('$name','$phone','$email',CURDATE(),0,0)";
+            $query="INSERT INTO `clients`( `client_name`, `client_phone`, `client_email`, `client_date_created`, `client_dnd`, `client_enabled`) VALUES ('$name','$phone','$email',CURDATE(),0,1)";
             $result = mysqli_query($db,$query);
             if($result){
                 $query="INSERT INTO `notification`( `notification_subject`, `notification_email`, `notification_status`) VALUES ('waitlist','$email','0')";

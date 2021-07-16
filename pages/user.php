@@ -2,29 +2,6 @@
     if(!isset($_SESSION['login'])){
       header("Location: ../loginPage.php");
     }
-    $count = getNotificationCount($db);
-    $countW = getNotificationCountWait($db);
-    $countC = getNotificationCountClient($db);
-    $countU = getNotificationCountUser($db);
-    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 ){
-      $_SESSION['countNotifW']=$countW;
-    }
-    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 ){
-      $_SESSION['countNotifC']=$countC;
-    }
-    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 ){
-      $_SESSION['countNotifU']=$countU;
-    }
-    // insertion during access
-    if(isset($_SESSION['countNotifC']) && $_SESSION['countNotifC'] !=$countC){
-      $_SESSION['countNotifC']+=$countC;
-    }
-    if(isset($_SESSION['countNotifW']) && $_SESSION['countNotifW'] !=$countU){
-      $_SESSION['countNotifW']+=$countW;
-    }
-    if(isset($_SESSION['countNotifU']) && $_SESSION['countNotifU'] !=$countU){
-      $_SESSION['countNotifU']+=$countU;
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Maui Snorkeling Lani Kai</title>
   <link rel="icon" href="../dist/img/TURTLE.png">
+  <script src="https://www.w3schools.com/lib/w3.js"></script>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -51,35 +29,13 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="../index.php" class="nav-link">Home</a>
-      </li>
+      </li> -->
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-          <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" onkeyup="searchBy(this.value)">
-              <select id="type" style="float:right;margin-right:1rem">
-                  <option value="username">Username</option>
-                  <option value="email">email</option>
-              </select>
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
       <!-- SET ON CLICK HERE -->
@@ -104,16 +60,6 @@
           <div class="dropdown-divider"></div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -135,7 +81,7 @@
     <!-- Brand Logo -->
     <a href="../index.php" class="brand-link">
       <img src="../dist/img/TURTLE.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8;margin-top:7px">
-      <span class="brand-text font-weight-bold" >Maui Snorkeling<br> Lani Kai</span>
+      <span class="brand-text font-weight-bold" ><?php echo $businessName; ?></span>
     </a>
 
     <!-- Sidebar -->
@@ -152,8 +98,8 @@
 
       <!-- SidebarSearch Form -->
       <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group">
+          <input class="form-control form-control-sidebar" oninput="w3.filterHTML('#myTable', '.tableItem', this.value)"  type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -236,9 +182,29 @@
               </li>
             </ul>
           </li>
+          <?php if($_SESSION['access']==1){
+          ?>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-archive" aria-hidden="true"></i>
+              <p>
+                Archive
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./archive/clientsArchive.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Clients Archive</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <?php }?>
           <li class="nav-item">
             <a href="../php/logout.php" class="nav-link">
-              <i class="nav-icon fa fa-file"></i>
+              <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>
                 Logout
               </p>
@@ -262,7 +228,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
               <li class="breadcrumb-item active">User List</li>
             </ol>
           </div>
@@ -273,10 +239,10 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" onclick="selectAll(this)"> Select All
+        <input type="checkbox" value="" style="margin-left:10px;" onclick="selectAll(this)"> Select All
         <?php
           if($_SESSION['access'] == 1){
-            echo '<button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>';
+            echo '<button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:10px;" onclick="exportDataModal()">Export</button>';
           }
         ?>
         <!-- <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
@@ -294,7 +260,6 @@
               <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Username</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Email</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Admin</th>
-              <th scope="col"></th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -477,7 +442,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+          <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body">
         <form action="" method="post" onsubmit="return addUser();" autocomplete="off" id="myForm">
@@ -509,17 +474,11 @@
   <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Information</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" style="margin:0 auto">
-          <div id="informationBody">
+        
+      <div id="informationBody">
+          
             
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
         </div>
       </div>
     </div>
@@ -528,8 +487,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Information</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+          <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit"></i> Edit Information</h5>
+          <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body">
         <form method="post" action=""  onsubmit="return editUserInfo();" >

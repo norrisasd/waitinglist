@@ -120,7 +120,7 @@
                 <form class="mx-1 mx-md-4" method="post" action="" onsubmit="return addUser();" id="myForm" autocomplete="off">
 
                   <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw" aria-hidden="true"></i>
+                    <i class="fas fa-user fa-lg me-3 fa-fw" style="padding-bottom:25px" aria-hidden="true"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="text" id="username" class="form-control" onblur="validate(1)" required/>
                       <label class="form-label" for="form3Example1c">Your Username</label>
@@ -128,7 +128,7 @@
                   </div>
 
                   <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                    <i class="fas fa-envelope fa-lg me-3 fa-fw" style="padding-bottom:25px"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="email" id="email" class="form-control" onblur="validate(2)" required />
                       <label class="form-label" for="form3Example3c">Your Email</label>
@@ -136,7 +136,7 @@
                   </div>
 
                   <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <i class="fas fa-lock fa-lg me-3 fa-fw" style="padding-bottom:25px"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="password" id="password" class="form-control" onblur="validate(3)" required />
                       <label class="form-label" for="form3Example4c">Password</label>
@@ -144,7 +144,7 @@
                   </div>
 
                   <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <i class="fas fa-key fa-lg me-3 fa-fw" style="padding-bottom:25px"></i>
                     <div class="form-outline flex-fill mb-0">
                       <input type="password" id="cpassword" class="form-control" onblur="validate(4)" required />
                       <label class="form-label" for="form3Example4cd">Repeat your password</label>

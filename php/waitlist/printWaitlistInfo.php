@@ -3,59 +3,162 @@
     $id=$_GET['id'];
     $data=getListById($db,$id);
     $notes = $data['waitlist_notes'] == ''?"None": $data['waitlist_notes'];
-    echo '<table>
-                <tr>
-                <td>ID:</td>
-                <td>'.$data['waitlist_id'].'</td>
-                </tr>
-                <tr>
-                <td>Name:</td>
-                <td>'.$data['name'].'</td>
-                </tr>
-                <tr>
-                <td>Phone:</td>
-                <td>'.$data['phone'].'</td>
-                </tr>
-                <tr>
-                <td>Email:</td>
-                <td>'.$data['email'].'</td>
-                </tr>
-                <tr>
-                <td>Start Date:</td>
-                <td>'.$data['waitlist_start_date'].'</td>
-                </tr>
-                <tr>
-                <td>End Date:</td>
-                <td>'.$data['waitlist_end_date'].'</td>
-                </tr>
-                <tr>
-                <td>Passengers:</td>
-                <td>'.$data['waitlist_num_passengers'].'</td>
-                </tr>
-                <tr>
-                <td>Service:</td>
-                <td>'.$data['waitlist_activity_name'].'</td>
-                </tr>
-                <tr>
-                <td>Notes:</td>
-                <td>'.$notes.'</td>
-                </tr>
-                <tr>
-                <tr>
-                <td>Client ID:</td>
-                <td>'.$data['client_id'].'</td>
-                </tr>
-                <tr>
-                <td>Date Created: </td>
-                <td>'.$data['waitlist_date_created'].'</td>
-                </tr>
-                <tr>
-                <td>Enabled:</td>
-                <td>'.$data['waitlist_enabled'].'</td>
-                </tr>
-                <tr>
-                <td>Email Sent: </td>
-                <td>'.$data['waitlist_approval_sent'].'</td>
-                </tr>
-            </table>';
+    $sent = $data['waitlist_approval_sent'] == 1?"Sent ":"Sent ";
+    $templates = getEmailSentRecordByWaitId($db,$data['waitlist_id']);
+    $query = "SELECT * FROM emailsentrecords WHERE waitlist_id = $id";
+    $result=mysqli_query($db,$query);
+        
+    echo '<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle" aria-hidden="true" style="margin-top:0.2rem"></i> Information</h5>
+    <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+  <div class="modal-body" style="margin:0 auto">
+  <table>
+          <tr>
+          <td>Waitlist ID</td>
+          <td style="padding-right:5rem">:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['waitlist_id'].'</td>
+          </tr>
+          <tr>
+          <td>Name</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['name'].'</td>
+          </tr>
+          <tr>
+          <td>Phone</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['phone'].'</td>
+          </tr>
+          <tr>
+          <td>Email</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['email'].'</td>
+          </tr>
+          <tr>
+          <td>Start Date</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['waitlist_start_date'].'</td>
+          </tr>
+          <tr>
+          <td>End Date</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['waitlist_end_date'].'</td>
+          </tr>
+          <tr>
+          <td>Passengers</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['waitlist_num_passengers'].'</td>
+          </tr>
+          <tr>
+          <td>Service</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['waitlist_activity_name'].'</td>
+          </tr>
+          <tr>
+          <td>Notes</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$notes.'</td>
+          </tr>
+          <tr>
+          <tr>
+          <td>Client ID</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['client_id'].'</td>
+          </tr>
+          <tr>
+          <td style="padding-right:1rem">Date Created</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['waitlist_date_created'].'</td>
+          </tr>
+          <tr>
+          <td>Enabled</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$data['waitlist_enabled'].'</td>
+          </tr>
+          <tr>
+          <td>Email Sent</td>
+          <td>:</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>'.$sent.mysqli_num_rows($result)." emails".'</td>
+          </tr>';
+          if($result){
+            while($temp=mysqli_fetch_assoc($result)){
+              if($temp['template_name']==''){
+                $tname="custom";
+              }else{
+                $tname=$temp['template_name'];
+              }
+              echo'<tr>
+              <td>Template</td>
+              <td>:</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>'.$tname.'</td>
+              </tr>';
+            }
+          }
+            
+            
+
+          echo'
+          <input type="text" value="'.$data['waitlist_id'].'" id="waitIndID" style="display:none" >
+      </table>
+  </div>
+  <div class="modal-footer"><a href="#" style="padding-right:48%" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i>Edit</a>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailTemplate">Send Email</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+  </div>';
 ?>

@@ -1,7 +1,10 @@
 <?php
-    require "../php/functions.php";
+    require "../../php/functions.php";
     if(!isset($_SESSION['login'])){
-        header("Location: ../loginPage.php");
+        header("Location: ../../loginPage.php");
+    }
+    if($_SESSION['access']!=1){
+        header("Location: ../../index.php");
     }
 ?>
 <!DOCTYPE html>
@@ -10,15 +13,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Maui Snorkeling Lani Kai</title>
-  <link rel="icon" href="../dist/img/TURTLE.png">
+  <link rel="icon" href="../../dist/img/TURTLE.png">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -30,8 +33,9 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <!-- <li class="nav-item d-none d-sm-inline-block">
-        <a href="../index.php" class="nav-link">Home</a>
+        <a href="../../index.php" class="nav-link">Home</a>
       </li> -->
+      
     </ul>
 
     <!-- Right navbar links -->
@@ -97,7 +101,7 @@
               document.getElementById("notifCnt").innerHTML=this.responseText;
           }
       }
-      xmlhttp.open("GET","../php/updateNotificationStatus.php",true);
+      xmlhttp.open("GET","../../php/updateNotificationStatus.php",true);
       xmlhttp.send();
     }
     </script>
@@ -106,7 +110,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="../index.php" class="brand-link">
-      <img src="../dist/img/TURTLE.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8;margin-top:7px">
+      <img src="../../dist/img/TURTLE.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8;margin-top:7px">
       <span class="brand-text font-weight-bold" ><?php echo $businessName; ?></span>
     </a>
 
@@ -115,10 +119,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="../dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
+          <img src="../../dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="../accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
+          <a href="../../accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
         </div>
       </div>
 
@@ -140,7 +144,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item ">
-            <a href="../index.php" class="nav-link">
+            <a href="../../index.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -148,15 +152,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="waitinglist.php" class="nav-link">
+            <a href="../waitinglist.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Waitlist
               </p>
             </a>
           </li>
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="../client.php" class="nav-link">
                 <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Client List
@@ -164,7 +168,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="user.php" class="nav-link">
+            <a href="../user.php" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
               <p>
                 User
@@ -172,7 +176,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="emailtemplates.php" class="nav-link">
+            <a href="../emailtemplates.php" class="nav-link">
               <i class="nav-icon fa fa-file"></i>
               <p>
                 Email Templates
@@ -189,28 +193,26 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../forms/waitlistForm.php" target="_blank" class="nav-link">
+                <a href="../../forms/waitlistForm.php" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Waitlist Form</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../forms/clientForm.php" target="_blank" class="nav-link">
+                <a href="../../forms/clientForm.php" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Client Form</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../forms/userForm.php" target="_blank" class="nav-link">
+                <a href="../../forms/userForm.php" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>User Form</p>
                 </a>
               </li>
             </ul>
           </li>
-          <?php if($_SESSION['access']==1){
-          ?>
-          <li class="nav-item">
+          <li class="nav-item menu-open">
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-archive" aria-hidden="true"></i>
               <p>
@@ -220,17 +222,16 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./archive/clientsArchive.php" class="nav-link">
+                <a href="#" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Clients Archive</p>
                 </a>
               </li>
             </ul>
           </li>
-          <?php }?>
           <li class="nav-item">
-            <a href="../php/logout.php" class="nav-link">
-              <i class="nav-icon fas fa-sign-out-alt"></i>
+            <a href="../../php/logout.php" class="nav-link">
+              <i class="nav-icon fa fa-file"></i>
               <p>
                 Logout
               </p>
@@ -250,11 +251,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Client List</h1>
+            <h1>Client Archive</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Client List</li>
             </ol>
           </div>
@@ -265,19 +266,17 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" style="margin-left:10px;" onclick="selectAll(this)"> Select All
-        <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px;"  onclick="checkDelete()">Disable</button>
+        <input type="checkbox" value="" onclick="selectAll(this)" style="margin-left:10px"> Select All
+        <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px"  onclick="checkDelete()">Delete</button>
         <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
-        
-        <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:120px">
+        <!-- <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:100px">
           <option value="" selected>Select</option>
           <option value="1">Check</option>
           <option value="0">Uncheck</option>
         </select>
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Filter DND</label>
-        
-        <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:170px">
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Date Created</label>
+        <label style="float:right;margin-right:1rem;">Filter DND</label>
+        <input type="date" id="dateCreated" class="form-control" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Date Created</label> -->
         <!-- <a href="#" data-toggle="modal" data-target="#addClient" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
         <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Client Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
         
@@ -298,14 +297,14 @@
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Email</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Date Created</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">DND</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Status</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Enabled</th>
+              <th></th>
             </tr>
           </thead>
-          <form method="post" action="" onsubmit="return disableClient();">
+          <form method="post" action="" onsubmit="return deleteClient();">
           <tbody id="searchTable">
             <?php 
-              displayAllClients($db);
-              updateNotificationStatusClient($db);
+              displayAllClientsDisabled($db);
             ?>
           </tbody>
           <button type="submit" id="delCli" style="display:none"></button>
@@ -331,7 +330,7 @@
       if(confirm("Are you sure you want to update DND?")){
         $.ajax({
           type:'post',
-          url: '../php/client/updateDND.php',
+          url: '../../php/client/updateDND.php',
           data:{
             id:id,
             dnd:dnd
@@ -360,7 +359,7 @@
 
         $.ajax({
           type: 'post',
-          url: '../php/client/addClient.php',
+          url: '../../php/client/addClient.php',
           data:{
             name:name,
             phone:phone,
@@ -383,7 +382,7 @@
         cb = cb.checked?1:0;
         $.ajax({
             type: 'post',
-            url: '../php/client/updateClient.php',
+            url: '../../php/client/updateClient.php',
             data:{
               id:clientID,
               name:name,
@@ -407,7 +406,7 @@
             document.getElementById("editInfoBody").innerHTML=this.responseText;
           }
         }
-        xmlhttp.open("GET","../php/client/editClientInfo.php?id="+id,true);
+        xmlhttp.open("GET","../../php/client/editClientInfo.php?id="+id,true);
         xmlhttp.send();
       }
       function info(id){
@@ -417,10 +416,10 @@
             document.getElementById("informationBody").innerHTML=this.responseText;
           }
         }
-        xmlhttp.open("GET","../php/client/printClientInfo.php?id="+id,true);
+        xmlhttp.open("GET","../../php/client/printClientInfo.php?id="+id,true);
         xmlhttp.send();
       }
-      function disableClient(){
+      function deleteClient(){
         var list=[];
         var ctr=0;
         var checkboxes = document.getElementsByName('list[]');
@@ -431,13 +430,13 @@
         }
         $.ajax({
             type: 'post',
-            url: '../php/client/disableClient.php',
+            url: '../../php/client/deleteClient.php',
             data:{
               list:list,
             },
             success:function(response){
               alert(response);
-              if(response == 'Disabled'){
+              if(response == 'Deleted'){
                   location.reload();
               }
             }
@@ -456,7 +455,7 @@
             alert("Nothing to Delete");
             return;
         }else{
-          if(confirm("Are you sure you want to disable the selected clients?")){
+          if(confirm("Are you sure you want to delete this clients?")){
             document.getElementById("delCli").click();
           }
         }
@@ -479,10 +478,10 @@
             var xmlhttp=new XMLHttpRequest();
             xmlhttp.onreadystatechange=function() {
                 if (this.readyState==4 && this.status==200) {
-                  window.location="../php/export.php";
+                  window.location="../../php/export.php";
                 }
             }
-            xmlhttp.open("GET","../php/client/exportClient.php?list="+list,true);
+            xmlhttp.open("GET","../../php/client/exportClient.php?list="+list,true);
             xmlhttp.send();
           } 
         }
@@ -499,7 +498,7 @@
         var cdate = document.getElementById("dateCreated").value;
         $.ajax({
           type: 'get',
-          url: '../php/client/searchClient.php',
+          url: '../../php/client/searchClient.php',
           data:{
             name:name,
             type:type,
@@ -523,17 +522,17 @@
   <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div id="informationBody">
-          
+          <div id="informationBody">
+            
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="modal fade" id="clientInfo" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="clientInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit"></i> Edit Information</h5>
+          <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit"></i>  Edit Information</h5>
           <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body">
@@ -602,12 +601,12 @@
   }
 </script>
 <script src="https://www.w3schools.com/lib/w3.js"></script>
-<script src="../plugins/jquery/jquery.min.js"></script>
+<script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../dist/js/adminlte.min.js"></script>
+<script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../dist/js/demo.js"></script>
+<script src="../../dist/js/demo.js"></script>
 </body>
 </html>

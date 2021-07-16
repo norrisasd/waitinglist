@@ -29,7 +29,6 @@
                          }else{
                             $str.= '<td></td>';
                          }
-                         $str.= '<td><a href="#" onclick="editUser(\''.$data['username'].'\')" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i></a></td>';
                     }else{
                         $str.='<td></td>';
                     }

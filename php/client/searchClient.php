@@ -4,12 +4,12 @@
     $type=$_GET['type'];//search Type
     $dnd = $_GET['dnd'];
     $cdate = $_GET['cdate'];
-    $query="SELECT * FROM clients";
+    $query="SELECT * FROM clients WHERE client_enabled = 1";
     $result=mysqli_query($db,$query);
     $str="";
     while($data=mysqli_fetch_assoc($result)){
         $check = $data['client_dnd'] == 1?"checked":"";
-        $enable = $data['client_enabled'] == 1?"Disabled":"Enabled";
+        $enable = $data['client_enabled'] == 1?"Active":"Inactive";
         $tdata='
         <tr class="tableItem">
             <th scope="row"><input type="checkbox" name="list[]" value="'.$data['client_id'].'"></th>
@@ -19,7 +19,6 @@
             <td>'.$data['client_date_created'].'</td>
             <td><input type="checkbox" class="form-check-input" style="margin : 0.4rem 0.5rem;height:15px;width:15px" id="'.$data['client_id'].'" value="'.$data['client_dnd'].'" onclick="updateDND('.$data['client_id'].')" autocomplete="off" '.$check.'></td>
             <td>'.$enable.'</td>
-            <td><a href="#" onclick="editClient('.$data['client_id'].')" data-toggle="modal" data-target="#clientInfo"><i class="fas fa-edit"></i></a></td>
         </tr>
         ';
         if(stristr($name,substr($data[$type],0,strlen($name))) && $dnd=='' && $cdate == ''){//search name

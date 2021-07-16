@@ -1,33 +1,7 @@
 <?php
-
-use function PHPSTORM_META\type;
-
-require "php/functions.php";
+  require "php/functions.php";
     if(!isset($_SESSION['login'])){
         header("Location: loginPage.php");
-    }
-    $count = getNotificationCount($db);
-    $countW = getNotificationCountWait($db);
-    $countC = getNotificationCountClient($db);
-    $countU = getNotificationCountUser($db);
-    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 ){
-      $_SESSION['countNotifW']=$countW;
-    }
-    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 ){
-      $_SESSION['countNotifC']=$countC;
-    }
-    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 ){
-      $_SESSION['countNotifU']=$countU;
-    }
-    // insertion during access
-    if(isset($_SESSION['countNotifC']) && $_SESSION['countNotifC'] !=$countC){
-      $_SESSION['countNotifC']+=$countC;
-    }
-    if(isset($_SESSION['countNotifW']) && $_SESSION['countNotifW'] !=$countW){
-      $_SESSION['countNotifW']+=$countW;
-    }
-    if(isset($_SESSION['countNotifU']) && $_SESSION['countNotifU'] !=$countU){
-      $_SESSION['countNotifU']+=$countU;
     }
 ?>
 <!DOCTYPE html>
@@ -75,34 +49,14 @@ require "php/functions.php";
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Home</a>
-      </li>
+      </li> -->
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-          <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
       <!-- SET ON CLICK HERE -->
@@ -127,16 +81,6 @@ require "php/functions.php";
           <div class="dropdown-divider"></div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -157,7 +101,7 @@ require "php/functions.php";
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
       <img src="dist/img/TURTLE.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8;margin-top:7px">
-      <span class="brand-text font-weight-bold" >Maui Snorkeling<br> Lani Kai</span>
+      <span class="brand-text font-weight-bold" ><?php echo $businessName; ?></span>
     </a>
 
     <!-- Sidebar -->
@@ -258,9 +202,29 @@ require "php/functions.php";
               </li>
             </ul>
           </li>
+          <?php if($_SESSION['access']==1){
+          ?>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-archive" aria-hidden="true"></i>
+              <p>
+                Archive
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./pages/archive/clientsArchive.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Clients Archive</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <?php }?>
           <li class="nav-item">
             <a href="php/logout.php" class="nav-link">
-              <i class="nav-icon fa fa-file"></i>
+              <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>
                 Logout
               </p>
@@ -284,7 +248,6 @@ require "php/functions.php";
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
@@ -300,7 +263,7 @@ require "php/functions.php";
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box bg-primary">
               <div class="inner">
                 <h3><?php echo getCountYesterday($db);?></h3>
                 <p>Yesterday</p>
@@ -308,7 +271,6 @@ require "php/functions.php";
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="./pages/waitinglist.php" onclick="displayType('yesterday')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -322,7 +284,6 @@ require "php/functions.php";
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="./pages/waitinglist.php" onclick="displayType('today')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -336,7 +297,6 @@ require "php/functions.php";
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="./pages/waitinglist.php" onclick="displayType('week')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -350,12 +310,64 @@ require "php/functions.php";
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="./pages/waitinglist.php" onclick="displayType('month')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
         </div>
         <!-- /.row -->
+        <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Emails Sent</span>
+              <span class="info-box-number"><?php echo getEmailSentCountYesterday($db);?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Emails Sent</span>
+              <span class="info-box-number"><?php echo getEmailSentCountToday($db);?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Emails Sent</span>
+              <span class="info-box-number"><?php echo getEmailSentCountWeek($db);?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Emails Sent</span>
+              <span class="info-box-number"><?php echo getEmailSentCountMonth($db);?></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
@@ -404,20 +416,6 @@ require "php/functions.php";
             <canvas id="myChart" style="width:100%;max-width:700px;margin:0 auto"></canvas>
             <br><br>
             <!-- Calendar -->
-            <div class="card bg-gradient-success" style="margin:0 auto">
-              <div class="card-header border-0">
-                <h3 class="card-title">
-                  <i class="far fa-calendar-alt"></i>
-                  Calendar
-                </h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body pt-0">
-                <!--The calendar -->
-                <div id="calendar" style="width: 100%"></div>
-              </div>
-              <!-- /.card-body -->
-            </div>
             <br>
             
             <!-- /.card -->
@@ -454,18 +452,6 @@ new Chart("myChart", {
     }
   }
 });
-function displayType(type){
-    $.ajax({
-    type: 'post',
-    url: './php/waitlist/setWaitlistDisplay.php',
-    data:{
-      type:type,
-    },
-    success:function(response){
-    }
-  });
-  return false;
-}
 </script>
         <!-- Main row -->
         <!-- /.row (main row) -->

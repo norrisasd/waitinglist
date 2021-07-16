@@ -1,5 +1,5 @@
 <?php
-    require 'functions.php';
+    require 'conn.php';
     $user=$_POST['username'];
     $pass=$_POST['password'];
     $query="SELECT * FROM user where username='$user'";
@@ -7,6 +7,9 @@
     $data = mysqli_fetch_assoc($result);
     if(mysqli_num_rows($result) == 1){
         if($pass == $data['password']){
+            $_SESSION['countNotifW']=0;
+            $_SESSION['countNotifC']=0;
+            $_SESSION['countNotifU']=0;
             if($data['isAdmin'] != NULL){
                 $_SESSION['login']=true;
                 $_SESSION['username']=$user;

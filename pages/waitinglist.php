@@ -3,29 +3,6 @@
     if(!isset($_SESSION['login'])){
         header("Location: ../loginPage.php");
     }
-    $count = getNotificationCount($db);
-    $countW = getNotificationCountWait($db);
-    $countC = getNotificationCountClient($db);
-    $countU = getNotificationCountUser($db);
-    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 ){
-      $_SESSION['countNotifW']=$countW;
-    }
-    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 ){
-      $_SESSION['countNotifC']=$countC;
-    }
-    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 ){
-      $_SESSION['countNotifU']=$countU;
-    }
-    // insertion during access
-    if(isset($_SESSION['countNotifC']) && $_SESSION['countNotifC'] !=$countC){
-      $_SESSION['countNotifC']+=$countC;
-    }
-    if(isset($_SESSION['countNotifW']) && $_SESSION['countNotifW'] !=$countW){
-      $_SESSION['countNotifW']+=$countW;
-    }
-    if(isset($_SESSION['countNotifU']) && $_SESSION['countNotifU'] !=$countU){
-      $_SESSION['countNotifU']+=$countU;
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,8 +15,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
@@ -53,15 +30,15 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <!-- <li class="nav-item d-none d-sm-inline-block">
         <a href="../index.php" class="nav-link">Home</a>
-      </li>
+      </li> -->
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-      <li class="nav-item">
+      <li class="nav-item" style="display:none">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
         </a>
@@ -108,16 +85,6 @@
           <div class="dropdown-divider"></div>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -139,7 +106,7 @@
     <!-- Brand Logo -->
     <a href="../index.php" class="brand-link">
       <img src="../dist/img/TURTLE.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8;margin-top:7px">
-      <span class="brand-text font-weight-bold" >Maui Snorkeling<br> Lani Kai</span>
+      <span class="brand-text font-weight-bold" ><?php echo $businessName; ?></span>
     </a>
 
     <!-- Sidebar -->
@@ -156,8 +123,8 @@
 
       <!-- SidebarSearch Form -->
       <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group">
+          <input class="form-control form-control-sidebar" type="search" oninput="w3.filterHTML('#myTable', '.tableItem', this.value)" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -241,9 +208,29 @@
               </li>
             </ul>
           </li>
+          <?php if($_SESSION['access']==1){
+          ?>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-archive" aria-hidden="true"></i>
+              <p>
+                Archive
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./archive/clientsArchive.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Clients Archive</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <?php }?>
           <li class="nav-item">
             <a href="../php/logout.php" class="nav-link">
-              <i class="nav-icon fa fa-file"></i>
+              <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>
                 Logout
               </p>
@@ -267,34 +254,51 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
               <li class="breadcrumb-item active">Waitlist</li>
             </ol>
           </div>
         </div>
+        <div style="margin:0 0 15px auto">
+          <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="<?php echo isset($_SESSION['setDate'])?$_SESSION['setDate']:'';?>" style="float:right;margin-right:0.5rem;width:170px">
+          <label style="float:right;margin-right:0.5rem;margin-top:0.25rem;">Date Created</label>
+          <select id="displayType" class="form-control" onchange="searchBy('')" style="float:right;margin-right:0.4rem;width:170px;">
+              <option value="">All</option>
+              <option value="1">Sent</option>
+              <option value="0">Not Sent</option>
+          </select>
+          <label style="float:right;margin-right:0.5rem;margin-top:0.25rem">Display </label>
+          <select id="actName" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1.5rem;width:200px">
+            <option value="" selected>Select</option>
+            <?php getAllActivity($db);?>
+          </select>
+          <label style="float:right;margin-right:0.5rem;margin-top:0.25rem">Activity Name</label>
+          
+        </div>
+        <br>
       </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" id="selectAll" onclick="selectAll(this)"> Select All
+        <input type="checkbox" value="" id="selectAll" style="margin-left:10px" onclick="selectAll(this)"> Select All
+        <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:15px;"  onclick="checkSend()">Send</button>
+        <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         
-        <button type="button" class="btn btn-success" style="float:right;margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
-        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px;margin-left:5px;"  onclick="checkSend()">Send</button>
         <!-- <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkApprove()">Approve</button> -->
         <!-- <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Waiting List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
         
         
-        <input type="date" id="endDate" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">End Date</label>
-        <input type="date" id="startDate" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Start Date</label>
-        <select id="actName" onchange="searchBy('')" style="float:right;margin-right:1rem;margin-top:0.25rem;width:100px">
-          <option value="" selected>Select</option>
-          <?php getAllActivity($db);?>
-        </select>
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Activity Name</label>
+        <input type="date" class="form-control" id="endDate" onchange="searchBy('')" value="" style="float:right;margin-right:0.5rem;width:170px">
+        <label style="float:right;margin-right:0.5rem;margin-top:0.25rem;">Last Date</label>
+        <!-- END DATE -->
+        <input type="date" class="form-control" id="startDate" onchange="searchBy('')" value="" style="float:right;margin-right:2rem;width:170px">
+        <label style="float:right;margin-right:0.5rem;margin-top:0.25rem;">First Date</label>
+        <!-- Start Date -->
+        <input type="text" class="form-control" id="actDate"  value="" style="float:right;margin-right:0.5rem;background:white;width:200px" readonly>
+        <label style="float:right;margin-right:0.5rem;margin-top:0.25rem;">Activity Date</label>
+        <!-- Activity Date -->
         <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="name">Name</option>
                   <option value="phone">Phone</option>
@@ -310,30 +314,17 @@
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Phone</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Email</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Activity Name</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">Start Date</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">End Date</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(8)')">Passengers</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">Date Created</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">First Date</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(8)')">Last Date</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(9)')">Passengers</th>
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return sendEmail();">
           <tbody id="searchTable" style="color:gray">
-            <?php 
-            if(isset($_SESSION['yesterday']) && $_SESSION['yesterday']){
-              displayAllListYesterday($db);
-              $_SESSION['yesterday']= false;
-            }else if(isset($_SESSION['today']) && $_SESSION['today'] ){
-              displayAllListToday($db);
-              $_SESSION['today'] = false;
-            }else if(isset($_SESSION['week']) && $_SESSION['week'] ){
-              displayAllListWeek($db);
-              $_SESSION['week'] = false;
-            }else if (isset($_SESSION['month']) && $_SESSION['month'] ){
-              displayAllListThisMonth($db);
-              $_SESSION['month'] = false;
-            }else
-              displayAllList($db);
-
-            updateNotificationStatusWait($db);
+            <?php
+              displayAllList($db,'','');
+              updateNotificationStatusWait($db);
             ?>
           </tbody>
         </table>
@@ -344,14 +335,19 @@
       function sendEmail(){
         var list=[];
         var ctr=0;
+        var tempName = document.getElementById("tempname").value;
         var subject = document.getElementById("subject1").value;
         var message = document.getElementById("text1").value;
         var checkboxes = document.getElementsByName('list[]');
         var checkboxes1 = document.getElementsByName('waitlist_id[]');
+        var waitIndId='';
         for(var i=0, n=checkboxes.length;i<n;i++) {
             if(checkboxes[i].checked == true){
                 list[ctr++]=checkboxes1[i].value;
             }
+        }
+        if(ctr == 0){
+          waitIndId=document.getElementById("waitIndID").value;
         }
         // alert(subject,message);
         $.ajax({
@@ -361,6 +357,8 @@
               subject:subject,
               message:message,
               list:list,
+              waitIndId:waitIndId,
+              tempName:tempName,
             },
             success:function(response){
               alert(response);
@@ -533,11 +531,13 @@
           checkboxes[i].checked = source.checked;
         }
       }
-      function searchBy(name){//change to ajax
+      function searchBy(name){//change to ajax  
         var type = document.getElementById("type").value;
         var aname = document.getElementById("actName").value;
         var sdate = document.getElementById("startDate").value;
         var edate = document.getElementById("endDate").value;
+        var displayType = document.getElementById("displayType").value;
+        var dateCreated = document.getElementById("dateCreated").value;
         $.ajax({
           type: 'get',
           url: '../php/waitlist/searchWaitlist.php',
@@ -547,6 +547,10 @@
             aname:aname,
             sdate:sdate,
             edate:edate,
+            startDate:startDate,
+            endDate:endDate,
+            displayType:displayType,
+            dateCreated:dateCreated,
 
           },
           success:function(response){
@@ -573,12 +577,21 @@
     </a>
   </div>
   <!-- /.MODAL -->
-  <div class="modal fade" id="emailTemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="info" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div id="informationBody">
+          
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="emailTemplate" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Send Email</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-paper-plane" aria-hidden="true"></i> Send Email</h5>
+          <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body" >
           <div class="form-group">
@@ -600,8 +613,9 @@
               </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Send Email</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
         </div>
       </form>
       </div>
@@ -611,8 +625,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Export By Activity Name</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-file-export"></i> Export By Activity Name</h5>
+          <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body" >
           <div class="form-group">
@@ -660,35 +674,18 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Information</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" style="margin:0 auto">
-          <div id="informationBody">
-            
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  
   <div class="modal fade" id="waitInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Information</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+          <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit"></i> Edit Information</h5>
+          <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body" style="margin:0 auto">
         <form method="post" action="" onsubmit="return updateListInfo();">
           <div id="editInfoBody">
-          
+            
           </div>
         
         </div>
@@ -722,13 +719,34 @@
     window.history.replaceState( null, null, window.location.href );
   }
 </script>
+
 <script src="https://www.w3schools.com/lib/w3.js"></script>
+<!-- jquery -->
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- InputMask -->
+<script src="../plugins/moment/moment.min.js"></script>
+<script src="../plugins/inputmask/jquery.inputmask.min.js"></script>
+<!-- date-range-picker -->
+<script src="../plugins/daterangepicker/daterangepicker.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script>
+  var startDate ='';
+  var endDate = '';
+  $(function() {
+  $('#actDate').daterangepicker({
+    opens: 'left',
+  }, function(start, end, label) {
+    startDate = start.format('YYYY-MM-DD');
+    endDate = end.format('YYYY-MM-DD');
+    searchBy('');
+  });
+});
+
+</script>
 </body>
 </html>
