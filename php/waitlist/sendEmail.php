@@ -30,8 +30,10 @@
         }else{
             foreach($_POST['list'] as $id){
                 $name = getListById($db,$id);
-                // $links  = "<a href='#'>Subscribe</a> | <a href='http://localhost/waitinglist/php/unsubscribe.php?id=".$name['client_id']."'>Unsubscribe</a>";
-                $links  = "<a href='#'>Subscribe</a> | <a href='#'>Unsubscribe</a>";
+                $forUrl=base64_encode($name['client_id']);
+                $forUrl=urlencode($forUrl);
+                // $links  = "<a href='https://waitlist.mauisnorkeling.com/php/unsubscribe.php?id=".$forUrl."'>Unsubscribe</a>";
+                $links  = "<a href='#'>Unsubscribe</a>";
                 $message = 'Aloha <b>'.$name['name'].','."</b>\n\n";
                 $message .=$Bodymessage;
                 $message .=$attachment;
@@ -65,7 +67,10 @@
             return;
         }else{
             $name = getListById($db,$waitIndId);
-            $links  = "<a href='#'>Subscribe</a> | <a href='#'>Unsubscribe</a>";
+            $forUrl=base64_encode($name['client_id']);
+            $forUrl=urlencode($forUrl);
+            // $links  = "<a href='https://waitlist.mauisnorkeling.com/php/unsubscribe.php?id=".$forUrl."'>Unsubscribe</a>";
+            $links  = "<a href='#'>Unsubscribe</a>";
             $message = 'Aloha <b>'.$name['name'].','."</b>\n\n";
             $message .=$Bodymessage;
             $message .=$attachment;
