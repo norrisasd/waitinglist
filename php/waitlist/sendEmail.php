@@ -78,7 +78,7 @@
             $email =getEmailById($db,$waitIndId);
             $retval=sendEmail($email,$subject,$message);
             if(!$retval){
-            }
+            }   
             else{
                 if($_SESSION['access']==0){
                     $_SESSION['emailSent'].="\t\t".$email."\r\n";
