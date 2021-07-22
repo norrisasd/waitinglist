@@ -2,6 +2,9 @@
     require '../functions.php';
     $id=$_GET['id'];
     $data=getClientById($db,$id);
+    $status = $data['client_enabled'] == 1 ? 'Enable':'Disable';
+    $setStatus = $data['client_enabled'] == 0 ? 'Enable':'Disable';
+    $dnd = $data['client_dnd'] == 1?'Check':'Uncheck';
     echo '<div class="modal-header">
     <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-info-circle" aria-hidden="true"></i> Information</h5>
     <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
@@ -36,18 +39,19 @@
         <tr>
         <td>DND</td>
         <td style="padding-right:5rem">:</td>
-        <td>'.$data['client_dnd'].'</td>
+        <td>'.$dnd.'</td>
         </tr>
         <tr>
         <td>Enabled</td>
         <td style="padding-right:5rem">:</td>
-        <td>'.$data['client_enabled'].'</td>
+        <td>'.$status.'</td>
         </tr>
         <tr>
     </table>
   </div>
   <div class="modal-footer">
-  <a href="#" style="padding-right:70%;margin:0" onclick="editClient('.$data['client_id'].')" data-toggle="modal" data-target="#clientInfo"><i class="fas fa-edit"></i>Edit</a>
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <a href="#" style="margin-right:55%"  onclick="editClient('.$data['client_id'].')" data-toggle="modal" data-target="#clientInfo"><i class="fas fa-edit"></i>Edit</a>
+    <a href="#" onclick="setStatus('.$data['client_id'].')" style="margin-right:3%" >'.$setStatus.'</a>
+    <button type="button" class="btn btn-secondary" style="" data-dismiss="modal">Close</button>
   </div>';
 ?>

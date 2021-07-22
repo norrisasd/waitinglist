@@ -268,26 +268,16 @@
       <div class="container-fluid">
         <input type="checkbox" value="" onclick="selectAll(this)" style="margin-left:10px"> Select All
         <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px"  onclick="checkDelete()">Delete</button>
+        <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:5px"  onclick="checkEnable()">Enable</button>
         <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
-        <!-- <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:100px">
+        <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:100px">
           <option value="" selected>Select</option>
           <option value="1">Check</option>
           <option value="0">Uncheck</option>
         </select>
         <label style="float:right;margin-right:1rem;">Filter DND</label>
         <input type="date" id="dateCreated" class="form-control" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Date Created</label> -->
-        <!-- <a href="#" data-toggle="modal" data-target="#addClient" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
-        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Client Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
-        
-        <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
-                  <option value="client_name">Name</option>
-                  <option value="client_phone">Phone</option>
-                  <option value="client_email">Email</option>
-                  <option value="client_date_created">Date Created</option>
-                  <option value="client_dnd">DND</option>
-                  <option value="client_enabled">Enabled</option>
-        </select> -->
+        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Date Created</label>
         <table class="table" id="myTable">
           <thead>
             <tr>
@@ -351,6 +341,55 @@
         }
       }
       
+    }
+    function checkEnable(){
+      var list=[];
+      var ctr = 0;
+      if(confirm("Are you sure you want to enable this selected client?")){
+        var checkboxes = document.getElementsByName('list[]');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            if(checkboxes[i].checked == true){
+                list[ctr++]=checkboxes[i].value;
+            }
+        }
+        $.ajax({
+          type:'post',
+          url:'../../php/client/enableClient.php',
+          data:{
+              list:list,
+          },
+          success:function(response){
+            alert(response);
+            if(response == "Enabled"){
+              location.reload();
+            }
+          }
+
+        });
+        return false;
+      }
+    }
+    function setStatus(id){
+      var list=[];
+      list[0]=id;
+      if(confirm("Are you sure you want to enable this client?")){
+        $.ajax({
+          type:'post',
+          url:'../../php/client/enableClient.php',
+          data:{
+              list:list,
+          },
+          success:function(response){
+            alert(response);
+            if(response == "Enabled"){
+              location.reload();
+            }
+          }
+
+        });
+        return false;
+      }
+
     }
     function addClient(){
         var name=document.getElementById('name').value;
@@ -498,7 +537,7 @@
         var cdate = document.getElementById("dateCreated").value;
         $.ajax({
           type: 'get',
-          url: '../../php/client/searchClient.php',
+          url: '../../php/client/searchClientArchive.php',
           data:{
             name:name,
             type:type,
@@ -584,6 +623,8 @@
   <footer class="main-footer">
     <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
+    <a href="../PrivacyPolicy.php" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+    <a href="../TermsAndConditions.php" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
   </footer>
 
   <!-- Control Sidebar -->

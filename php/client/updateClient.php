@@ -8,7 +8,13 @@
     $query="UPDATE `clients` SET `client_name`='$name',`client_phone`='$phone',`client_email`='$email', client_dnd = $dnd WHERE client_id = $id ";
     $result=mysqli_query($db,$query);
     if($result){
-        echo 'Updated';
+        $query ="UPDATE waitlist SET name='$name',phone=$phone,email ='$email' WHERE client_id = $id";
+        $result=mysqli_query($db,$query);
+        if($result){
+            echo 'Updated';
+        }else{
+            echo mysqli_error($db);
+        }
     }else{
         echo mysqli_error($db);
     }

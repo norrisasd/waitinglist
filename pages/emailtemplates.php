@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+  
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -378,6 +380,10 @@
         xmlhttp.open("GET","../php/emailTemplates/getTemplates.php?tempName="+str,true);
         xmlhttp.send();
     }
+    document.addEventListener('DOMContentLoaded', function() {
+    autosize(document.querySelectorAll('#notes'));
+}, false);
+    
     </script>
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
       <i class="fas fa-chevron-up"></i>
@@ -459,6 +465,8 @@
   <footer class="main-footer">
     <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
+    <a href="./PrivacyPolicy.php" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+    <a href="./TermsAndConditions.php" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
   </footer>
 
   <!-- Control Sidebar -->
@@ -506,5 +514,9 @@
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+
+<script>
+  
+</script>
 </body>
 </html>

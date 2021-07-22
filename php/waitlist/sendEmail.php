@@ -5,7 +5,12 @@
     require '../../phpmailer/PHPMailerAutoload.php';
     $waitIndId = $_POST['waitIndId'];
     $subject=$_POST['subject'];
-    $message=$_POST['message'];
+    $Bodymessage=$_POST['message'];
+    $attachment="\n\n<b>Maui Snorkeling Lani Kai</b>
+                mauisnorkeling.com
+                888.983.8080
+                <img src='cid:logo_image'>
+                ";
     $tempname=$_POST['tempName'];
     $retval = false;
     $flag = false;
@@ -24,8 +29,18 @@
             return;
         }else{
             foreach($_POST['list'] as $id){
+                $name = getListById($db,$id);
+                // $links  = "<a href='#'>Subscribe</a> | <a href='http://localhost/waitinglist/php/unsubscribe.php?id=".$name['client_id']."'>Unsubscribe</a>";
+                $links  = "<a href='#'>Subscribe</a> | <a href='#'>Unsubscribe</a>";
+                $message = 'Aloha <b>'.$name['name'].','."</b>\n\n";
+                $message .=$Bodymessage;
+                $message .=$attachment;
+                $message .= $links;
                 $email =getEmailById($db,$id);
                 $retval=sendEmail($email,$subject,$message);
+                $ai = getAutoIncrementNotification($db);
+                createEmailNotification($db,$subject,$email);
+                createWaitlistNotification($db,$id,$ai);
                 if(!$retval){
                     break;
                 }
@@ -49,6 +64,12 @@
             echo $str."\nSelected row must not be on DND list";
             return;
         }else{
+            $name = getListById($db,$waitIndId);
+            $links  = "<a href='#'>Subscribe</a> | <a href='#'>Unsubscribe</a>";
+            $message = 'Aloha <b>'.$name['name'].','."</b>\n\n";
+            $message .=$Bodymessage;
+            $message .=$attachment;
+            $message .=$links;
             $email =getEmailById($db,$waitIndId);
             $retval=sendEmail($email,$subject,$message);
             if(!$retval){

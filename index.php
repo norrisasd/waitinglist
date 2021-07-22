@@ -413,7 +413,12 @@
 
             <!-- solid sales graph -->
             <!-- /.card -->
-            <canvas id="myChart" style="width:100%;max-width:700px;margin:0 auto"></canvas>
+            <br><br>
+            <div class="d-flex justify-content-center">
+              <canvas id="myChart" style="width:100%;max-width:700px;margin:0 auto"></canvas>
+              <canvas id="pieChart" style="width:100%;max-width:500px;margin:0 auto"></canvas>
+            </div>
+            
             <br><br>
             <!-- Calendar -->
             <br>
@@ -431,12 +436,41 @@
         
 
 <script>
-var xValues = ["Yesterday", "Today", "This Week", "This Month"];
-var yValues = [<?php echo getCountYesterday($db); ?>, <?php echo getCountToday($db); ?>,  <?php echo getCountLastWeek($db); ?>,<?php echo getCountThisMonth($db) ?>];
-var barColors = ["blue", "green","orange","red"];
+var bxValues = ["Yesterday", "Today", "This Week", "This Month"];
+var byValues = [<?php echo getCountYesterday($db); ?>, <?php echo getCountToday($db); ?>,  <?php echo getCountLastWeek($db); ?>,<?php echo getCountThisMonth($db) ?>];
+var bbarColors = ["blue", "green","orange","red"];
 
 new Chart("myChart", {
   type: "bar",
+  data: {
+    labels: bxValues,
+    datasets: [{
+      backgroundColor: bbarColors,
+      data: byValues
+    }]
+  },
+  options: {
+    legend: {
+      display: false,
+    },
+    title: {
+      display: true,
+      text: "Registered in the Waitlist"
+    }
+  }
+});
+
+var xValues = ["Yesterday", "Today", "This Week", "This Month"];
+var yValues = [<?php echo getEmailSentCountYesterday($db); ?>, <?php echo getEmailSentCountToday($db); ?>,  <?php echo getEmailSentCountWeek($db); ?>,<?php echo getEmailSentCountMonth($db); ?>];
+var barColors = [
+  "blue",
+  "green",
+  "orange",
+  "red",
+];
+
+new Chart("pieChart", {
+  type: "pie",
   data: {
     labels: xValues,
     datasets: [{
@@ -445,10 +479,9 @@ new Chart("myChart", {
     }]
   },
   options: {
-    legend: {display: false},
     title: {
       display: true,
-      text: "Bar Chart"
+      text: "Emails Sent to the Client"
     }
   }
 });
@@ -464,6 +497,8 @@ new Chart("myChart", {
   <footer class="main-footer">
     <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
+    <a href="./pages/PrivacyPolicy.php" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+    <a href="./pages/TermsAndConditions.php" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
   </footer>
 
   <!-- Control Sidebar -->

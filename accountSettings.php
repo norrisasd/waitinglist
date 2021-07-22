@@ -462,6 +462,8 @@
   <footer class="main-footer">
     <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
+    <a href="./pages/PrivacyPolicy.php" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+    <a href="./pages/PrivacyPolicy.php" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
   </footer>
 
   <!-- Control Sidebar -->

@@ -9,6 +9,7 @@
 <link rel="icon" href="../dist/img/TURTLE.png">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+<link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
 <style>
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -109,9 +110,14 @@
             notes:notes
           },
           success:function(response){
-            alert(response);
-            if(response == 'Success')
-            location.reload();
+            if(response == 'Success'){
+                toastr.success(response);
+                document.getElementById("myForm").reset();
+            }  
+            else{
+                toastr.error(response);
+            }
+                
           }
         });
         return false;
@@ -262,14 +268,14 @@
                             <label class="form-control-label px-3">Notes</label> 
                             <textarea class="form-control" name="notes" id="notes" autocomplete="off" placeholder="Additional Notes" ></textarea>
                         </div>
-                    </div>
+                    </div>      
                     <br>
                     <div class="row justify-content-center"> 
                         <div class="form-group col-sm-6"> 
                             <div style="display:flex">
                                 <input class="form-check-input" type="checkbox" value="" style="margin: 0;" required>
                                 <p style="font-size:12px" >
-                                By checking this box, I agree that the Mauisnorkeling will contact me through my email or phone number regarding this matter
+                                By checking this box, I agree that the Mauisnorkeling will contact me through my email or phone number regarding this matter. Also, I agree all statements in <a href="../pages/TermsAndConditions.php">Terms and Conditions</a>
                                 </p>
                             </div>
                         </div>
@@ -290,4 +296,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="../plugins/toastr/toastr.min.js"></script>
+<script>
+    
+</script>
 </html>

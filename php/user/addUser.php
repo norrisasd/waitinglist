@@ -3,9 +3,14 @@
     $user=$_POST['username'];
     $pass=$_POST['password'];
     $email=$_POST['email'];
+    list($trash,$domain) = explode('@',$email);
+    if(!checkdnsrr($domain,'MX')){
+        echo 'Email is not Valid!';
+        return;
+    }
     $query="INSERT INTO `user`(`username`, `password`, `email`) VALUES ('$user','$pass','$email')";
     $result=mysqli_query($db,$query);
-    $nquery="INSERT INTO `notification`( `notification_subject`, `notification_email`, `notification_status`) VALUES ('user','$email',0)";
+    $nquery="INSERT INTO `notification_added`( `notification_type`, `notification_status`) VALUES ('user',0)";
     $nresult=mysqli_query($db,$nquery);
     if($result == $nresult){
         echo "Success";

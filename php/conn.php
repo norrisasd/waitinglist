@@ -26,17 +26,17 @@
 
 
     // AWS
-    // $_SESSION['sender']='info@mauisnorkeling.com';
-    // $_SESSION['smtpUser']='AKIA3LKCDTEVT3SEYNXJ';
-    // $_SESSION['smtpPass']='BCavRNQT3htkExIQ8tV24z6in/4Lu/zTTLQ30OEr90aC';
-    // $_SESSION['smtpHost']='email-smtp.us-east-2.amazonaws.com';
-    // $_SESSION['smtpPort']=587;
-    //GMAIL
-    $_SESSION['sender']='info.mauisnorkeling@gmail.com';
-    $_SESSION['smtpUser']='info.mauisnorkeling@gmail.com';
-    $_SESSION['smtpPass']='Mauisnorkeling21';
-    $_SESSION['smtpHost']='smtp.gmail.com';
+    $_SESSION['sender']='info@mauisnorkeling.com';
+    $_SESSION['smtpUser']='AKIA3LKCDTEV4IZYJXDV';
+    $_SESSION['smtpPass']='BByif4GkM2IRTZetEdfmYShkiaVDsp3e/I/77VYx8DTZ';
+    $_SESSION['smtpHost']='email-smtp.us-east-2.amazonaws.com';
     $_SESSION['smtpPort']=587;
+    //GMAIL
+    // $_SESSION['sender']='info.mauisnorkeling@gmail.com';
+    // $_SESSION['smtpUser']='info.mauisnorkeling@gmail.com';
+    // $_SESSION['smtpPass']='Mauisnorkeling21';
+    // $_SESSION['smtpHost']='smtp.gmail.com';
+    // $_SESSION['smtpPort']=587;
 
     
 ?>

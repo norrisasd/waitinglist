@@ -353,6 +353,28 @@
       }
       
     }
+    function setStatus(id){
+      var list=[];
+      list[0]=id;
+      if(confirm("Are you sure you want to disable this client?")){
+        $.ajax({
+          type:'post',
+          url:'../php/client/disableClient.php',
+          data:{
+              list:list,
+          },
+          success:function(response){
+            alert(response);
+            if(response == "Disabled"){
+              location.reload();
+            }
+          }
+
+        });
+        return false;
+      }
+
+    }
     function addClient(){
         var name=document.getElementById('name').value;
         var phone=document.getElementById('phone').value;
@@ -585,6 +607,8 @@
   <footer class="main-footer">
     <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
+    <a href="./PrivacyPolicy.php" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+    <a href="./TermsAndConditions.php" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
   </footer>
 
   <!-- Control Sidebar -->

@@ -3,11 +3,16 @@
     $id=$_GET['id'];
     $data=getListById($db,$id);
     $notes = $data['waitlist_notes'] == ''?"None": $data['waitlist_notes'];
+    $notes = nl2br($notes);
     $sent = $data['waitlist_approval_sent'] == 1?"Sent ":"Sent ";
     $templates = getEmailSentRecordByWaitId($db,$data['waitlist_id']);
-    $query = "SELECT * FROM emailsentrecords WHERE waitlist_id = $id";
+    $query = "SELECT * FROM emailsentrecords WHERE waitlist_id = $id";//waitlist notification 
+    $status = $data['waitlist_enabled'] == 1 ?"Enabled":"Disabled";
+    $setStatus = $data['waitlist_enabled'] == 1 ?"Disable":"Enable";
     $result=mysqli_query($db,$query);
-        
+    $ctr =0;
+    $dnd = getClientDNDByWaitId($db,$id);
+    $check = $dnd == 1?"checked":"";
     echo '<div class="modal-header">
     <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle" aria-hidden="true" style="margin-top:0.2rem"></i> Information</h5>
     <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
@@ -115,13 +120,13 @@
           <td>'.$data['waitlist_date_created'].'</td>
           </tr>
           <tr>
-          <td>Enabled</td>
+          <td>Status</td>
           <td>:</td>
           <td></td>
           <td></td>
           <td></td>
           <td></td>
-          <td>'.$data['waitlist_enabled'].'</td>
+          <td>'.$status.'</td>
           </tr>
           <tr>
           <td>Email Sent</td>
@@ -134,30 +139,40 @@
           </tr>';
           if($result){
             while($temp=mysqli_fetch_assoc($result)){
+              $str =$ctr==0?"Template Name":"";
               if($temp['template_name']==''){
-                $tname="custom";
+                $tname="Custom";
               }else{
                 $tname=$temp['template_name'];
               }
               echo'<tr>
-              <td>Template</td>
-              <td>:</td>
+              <td>'.$str.'</td>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
               <td>'.$tname.'</td>
               </tr>';
-            }
-          }
-            
-            
 
-          echo'
+              $ctr++;
+            }
+          }        
+          echo'<tr>
+                <td>DND</td>
+                <td>:</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" class="form-check-input" style="margin-left:3%;margin-top:-1%;height:15px;width:15px" id="'.$data['client_id'].'" value="'.$dnd.'" onclick="updateDND('.$data['client_id'].')" autocomplete="off" '.$check.'></td>
+               </tr> 
           <input type="text" value="'.$data['waitlist_id'].'" id="waitIndID" style="display:none" >
       </table>
   </div>
-  <div class="modal-footer"><a href="#" style="padding-right:48%" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i>Edit</a>
+  <div class="modal-footer">
+    <a href="#" style="padding-right:33%" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i>Edit</a>
+    <a href="#" style="padding-right:2%" onclick="setStatus('.$data['client_id'].')">'.$setStatus.'</a>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailTemplate">Send Email</button>
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
   </div>';

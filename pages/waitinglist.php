@@ -14,6 +14,7 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
+  
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
@@ -332,6 +333,56 @@
     </section>
     
     <script>
+      function setStatus(id){
+        var list=[];
+        list[0]=id;
+        if(confirm("Are you sure you want to disable this client?")){
+          $.ajax({
+            type:'post',
+            url:'../php/client/disableClient.php',
+            data:{
+                list:list,
+            },
+            success:function(response){ 
+              alert(response);
+              if(response == "Disabled"){
+                location.reload();
+              }
+            }
+
+          });
+          return false;
+        }
+
+      }
+      function updateDND(id){
+      var cb = document.getElementById(id);
+      dnd = cb.checked?1:0;
+      if(confirm("Are you sure you want to update DND?")){
+        $.ajax({
+          type:'post',
+          url: '../php/client/updateDND.php',
+          data:{
+            id:id,
+            dnd:dnd
+          },
+          success:function(response){
+              if(response != 'Updated'){
+                alert(response);
+              }else{
+                cb.value= dnd;
+              }
+          }
+       });
+      }else{
+        if(cb.value == 1){
+          cb.checked = true;
+        }else{
+          cb.checked = false;
+        }
+      }
+      
+    }
       function sendEmail(){
         var list=[];
         var ctr=0;
@@ -445,11 +496,13 @@
             }
         }
         if(ctr==0){
-            alert("Nothing to Send");
-            return;
+          alert("Nothing to Send");
+          return;
         }else{
+          if(ctr>1)
+            w3.show("#warningBulk");
           $(document).ready(function(){
-              $("#emailTemplate").modal();
+            $("#emailTemplate").modal();
           });
         }
       }
@@ -591,10 +644,16 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-paper-plane" aria-hidden="true"></i> Send Email</h5>
-          <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-outline-dark" onclick="w3.hide('#warningBulk')" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body" >
           <div class="form-group">
+          <div class="alert alert-warning" id="warningBulk" style="display:none" role="alert">
+          <b>Warning:</b><br>
+          <p style="text-align:justify;margin:0">
+            Sending bulk emails will likely get them tagged as spam. To eliminate bounce rate, ensure email quality and avoid potential spam triggers!  
+          </p> 
+          </div>
               <label for="exampleFormControlInput1">Template Name</label>
               <select id="tempname" onchange="setEmail(this.value)">
                   <option value="" disabled selected>Select Template</option>
@@ -614,7 +673,7 @@
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Send Email</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" onclick="w3.hide('#warningBulk')" data-dismiss="modal">Close</button>
           
         </div>
       </form>
@@ -703,6 +762,8 @@
   <footer class="main-footer">
     <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
+    <a href="./PrivacyPolicy.php" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+    <a href="./TermsAndConditions.php" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
   </footer>
 
   <!-- Control Sidebar -->
@@ -726,6 +787,7 @@
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- InputMask -->
+<script src="../plugins/popper/popper.js"></script>
 <script src="../plugins/moment/moment.min.js"></script>
 <script src="../plugins/inputmask/jquery.inputmask.min.js"></script>
 <!-- date-range-picker -->
@@ -734,6 +796,7 @@
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+
 <script>
   var startDate ='';
   var endDate = '';

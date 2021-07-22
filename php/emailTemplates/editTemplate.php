@@ -13,8 +13,8 @@
             <input type="text" class="form-control" id="esub" name="esub" value="'.$data['subject'].'" required>
         </div>
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">Message</label>
-            <textarea class="form-control" id="emes" name="emes" rows="3" required>'.$data['message'].'</textarea>
+            <label for="exampleFormControlTextarea1">Message Body</label>
+            <textarea class="form-control" id="emes" name="emes" rows="20" required>'.$data['message'].'</textarea>
         </div>
         ';
 ?>

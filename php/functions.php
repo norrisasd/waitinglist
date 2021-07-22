@@ -83,7 +83,7 @@
         }
     }
     function displayAllClients($db){
-        $query="SELECT * FROM clients WHERE client_enabled=1";
+        $query="SELECT * FROM clients WHERE client_enabled=1 GROUP BY client_id desc";
         $result=mysqli_query($db,$query);
         if($result){
             while($data = mysqli_fetch_assoc($result)){
@@ -115,12 +115,9 @@
         }else{
             $dateC = "AND waitlist.waitlist_date_created ='$dateCreated'";
         }
-        $query ="SELECT waitlist.* ,notification.notification_status
-        FROM waitlist,notification
-        INNER JOIN waitlist_notfication
-        ON waitlist_notfication.waitlist_id=waitlist_id
-        AND notification.notification_id = waitlist_notfication.notification_id
-        WHERE waitlist_notfication.waitlist_id= waitlist.waitlist_id AND waitlist.waitlist_enabled=1 $disT $dateC
+        $query ="SELECT waitlist.*,notification_added.notification_status
+        FROM `waitlist`,`notification_added`
+        WHERE waitlist.waitlist_id=notification_added.waitlist_id AND waitlist.waitlist_enabled=1 $disT $dateC
         GROUP BY waitlist.waitlist_id desc;";
         $result=mysqli_query($db,$query);
         if($result){
@@ -166,15 +163,15 @@
         }
     }
     function updateNotificationStatusWait($db){
-        $query = "UPDATE `notification` SET `notification_status` = 1 WHERE notification.notification_status = 0 and notification.notification_subject = 'waitlist'";
+        $query = "UPDATE `notification_added` SET `notification_status` = 1 WHERE notification_added.notification_status = 0 and notification_added.notification_type = 'waitlist'";
         $result = mysqli_query($db,$query);
     }
     function updateNotificationStatusClient($db){
-        $query = "UPDATE `notification` SET `notification_status` = 1 WHERE notification.notification_status = 0 and notification.notification_subject = 'client'";
+        $query = "UPDATE `notification_added` SET `notification_status` = 1 WHERE notification_added.notification_status = 0 and notification_added.notification_type = 'client'";
         $result = mysqli_query($db,$query);
     }
     function updateNotificationStatusUser($db){
-        $query = "UPDATE `notification` SET `notification_status` = 1 WHERE notification.notification_status = 0 and notification.notification_subject = 'user'";
+        $query = "UPDATE `notification_added` SET `notification_status` = 1 WHERE notification_added.notification_status = 0 and notification_added.notification_type = 'user'";
         $result = mysqli_query($db,$query);
     }
     function displayAllTemplates($db){
@@ -263,6 +260,7 @@
             $mail->isHTML(true);
             $mail->Subject    = $subject;
             $mail->Body       = nl2br($message);
+            $mail->addEmbeddedImage(dirname(__FILE__).'/logo-small.png','logo_image');
             $check = $mail->Send();
         } catch (phpmailerException $e) {
             echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
@@ -300,7 +298,7 @@
         echo $data;
     }
     function getNotificationCount($db){
-        $query="SELECT * FROM notification where notification_status=0";
+        $query="SELECT * FROM notification_added where notification_status=0";
         $result=mysqli_query($db,$query);
         if($result){
             $count = mysqli_num_rows($result);
@@ -308,7 +306,7 @@
         }
     }
     function getNotificationCountWait($db){
-        $query="SELECT * FROM notification where notification_subject ='waitlist' AND notification_status=0";
+        $query="SELECT * FROM notification_added where notification_type ='waitlist' AND notification_status=0";
         $result=mysqli_query($db,$query);
         if($result){
             $count = mysqli_num_rows($result);
@@ -316,7 +314,7 @@
         }
     }
     function getNotificationCountClient($db){
-        $query="SELECT * FROM notification where notification_subject ='client' AND notification_status=0";
+        $query="SELECT * FROM notification_added where notification_type ='client' AND notification_status=0";
         $result=mysqli_query($db,$query);
         if($result){
             $count = mysqli_num_rows($result);
@@ -324,7 +322,7 @@
         }
     }
     function getNotificationCountUser($db){
-        $query="SELECT * FROM notification where notification_subject ='user' AND notification_status=0";
+        $query="SELECT * FROM notification_added where notification_type ='user' AND notification_status=0";
         $result=mysqli_query($db,$query);
         if($result){
             $count = mysqli_num_rows($result);
@@ -356,28 +354,28 @@
         return $count;
     }
     function getEmailSentCountYesterday($db){
-        $query="SELECT * FROM `waitlist` where waitlist_date_created = curdate() - INTERVAL 1 day AND waitlist_approval_sent = 1";
+        $query="SELECT * FROM `waitlist_notfication` where waitlist_notification_create_date = curdate() - INTERVAL 1 day";
         $result =mysqli_query($db,$query);
         $count = mysqli_num_rows($result);
         return $count;
 
     }
     function getEmailSentCountToday($db){
-        $query="SELECT * FROM `waitlist` where waitlist_date_created = curdate() AND waitlist_approval_sent = 1";
+        $query="SELECT * FROM `waitlist_notfication` where waitlist_notification_create_date = curdate()";
         $result =mysqli_query($db,$query);
         $count = mysqli_num_rows($result);
         return $count;
 
     }
     function getEmailSentCountWeek($db){
-        $query="SELECT * FROM `waitlist` where waitlist_date_created > curdate() - INTERVAL 7 day AND waitlist_approval_sent = 1";
+        $query="SELECT * FROM `waitlist_notfication` where waitlist_notification_create_date > curdate() - INTERVAL 7 day";
         $result =mysqli_query($db,$query);
         $count = mysqli_num_rows($result);
         return $count;
 
     }
     function getEmailSentCountMonth($db){
-        $query="SELECT * FROM `waitlist` where waitlist_date_created > curdate() - INTERVAL 30 day AND waitlist_approval_sent = 1";
+        $query="SELECT * FROM `waitlist_notfication` where waitlist_notification_create_date > curdate() - INTERVAL 30 day";
         $result =mysqli_query($db,$query);
         $count = mysqli_num_rows($result);
         return $count;
@@ -429,5 +427,34 @@
             $data = mysqli_fetch_assoc($result);
             return $data;
         }
+    }
+    function getAutoIncrementNotification($db){
+        $dbName=$_SESSION['db'];
+        $qAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$dbName' AND TABLE_NAME = 'notification';";
+        $rAI=mysqli_query($db,$qAI);
+        $ai=mysqli_fetch_assoc($rAI);
+        $ai=$ai['AI'];  //Auto Increment of waitlist
+        return $ai;
+    }
+    function createEmailNotification($db,$subject,$message){
+        $query = "INSERT INTO `notification`(`notification_subject`, `notification_email`) VALUES ('$subject','$message')";
+        $result = mysqli_query($db,$query);
+    }
+    function createWaitlistNotification($db,$waitID,$notifID){
+        $query ="INSERT INTO `waitlist_notfication`(`waitlist_id`, `notification_id`, `waitlist_notification_create_date`) VALUES ($waitID,$notifID,CURDATE())";
+        $result = mysqli_query($db,$query);
+    }
+    function enableClientById($db,$id){
+        $query="UPDATE clients SET  client_enabled = 1 WHERE client_id = $id";
+        $result=mysqli_query($db,$query);
+        return $result;
+    }
+    function enableWaitlistByClientId($db,$id){
+        $query="UPDATE waitlist SET  waitlist_enabled = 1 WHERE client_id = $id";
+        $result=mysqli_query($db,$query);
+        return $result;
+    }
+    function checkEmail($email){
+        
     }
 ?>
