@@ -436,7 +436,9 @@
         $result=mysqli_query($db,$query);
         return $result;
     }
-    function checkEmail($email){
-        
+    function deleteListByClientId($db,$id){
+        $query="DELETE FROM waitlist where client_id=$id";
+        $result=mysqli_query($db,$query);
+        return $result;
     }
 ?>
