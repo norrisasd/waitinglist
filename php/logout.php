@@ -19,9 +19,7 @@
             $message.="<b><h3>Updated DND:</h3></b>"."\r\n";
             $message.="\t\t"."<b>ID"."\t\t"."NAME"."\t\t"."PHONE"."\t\t"."EMAIL</b>"."\r\n";
             $message.=$_SESSION['dndUpdated']."\r\n";
-            if(sendEmail($email,$subject,$message)){
-                echo "success";
-            }
+            sendEmail($email,$subject,$message,$cred);
         }
         
     }

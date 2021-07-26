@@ -1,8 +1,8 @@
 {
     "smtpSender":"info@mauisnorkeling.com",
-    "smtpUser":"info@mauisnorkeling.com",
-    "smtpPass":"122>t1t5b#wk",
-    "smtpHost":"mauisnorkeling.com",
+    "smtpUser":"AKIA3LKCDTEVTF5IAWTW",
+    "smtpPass":"BET1vf6zl3OyZ9n/1LgEMYiMhcQvf4Jo+OeusNdNi2ma",
+    "smtpHost":"email-smtp.us-east-2.amazonaws.com",
     "smtpPort":587,
     "dbHost":"localhost",
     "dbUser":"root",
