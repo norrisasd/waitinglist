@@ -415,10 +415,13 @@
             <!-- /.card -->
             <br><br>
             <div class="d-flex justify-content-center">
-              <canvas id="myChart" style="width:100%;max-width:700px;margin:0 auto"></canvas>
-              <canvas id="pieChart" style="width:100%;max-width:500px;margin:0 auto"></canvas>
+              <div class="col-lg-12 col-6">
+                <canvas id="myChart" style="width:100%;max-width:700px;margin:0 auto"></canvas>
+              </div>
+              <div class="col-lg-12 col-6">
+                <canvas id="pieChart" style="width:100%;max-width:500px;margin:0 auto"></canvas>
+              </div>
             </div>
-            
             <br><br>
             <!-- Calendar -->
             <br>
@@ -497,8 +500,8 @@ new Chart("pieChart", {
   <footer class="main-footer">
     <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
-    <a href="./pages/PrivacyPolicy.php" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-    <a href="./pages/TermsAndConditions.php" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    <a href="./pages/PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+    <a href="./pages/TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
   </footer>
 
   <!-- Control Sidebar -->

@@ -33,13 +33,16 @@
         </div>
         <div class="modal-footer">';
             if($_SESSION['access'] == 1){
-                echo '<a href="#" onclick="editUser(\''.$data['username'].'\')" style="padding-right:67%" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i>Edit</a>';
                 if($data['isAdmin']== NULL ){
+                    echo '<a href="#" onclick="editUser(\''.$data['username'].'\')" style="padding-right:47%" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i>Edit</a>';
                     echo '
                    <a href="#" style="margin-right:1rem" onclick="makeAdmin(\''.$data['username'].'\')">Grant Access</a>';
                }else if($data['isAdmin'] == 0){
+                    echo '<a href="#" onclick="editUser(\''.$data['username'].'\')" style="padding-right:47%" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i>Edit</a>';
                    echo '
                    <a href="#" style="margin-right:1rem" onclick="removeAdmin(\''.$data['username'].'\')">Remove Access</a>';
+               }else{
+                echo '<a href="#" onclick="editUser(\''.$data['username'].'\')" style="padding-right:67%" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i>Edit</a>';
                }
             }
             

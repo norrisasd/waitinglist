@@ -1,14 +1,13 @@
 <?php
+//ALL CONNECTION STRINGS ARE IN Config.JSON
 // DB CONNECTION
-    $host="localhost";
-    $user="root";
-    $pass="";
-    $data="waitlist";
-//siteground
-//     $host="localhost";
-//     $user="uarg4jgrrxrfe";
-//     $pass="e#3$2316@fF[";
-//     $data="dbwdgw3oahbswe";
+    $cred = file_get_contents(__DIR__."/Config.json");
+    $cred = json_decode($cred);
+    $host=$cred->dbHost;
+    $user=$cred->dbUser;
+    $pass=$cred->dbPass;
+    $data=$cred->dbData;
+    require 'cred.php';
     $db = mysqli_connect($host,$user,$pass,$data);
         //local
     if (!$db) {
@@ -24,19 +23,12 @@
     //passing dbname
     $_SESSION['db']=$data;
 
-
-    // AWS
-    $_SESSION['sender']='info@mauisnorkeling.com';
-    $_SESSION['smtpUser']='AKIA3LKCDTEV4IZYJXDV';
-    $_SESSION['smtpPass']='BByif4GkM2IRTZetEdfmYShkiaVDsp3e/I/77VYx8DTZ';
-    $_SESSION['smtpHost']='email-smtp.us-east-2.amazonaws.com';
-    $_SESSION['smtpPort']=587;
-    //GMAIL
-    // $_SESSION['sender']='info.mauisnorkeling@gmail.com';
-    // $_SESSION['smtpUser']='info.mauisnorkeling@gmail.com';
-    // $_SESSION['smtpPass']='Mauisnorkeling21';
-    // $_SESSION['smtpHost']='smtp.gmail.com';
-    // $_SESSION['smtpPort']=587;
-
+    
+    $sender =$cred->smtpSender;
+    $smtpUser =$cred->smtpUser;
+    $smtpPass=$cred->smtpPass;
+    $smtpHost=$cred->smtpHost;
+    $smtpPort=$cred->smtpPort;
+    $smtpSES = new SMTPcred($smtpHost,$smtpUser,$smtpPass,$sender,$smtpPort);
     
 ?>

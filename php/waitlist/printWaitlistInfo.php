@@ -5,8 +5,7 @@
     $notes = $data['waitlist_notes'] == ''?"None": $data['waitlist_notes'];
     $notes = nl2br($notes);
     $sent = $data['waitlist_approval_sent'] == 1?"Sent ":"Sent ";
-    $templates = getEmailSentRecordByWaitId($db,$data['waitlist_id']);
-    $query = "SELECT * FROM emailsentrecords WHERE waitlist_id = $id";//waitlist notification 
+    $query = "SELECT * FROM `notification` INNER JOIN waitlist_notfication ON notification.notification_id = waitlist_notfication.notification_id WHERE waitlist_notfication.waitlist_id = $id";//waitlist notification 
     $status = $data['waitlist_enabled'] == 1 ?"Enabled":"Disabled";
     $setStatus = $data['waitlist_enabled'] == 1 ?"Disable":"Enable";
     $result=mysqli_query($db,$query);

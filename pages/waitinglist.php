@@ -649,10 +649,10 @@
         <div class="modal-body" >
           <div class="form-group">
           <div class="alert alert-warning" id="warningBulk" style="display:none" role="alert">
-          <b>Warning:</b><br>
-          <p style="text-align:justify;margin:0">
-            Sending bulk emails will likely get them tagged as spam. To eliminate bounce rate, ensure email quality and avoid potential spam triggers!  
-          </p> 
+            <b>Warning:</b><br>
+            <p style="text-align:justify;margin:0">
+              Sending bulk emails will likely get them tagged as spam. To eliminate bounce rate, ensure email quality and avoid potential spam triggers!  
+            </p> 
           </div>
               <label for="exampleFormControlInput1">Template Name</label>
               <select id="tempname" onchange="setEmail(this.value)">
@@ -762,8 +762,8 @@
   <footer class="main-footer">
     <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
     All rights reserved.
-    <a href="./PrivacyPolicy.php" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-    <a href="./TermsAndConditions.php" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+    <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
   </footer>
 
   <!-- Control Sidebar -->

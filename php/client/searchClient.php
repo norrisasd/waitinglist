@@ -51,7 +51,7 @@
     }  
     if($name === "" && $str ==="" && $cdate == "" && $dnd == ''){
         displayAllClients($db);
-    }
-    echo $str ==""? 'No Results Found':$str;
+    }else
+        echo $str ==""? 'No Results Found':$str;
 
 ?>

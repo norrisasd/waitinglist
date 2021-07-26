@@ -1,12 +1,11 @@
 <?php
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
     require '../functions.php';
     require '../../phpmailer/PHPMailerAutoload.php';
     $waitIndId = $_POST['waitIndId'];
     $subject=$_POST['subject'];
     $Bodymessage=$_POST['message'];
-    $attachment="\n\n<b>Maui Snorkeling Lani Kai</b>
+    $attachment="\n\n<b style='font-size:16px'><a href='https://mauisnorkeling.tripworks.com/widgets/tripBuilder?showDetail=1&defaultView=gallery&language=en&m=%7B%22landingUrl%22%3A%22https%3A%2F%2Fmauisnorkeling.com%2F%22%2C%22referrerUrl%22%3A%22%22%2C%22firstView%22%3A%222021-07-02T14%3A50%3A33.308Z%22%2C%22pageViews%22%3A23%2C%22recents%22%3A%5B%22https%3A%2F%2Fmauisnorkeling.com%2F%22%2C%22https%3A%2F%2Fmauisnorkeling.com%2F%22%2C%22https%3A%2F%2Fmauisnorkeling.com%2F%22%2C%22https%3A%2F%2Fmauisnorkeling.com%2F%22%2C%22https%3A%2F%2Fmauisnorkeling.com%2F%22%5D%2C%22language%22%3A%22en-US%22%2C%22viewport%22%3A%7B%22height%22%3A763%2C%22width%22%3A1519%7D%7D&inModal=true'>Book Now</a></b>
+                <b>Maui Snorkeling Lani Kai</b>
                 mauisnorkeling.com
                 888.983.8080
                 <img src='cid:logo_image'>
@@ -39,10 +38,9 @@
                 $message .=$attachment;
                 $message .= $links;
                 $email =getEmailById($db,$id);
-                $retval=sendEmail($email,$subject,$message);
+                $retval=sendEmail($email,$subject,$message,$cred);
                 $ai = getAutoIncrementNotification($db);
-                createEmailNotification($db,$subject,$email);
-                createWaitlistNotification($db,$id,$ai);
+                
                 if(!$retval){
                     break;
                 }
@@ -50,7 +48,8 @@
                     if($_SESSION['access']==0){
                         $_SESSION['emailSent'].="\t\t".$email."\r\n";
                     }
-                    setEmailSentRecord($db,$id,$tempname);
+                    createEmailNotification($db,$subject,$email,$tempname);
+                    createWaitlistNotification($db,$id,$ai);
                     updateStatus($db,$id);
                 }
             }
@@ -76,14 +75,16 @@
             $message .=$attachment;
             $message .=$links;
             $email =getEmailById($db,$waitIndId);
-            $retval=sendEmail($email,$subject,$message);
+            $retval=sendEmail($email,$subject,$message, $cred);
+            $ai = getAutoIncrementNotification($db);
             if(!$retval){
             }   
             else{
                 if($_SESSION['access']==0){
                     $_SESSION['emailSent'].="\t\t".$email."\r\n";
                 }
-                setEmailSentRecord($db,$waitIndId,$tempname);
+                createEmailNotification($db,$subject,$email,$tempname);
+                createWaitlistNotification($db,$waitIndId,$ai);
                 updateStatus($db,$waitIndId);
             }
         }
@@ -94,6 +95,6 @@
     if($retval){
         echo 'Email Sent';
     }else{
-        echo mysqli_error($db);
+        echo $cred->getSender();
     }
 ?>

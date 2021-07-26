@@ -1,5 +1,6 @@
 <?php
     require 'conn.php';
+    $cred =$smtpSES;
     $count = getNotificationCount($db);
     $countW = getNotificationCountWait($db);
     $countC = getNotificationCountClient($db);
@@ -185,7 +186,6 @@
                     <td><a href="#" onclick="info('.$data['template_id'].')" data-toggle="modal" data-target="#info">'.$data['TemplateName'].'</a></td>
                     <td>'.$data['subject'].'</td>
                     <td>'.$data['message'].'</td>
-                    <td><a href="#" onclick="editTemplate('.$data['template_id'].')" data-toggle="modal" data-target="#editTemp"><i class="fas fa-edit"></i></a></td>
                 </tr>
                     ';
             }
@@ -202,42 +202,24 @@
         return $result;
     }
     function getEmailSentRecordByWaitId($db,$id){
-        $query = "SELECT * FROM emailsentrecords WHERE waitlist_id = $id";
+        $query = "SELECT * FROM `notification` INNER JOIN waitlist_notfication ON notification.notification_id = waitlist_notfication.notification_id WHERE waitlist_notfication.waitlist_id = $id";
         $result=mysqli_query($db,$query);
         if($result){
             return mysqli_fetch_assoc($result);
         }
     }
-    function sendEmail($email,$subject,$message){
-        // $mail = new PHPMailer;
-        // $mail->isSMTP();
-        // $mail->Host='smtp.gmail.com';
-        // $mail->Port=587;
-        // $mail->SMTPAuth=true;
-        // $mail->SMTPSecure='tls';
-
-        // $mail->Username='info.mauisnorkeling@gmail.com';
-        // $mail->Password='Mauisnorkeling21';
-        // $mail->setFrom('info.mauisnorkeling@gmail.com','Maui Snorkeling');
-        // $mail->addAddress($email);
-        // $mail->addReplyTo('info.mauisnorkeling@gmail.com');
-
-        // $mail->isHTML(true);
-        // $mail->Subject=$subject;
-        // $mail->Body=nl2br($message);
-        // $check = $mail->send();
-        // return $check;
-        $sender = $_SESSION['sender'];
+    function sendEmail($email,$subject,$message,SMTPcred $smtp){
+        $sender = $smtp->getSender();
         $senderName = 'Lani Kai';
         // Replace smtp_username with your Amazon SES SMTP user name.
-        $usernameSmtp = $_SESSION['smtpUser'];
+        $usernameSmtp = $smtp->getUser();
         // Replace smtp_password with your Amazon SES SMTP password.
-        $passwordSmtp = $_SESSION['smtpPass'];
+        $passwordSmtp = $smtp->getPass();
         // If you're using Amazon SES in a region other than US West (Oregon),
         // replace email-smtp.us-west-2.amazonaws.com with the Amazon SES SMTP
         // endpoint in the appropriate region.
-        $host = $_SESSION['smtpHost'];
-        $port = $_SESSION['smtpPort'];
+        $host = $smtp->getHost();
+        $port = $smtp->getPort();
         $mail = new PHPMailer(true);
         $check = false;
         try {
@@ -436,8 +418,8 @@
         $ai=$ai['AI'];  //Auto Increment of waitlist
         return $ai;
     }
-    function createEmailNotification($db,$subject,$message){
-        $query = "INSERT INTO `notification`(`notification_subject`, `notification_email`) VALUES ('$subject','$message')";
+    function createEmailNotification($db,$subject,$message,$tempname){
+        $query = "INSERT INTO `notification`(`notification_subject`, `notification_email`,`template_name`) VALUES ('$subject','$message','$tempname')";
         $result = mysqli_query($db,$query);
     }
     function createWaitlistNotification($db,$waitID,$notifID){

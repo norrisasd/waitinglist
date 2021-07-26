@@ -1,0 +1,11 @@
+{
+    "smtpSender":"info.mauisnorkeling@gmail.com",
+    "smtpUser":"info.mauisnorkeling@gmail.com",
+    "smtpPass":"Mauisnorkeling21",
+    "smtpHost":"smtp.gmail.com",
+    "smtpPort":587,
+    "dbHost":"localhost",
+    "dbUser":"root",
+    "dbPass":"",
+    "dbData":"waitlist"
+}
