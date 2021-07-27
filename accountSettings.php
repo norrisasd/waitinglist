@@ -186,12 +186,12 @@
                   <p>Client Form</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="./forms/userForm.php" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>User Form</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <?php if($_SESSION['access']==1){

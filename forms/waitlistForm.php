@@ -1,6 +1,8 @@
 <?php
 //connection
     require '../php/functions.php';
+    $cred = file_get_contents("../php/Config.json");
+    $cred = json_decode($cred);
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,6 +12,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <style>
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -111,7 +114,7 @@
           },
           success:function(response){
             if(response == 'Success'){
-                toastr.success(response);
+                toastr.success("Success! You are now added in the Waitlist!");
                 document.getElementById("myForm").reset();
             }  
             else{
@@ -121,6 +124,9 @@
           }
         });
         return false;
+      }
+      function verify_captcha(){
+        document.getElementById("submitBtn").disabled=false;
       }
       function validate(val) {
         v1 = document.getElementById("name");
@@ -281,11 +287,15 @@
                         </div>
                     </div>
                     <div class="row justify-content-center">
+                        <div class="g-recaptcha" style="margin-left:63%" data-sitekey="<?php echo $cred->recaptchaSiteKey;?>" data-callback="verify_captcha"></div>
+                    </div>
+                    <div class="row justify-content-center" style="margin-top:1%">
                         <div class="form-group col-sm-6"> 
-                            <button type="submit" class="btn-block btn-primary">SUBMIT</button> 
+                            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>SUBMIT</button> 
                         </div>
                     </div>
                 </form>
+                
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 {
     "smtpSender":"info@mauisnorkeling.com",
+    "senderName":"Maui Snorkeling Lani Kai",
     "smtpUser":"AKIA3LKCDTEVTF5IAWTW",
     "smtpPass":"BET1vf6zl3OyZ9n/1LgEMYiMhcQvf4Jo+OeusNdNi2ma",
     "smtpHost":"email-smtp.us-east-2.amazonaws.com",
@@ -7,5 +8,7 @@
     "dbHost":"localhost",
     "dbUser":"root",
     "dbPass":"",
-    "dbData":"waitlist"
+    "dbData":"waitlist",
+    "recaptchaSiteKey":"6LcSvMMbAAAAAFFoi_gy4DOu-APP8yLApGqto8oP",
+    "recaptchaSecretKey":"6LcSvMMbAAAAABkmczCyw650_NDRkITpk0xgUpVf"
 }

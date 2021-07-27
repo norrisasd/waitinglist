@@ -1,4 +1,5 @@
-<?php include '../php/functions.php';
+<?php 
+    include '../php/functions.php';
     if(!isset($_SESSION['login'])){
       header("Location: ../loginPage.php");
     }
@@ -174,12 +175,12 @@
                   <p>Client Form</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="../forms/userForm.php" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>User Form</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <?php if($_SESSION['access']==1){
@@ -245,8 +246,9 @@
             echo '<button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:10px;" onclick="exportDataModal()">Export</button>';
           }
         ?>
-        <!-- <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
-        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
+        <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="margin:0.2rem 0.5rem;margin-top:0.2rem">ADD USER</a>
+         
+        <!--<a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
         
         <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="username">Username</option>
@@ -441,7 +443,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+          <h5 class="modal-title" id="exampleModalLabel"> <i class="nav-icon fas fa-user"></i> Add User</h5>
           <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body">

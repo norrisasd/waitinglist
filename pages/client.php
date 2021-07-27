@@ -200,12 +200,12 @@
                   <p>Client Form</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="../forms/userForm.php" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>User Form</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <?php if($_SESSION['access']==1){
@@ -266,7 +266,7 @@
     <section class="content">
       <div class="container-fluid">
         <input type="checkbox" value="" style="margin-left:10px;" onclick="selectAll(this)"> Select All
-        <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px;"  onclick="checkDelete()">Disable</button>
+        <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px;"  onclick="checkDelete()">Archive</button>
         <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         
         <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:120px">

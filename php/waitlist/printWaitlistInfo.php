@@ -7,7 +7,7 @@
     $sent = $data['waitlist_approval_sent'] == 1?"Sent ":"Sent ";
     $query = "SELECT * FROM `notification` INNER JOIN waitlist_notfication ON notification.notification_id = waitlist_notfication.notification_id WHERE waitlist_notfication.waitlist_id = $id";//waitlist notification 
     $status = $data['waitlist_enabled'] == 1 ?"Enabled":"Disabled";
-    $setStatus = $data['waitlist_enabled'] == 1 ?"Disable":"Enable";
+    $setStatus = $data['waitlist_enabled'] == 1 ?"Archive":"Unarchive";
     $result=mysqli_query($db,$query);
     $ctr =0;
     $dnd = getClientDNDByWaitId($db,$id);

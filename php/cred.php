@@ -5,13 +5,15 @@
         private $pass;
         private $sender;
         private $port;
+        private $senderName;
 
-        public function __construct($host,$user,$pass,$sender,$port){
+        public function __construct($host,$user,$pass,$sender,$port,$senderName){
             $this->host = $host;
             $this->user = $user;
             $this->pass=$pass;
             $this->sender=$sender;
             $this->port=$port;
+            $this->senderName=$senderName;
         }
         function getHost(){
             return $this->host;
@@ -27,6 +29,9 @@
         }
         function getPort(){
             return $this->port;
+        }
+        function getSenderName(){
+            return $this->senderName;
         }
     }
 ?>

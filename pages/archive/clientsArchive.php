@@ -204,12 +204,12 @@
                   <p>Client Form</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="../../forms/userForm.php" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>User Form</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <li class="nav-item menu-open">
@@ -268,7 +268,7 @@
       <div class="container-fluid">
         <input type="checkbox" value="" onclick="selectAll(this)" style="margin-left:10px"> Select All
         <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px"  onclick="checkDelete()">Delete</button>
-        <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:5px"  onclick="checkEnable()">Enable</button>
+        <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:5px"  onclick="checkEnable()">Unarchive</button>
         <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:100px">
           <option value="" selected>Select</option>
@@ -287,7 +287,7 @@
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Email</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Date Created</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">DND</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Enabled</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Status</th>
               <th></th>
             </tr>
           </thead>

@@ -1,6 +1,8 @@
 <?php
 //connection
     require '../php/functions.php';
+    $cred = file_get_contents("../php/Config.json");
+    $cred = json_decode($cred);
 ?>
 <!DOCTYPE html>
 <html>
@@ -9,6 +11,7 @@
 <link rel="icon" href="../dist/img/TURTLE.png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <style>
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -41,6 +44,9 @@
           }
         });
         return false;
+      }
+      function verify_captcha(){
+        document.getElementById("submitBtn").disabled=false;
       }
       function validate(val) {
         v1 = document.getElementById("name");
@@ -138,9 +144,11 @@
                         I agree all statements in <a href="../pages/TermsAndConditions.php">Terms and Conditions</a>
                         </label>
                     </div>
-
+                    <div class="d-flex flex-row align-items-center mb-4">
+                        <div class="g-recaptcha" style="margin-left:13%" data-sitekey="<?php echo $cred->recaptchaSiteKey;?>" data-callback="verify_captcha"></div>
+                    </div>
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn" disabled>Register</button>
                     </div>
 
                     </form>

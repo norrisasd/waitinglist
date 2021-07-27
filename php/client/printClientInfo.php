@@ -3,7 +3,7 @@
     $id=$_GET['id'];
     $data=getClientById($db,$id);
     $status = $data['client_enabled'] == 1 ? 'Enable':'Disable';
-    $setStatus = $data['client_enabled'] == 0 ? 'Enable':'Disable';
+    $setStatus = $data['client_enabled'] == 0 ? 'Unarchive':'Archive';
     $dnd = $data['client_dnd'] == 1?'Check':'Uncheck';
     echo '<div class="modal-header">
     <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-info-circle" aria-hidden="true"></i> Information</h5>

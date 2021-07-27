@@ -200,7 +200,7 @@
         $query ="INSERT INTO `emailsentrecords`(`waitlist_id`, `template_name`) VALUES ($id,'$tempname')";
         $result= mysqli_query($db,$query);
         return $result;
-    }
+}
     function getEmailSentRecordByWaitId($db,$id){
         $query = "SELECT * FROM `notification` INNER JOIN waitlist_notfication ON notification.notification_id = waitlist_notfication.notification_id WHERE waitlist_notfication.waitlist_id = $id";
         $result=mysqli_query($db,$query);
@@ -210,7 +210,7 @@
     }
     function sendEmail($email,$subject,$message,SMTPcred $smtp){
         $sender = $smtp->getSender();
-        $senderName = 'Lani Kai';
+        $senderName = $smtp->getSenderName();
         // Replace smtp_username with your Amazon SES SMTP user name.
         $usernameSmtp = $smtp->getUser();
         // Replace smtp_password with your Amazon SES SMTP password.

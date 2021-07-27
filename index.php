@@ -39,7 +39,7 @@
 
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    <img class="animation__shake" src="dist/img/TURTLE.png" alt="AdminLogo" height="60" width="60">
   </div>
 
   <!-- Navbar -->
@@ -194,12 +194,12 @@
                   <p>Client Form</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="./forms/userForm.php" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>User Form</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <?php if($_SESSION['access']==1){
@@ -419,7 +419,7 @@
                 <canvas id="myChart" style="width:100%;max-width:700px;margin:0 auto"></canvas>
               </div>
               <div class="col-lg-12 col-6">
-                <canvas id="pieChart" style="width:100%;max-width:500px;margin:0 auto"></canvas>
+                <canvas id="pieChart" style="width:100%;max-width:700px;margin:0 auto"></canvas>
               </div>
             </div>
             <br><br>
@@ -441,8 +441,11 @@
 <script>
 var bxValues = ["Yesterday", "Today", "This Week", "This Month"];
 var byValues = [<?php echo getCountYesterday($db); ?>, <?php echo getCountToday($db); ?>,  <?php echo getCountLastWeek($db); ?>,<?php echo getCountThisMonth($db) ?>];
-var bbarColors = ["blue", "green","orange","red"];
-
+var bbarColors = ["#3c8dbc", "#00a65a","#f39c12","#f56954"];
+var barOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
 new Chart("myChart", {
   type: "bar",
   data: {
@@ -453,41 +456,17 @@ new Chart("myChart", {
     }]
   },
   options: {
-    legend: {
-      display: false,
-    },
+    legend: {display: false},
     title: {
       display: true,
       text: "Registered in the Waitlist"
-    }
+    },
+    maintainAspectRatio : false,
+    responsive:true,
   }
 });
 
-var xValues = ["Yesterday", "Today", "This Week", "This Month"];
-var yValues = [<?php echo getEmailSentCountYesterday($db); ?>, <?php echo getEmailSentCountToday($db); ?>,  <?php echo getEmailSentCountWeek($db); ?>,<?php echo getEmailSentCountMonth($db); ?>];
-var barColors = [
-  "blue",
-  "green",
-  "orange",
-  "red",
-];
-
-new Chart("pieChart", {
-  type: "pie",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-  options: {
-    title: {
-      display: true,
-      text: "Emails Sent to the Client"
-    }
-  }
-});
+    
 </script>
         <!-- Main row -->
         <!-- /.row (main row) -->
@@ -545,5 +524,37 @@ new Chart("pieChart", {
 <script src="dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+<script>
+  var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+    var pieData = {
+      labels: [
+          'Yesterday',
+          'Today',
+          'This Week',
+          'This Month',
+      ],
+      datasets: [
+        {
+          data: [<?php echo getEmailSentCountYesterday($db); ?>, <?php echo getEmailSentCountToday($db); ?>,  <?php echo getEmailSentCountWeek($db); ?>,<?php echo getEmailSentCountMonth($db); ?>],
+          backgroundColor : ['#3c8dbc', '#00a65a', '#f39c12', '#f56954'],
+        }
+      ]
+    };
+    var pieOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+      title:{
+        display: true,
+        text:"Email Sent"
+      }
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    new Chart(pieChartCanvas, {
+      type: 'pie',
+      data: pieData,
+      options: pieOptions
+  })
+</script>
 </body>
 </html>

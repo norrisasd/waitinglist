@@ -29,6 +29,7 @@
     $smtpPass=$cred->smtpPass;
     $smtpHost=$cred->smtpHost;
     $smtpPort=$cred->smtpPort;
-    $smtpSES = new SMTPcred($smtpHost,$smtpUser,$smtpPass,$sender,$smtpPort);
+    $senderName=$cred->senderName;
+    $smtpSES = new SMTPcred($smtpHost,$smtpUser,$smtpPass,$sender,$smtpPort,$senderName);
     
 ?>
