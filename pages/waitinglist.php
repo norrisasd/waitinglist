@@ -691,6 +691,7 @@
               Sending bulk emails will likely get them tagged as spam. To eliminate bounce rate, ensure email quality and avoid potential spam triggers!  
             </p> 
           </div>
+            <input type="checkbox" style="margin:3% 2%" required><span>I agree all statements in <a href="TermsAndConditions.php" target="_blank">TERMS AND CONDITIONS</a></span><br>
               <label for="exampleFormControlInput1">Template Name</label>
               <select id="tempname" onchange="setEmail(this.value)">
                   <option value="" disabled selected>Select Template</option>
