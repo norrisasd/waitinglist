@@ -323,7 +323,7 @@
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(9)')">Passengers</th>
             </tr>
           </thead>
-          <form method="post" action="" onsubmit="return sendEmail();">
+          <form method="post" action="" id="sendEmailForm" onsubmit="return sendEmail();">
           <tbody id="searchTable" style="color:gray">
             <?php
               displayAllList($db,'','');
@@ -434,6 +434,8 @@
                 });
                 $('.modal').modal('hide');
                 document.getElementById("selectAll").checked=false;
+                document.getElementById("sendEmailForm").reset();
+                document.getElementById("canSpam").checked=false;
               }else{
                 toastr.error(response);
               }
@@ -685,13 +687,17 @@
         </div>
         <div class="modal-body" >
           <div class="form-group">
-          <div class="alert alert-warning" id="warningBulk" style="display:none" role="alert">
-            <b>Warning:</b><br>
-            <p style="text-align:justify;margin:0">
-              Sending bulk emails will likely get them tagged as spam. To eliminate bounce rate, ensure email quality and avoid potential spam triggers!  
-            </p> 
+          <div id="warningBulk" style="display:none">
+            <div class="alert alert-warning" role="alert">
+              <b>Warning:</b><br>
+              <p style="text-align:justify;margin:0">
+                Sending bulk emails will likely get them tagged as spam. To eliminate bounce rate, ensure email quality and avoid potential spam triggers!  
+              </p> 
+            </div>
+            <input type="checkbox" id="canSpam" style="margin:3% 2%" required><span>I agree all statements in <a href="TermsAndConditions.php" target="_blank">TERMS AND CONDITIONS</a></span>
           </div>
-            <input type="checkbox" style="margin:3% 2%" required><span>I agree all statements in <a href="TermsAndConditions.php" target="_blank">TERMS AND CONDITIONS</a></span><br>
+          
+            <br>
               <label for="exampleFormControlInput1">Template Name</label>
               <select id="tempname" onchange="setEmail(this.value)">
                   <option value="" disabled selected>Select Template</option>
