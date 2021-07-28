@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- TOASTRS -->
+  <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
@@ -240,7 +242,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" style="margin-left:10px;" onclick="selectAll(this)"> Select All
+        <input type="checkbox" value="" style="margin-left:10px;" id="selectAll" onclick="selectAll(this)"> Select All
         <?php
           if($_SESSION['access'] == 1){
             echo '<button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:10px;" onclick="exportDataModal()">Export</button>';
@@ -294,7 +296,7 @@
         var password=document.getElementById('password').value;
         var cpassword=document.getElementById('cpassword').value;
         if(password != cpassword){
-            alert("Password not the same!");
+            toastr.error("Password not the same!");
             return false;
         }
         var email=document.getElementById('email').value;
@@ -308,9 +310,15 @@
             email:email
           },
           success:function(response){
-            alert(response);
-            if(response == 'Success')
-              location.reload();
+            if(response == 'Success'){
+              toastr.success("Registered Successfully");
+              $( "#myTable" ).load( "user.php #myTable" );
+              $('.modal').modal('hide');
+              document.getElementById("addUserModal").reset();
+            }else{
+              toastr.error(response);
+            }
+              
           }
         });
         return false;
@@ -320,9 +328,13 @@
           var xmlhttp=new XMLHttpRequest();
           xmlhttp.onreadystatechange=function() {
               if (this.readyState==4 && this.status==200) {
-                alert(this.responseText);
-                if(this.responseText== 'Success')
-                  location.reload();
+                if(this.responseText== 'Success'){
+                  toastr.success(user+" has no access anymore");
+                  $( "#myTable" ).load( "user.php #myTable" );
+                  $('.modal').modal('hide');
+                }else{
+                  toastr.error(this.responseText);
+                }
               }
           }
           xmlhttp.open("GET","../php/user/removeAdmin.php?user="+user,true);
@@ -334,9 +346,13 @@
           var xmlhttp=new XMLHttpRequest();
           xmlhttp.onreadystatechange=function() {
               if (this.readyState==4 && this.status==200) {
-                alert(this.responseText);
-                if(this.responseText== 'Success')
-                  location.reload();
+                if(this.responseText== 'Success'){
+                  toastr.success(user+" can access now");
+                  $( "#myTable" ).load( "user.php #myTable" );
+                  $('.modal').modal('hide');
+                }else{
+                  toastr.error(this.responseText);
+                }
               }
           }
           xmlhttp.open("GET","../php/user/makeAdmin.php?user="+user,true);
@@ -372,8 +388,9 @@
             xmlhttp.onreadystatechange=function() {
                 if (this.readyState==4 && this.status==200) {
                   window.location="../php/export.php";
-                  alert("Success");
-                  location.reload();
+                  toastr.success("Exported List Successfully");
+                  $( "#myTable" ).load( "user.php #myTable" );
+                  document.getElementById("selectAll").checked=false;
                 }
             }
             xmlhttp.open("GET","../php/user/exportUser.php?list="+list,true);
@@ -413,9 +430,13 @@
           prevUser:prevUser
         },
         success:function(response){
-          alert(response);
           if(response == 'Updated'){
-              location.reload();
+              toastr.success("Information Updated");
+              $( "#myTable" ).load( "user.php #myTable" );
+              $('.modal').modal('hide');
+
+          }else{
+            toast.error(response);
           }
         }
       });
@@ -447,7 +468,7 @@
           <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body">
-        <form action="" method="post" onsubmit="return addUser();" autocomplete="off" id="myForm">
+        <form action="" method="post" onsubmit="return addUser();" autocomplete="off" id="addUserModal">
             <div class="form-group">
                 <label for="exampleFormControlInput1">Username</label>
                 <input type="text" class="form-control" name="name" id="username" placeholder="" autocomplete="off" required>
@@ -532,6 +553,8 @@
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- TOASTRS -->
+<script src="../plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->

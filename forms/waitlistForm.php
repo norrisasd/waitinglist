@@ -116,6 +116,7 @@
             if(response == 'Success'){
                 toastr.success("Success! You are now added in the Waitlist!");
                 document.getElementById("myForm").reset();
+                grecaptcha.reset();
             }  
             else{
                 toastr.error(response);

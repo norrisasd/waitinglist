@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -264,9 +266,9 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <input type="checkbox" value="" style="margin-left:10px;" onclick="selectAll(this)"> Select All
-        <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px;"  onclick="checkDelete()">Archive</button>
+      <div class="container-fluid" id="mainBox">
+        <input type="checkbox" value="" style="margin-left:10px;" id="selectAllBox" onclick="selectAll(this)"> Select All
+        <button type="button" class="btn btn-danger" id="archiveBtn" style="margin-bottom:5px;margin-left:10px;"  onclick="checkDelete()">Archive</button>
         <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
         
         <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:120px">
@@ -315,6 +317,7 @@
     </section>
     
     <script>
+      
     function copyToClip(){
         str="https://waitinglist.klbsolutionsllc.com/forms/clientForm.php";
         const el = document.createElement('textarea');
@@ -364,9 +367,18 @@
               list:list,
           },
           success:function(response){
-            alert(response);
             if(response == "Disabled"){
-              location.reload();
+              toastr.success("Archived");
+              $.ajax({
+                  type:'post',
+                  url:'../php/display/client.php',
+                  success:function(response){
+                    document.getElementById("searchTable").innerHTML=response;
+                  }
+                });
+              $('.modal').modal('hide');
+            }else{
+              toastr.error("There was an Error!");
             }
           }
 
@@ -390,8 +402,19 @@
           },
           success:function(response){
             alert(response);
-            if(response == 'Success')
-              location.reload();
+            if(response == 'Success'){
+              toastr.success("Added Successfully");
+              $.ajax({
+                  type:'post',
+                  url:'../php/display/client.php',
+                  success:function(response){
+                    document.getElementById("searchTable").innerHTML=response;
+                  }
+                });
+            }else{
+              toastr.error("There was an Error!");
+            }
+              
           }
         });
         return false;
@@ -414,9 +437,18 @@
               dnd:cb,
             },
             success:function(response){
-              alert(response);
               if(response == 'Updated'){
-                  location.reload();
+                toastr.success("Information Updated");
+                $('.modal').modal('hide');
+                $.ajax({
+                  type:'post',
+                  url:'../php/display/client.php',
+                  success:function(response){
+                    document.getElementById("searchTable").innerHTML=response;
+                  }
+                });
+              }else{
+                toastr.error("There was an Error!");
               }
             }
           });
@@ -444,13 +476,16 @@
       }
       function disableClient(){
         var list=[];
-        var ctr=0;
-        var checkboxes = document.getElementsByName('list[]');
-        for(var i=0, n=checkboxes.length;i<n;i++) {
-            if(checkboxes[i].checked == true){
-                list[ctr++]=checkboxes[i].value;
-            }
-        }
+        // var ctr=0;
+        // var checkboxes = document.getElementsByName('list[]');
+        // for(var i=0, n=checkboxes.length;i<n;i++) {
+        //     if(checkboxes[i].checked == true){
+        //         list[ctr++]=checkboxes[i].value;
+        //     }
+        // }
+        $.each($("input[name='list[]']:checked"), function(){
+                  list.push($(this).val());
+        });
         $.ajax({
             type: 'post',
             url: '../php/client/disableClient.php',
@@ -458,9 +493,18 @@
               list:list,
             },
             success:function(response){
-              alert(response);
               if(response == 'Disabled'){
-                  location.reload();
+                toastr.success("Archived");
+                $.ajax({
+                  type:'post',
+                  url:'../php/display/client.php',
+                  success:function(response){
+                    document.getElementById("searchTable").innerHTML=response;
+                  }
+                });
+                document.getElementById("selectAllBox").checked=false;
+              }else{
+                toastr.error("There was an Error!");
               }
             }
           });
@@ -502,6 +546,15 @@
             xmlhttp.onreadystatechange=function() {
                 if (this.readyState==4 && this.status==200) {
                   window.location="../php/export.php";
+                  toastr.success("Exported Successfully");
+                  $.ajax({
+                    type:'post',
+                    url:'../php/display/client.php',
+                    success:function(response){
+                      document.getElementById("searchTable").innerHTML=response;
+                    }
+                  });
+                  document.getElementById("selectAllBox").checked=false;
                 }
             }
             xmlhttp.open("GET","../php/client/exportClient.php?list="+list,true);
@@ -628,9 +681,18 @@
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Toastr -->
+<script src="../plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script>
+// $(document).ready(function(){
+//   $(document).on("click","#archiveBtn",function(){
+//     checkDelete();
+//   });
+// });
+</script>
 </body>
 </html>

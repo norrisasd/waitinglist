@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+    <!-- TOASTR -->
+    <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
   
 </head>
@@ -240,7 +242,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" style="margin-left:10px" onclick="selectAll(this)"> Select All
+        <input type="checkbox" value="" style="margin-left:10px" id="selectAll" onclick="selectAll(this)"> Select All
         <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px" onclick="confirmDel()">Delete</button>
         <a href="#" style="margin-right:1.5rem;margin-top:0.2rem;margin-left:10px" data-toggle="modal" data-target="#addemailTemplate">Add Template</a>
         <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
@@ -293,9 +295,19 @@
               message:message,
             },
             success:function(response){
-              alert(response);
               if(response == 'Success'){
-                  location.reload();
+                  toastr.success("Template Added");
+                  $.ajax({
+                    type:'post',
+                    url:'../php/display/templates.php',
+                    success:function(response){
+                      document.getElementById("searchTable").innerHTML=response;
+                    }
+                  });
+                  $('.modal').modal('hide');
+                  document.getElementById("addTemplateModal").reset();
+              }else{
+                toastr.error(response);
               }
             }
           });
@@ -318,9 +330,18 @@
               list:list,
             },
             success:function(response){
-              alert(response);
               if(response == 'Deleted'){
-                  location.reload();
+                  toastr.success("Template Deleted");
+                  $.ajax({
+                    type:'post',
+                    url:'../php/display/templates.php',
+                    success:function(response){
+                      document.getElementById("searchTable").innerHTML=response;
+                    }
+                  });
+                  document.getElementById("selectAll").checked=false;
+              }else{
+                toastr.error(response);
               }
             }
           });
@@ -397,7 +418,7 @@
           <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body">
-          <form action="" method="post" onsubmit="return addTemplate();">
+          <form action="" method="post" id="addTemplateModal" onsubmit="return addTemplate();">
           <div class="form-group">
               <label for="exampleFormControlInput1">Template Name</label>
               <input type="text" class="form-control" id="TemplateName" placeholder="Template Name" required>
@@ -493,9 +514,18 @@
               mes:mes,
             },
             success:function(response){
-              alert(response);
               if(response == 'Updated'){
-                  location.reload();
+                  toastr.success("Template Updated");
+                  $.ajax({
+                  type:'post',
+                    url:'../php/display/templates.php',
+                    success:function(response){
+                      document.getElementById("searchTable").innerHTML=response;
+                    }
+                  });
+                  $('.modal').modal('hide');
+              }else{
+                toastr.error(response);
               }
             }
           });
@@ -509,6 +539,8 @@
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- TOASTR -->
+<script src="../plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->

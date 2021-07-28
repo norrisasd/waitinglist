@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
+  <!-- TOASTR -->
+  <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
@@ -344,9 +346,18 @@
                 list:list,
             },
             success:function(response){ 
-              alert(response);
               if(response == "Disabled"){
-                location.reload();
+                toastr.success("Archived");
+                $.ajax({
+                  type:'post',
+                  url:'../php/display/waitlist.php',
+                  success:function(response){
+                    document.getElementById("searchTable").innerHTML=response;
+                  }
+                });
+                $('.modal').modal('hide');
+              }else{
+                toastr.error("There was an Error!");
               }
             }
 
@@ -412,9 +423,19 @@
               tempName:tempName,
             },
             success:function(response){
-              alert(response);
               if(response == 'Email Sent'){
-                  location.reload();
+                toastr.success("Email has been sent!");
+                $.ajax({
+                  type:'post',
+                  url:'../php/display/waitlist.php',
+                  success:function(response){
+                    document.getElementById("searchTable").innerHTML=response;
+                  }
+                });
+                $('.modal').modal('hide');
+                document.getElementById("selectAll").checked=false;
+              }else{
+                toastr.error(response);
               }
             }
           });
@@ -446,12 +467,18 @@
             notes:notes
           },
           success:function(response){
-            alert(response);
             if(response == 'Success'){
-              $(function () {
-                $('#waitInfo').modal('toggle');
+              toastr.success("Information Updated");
+              $.ajax({
+                type:'post',
+                url:'../php/display/waitlist.php',
+                success:function(response){
+                  document.getElementById("searchTable").innerHTML=response;
+                }
               });
-              location.reload();
+              $('.modal').modal('hide');
+            }else{
+              toastr.error("There was an error!");
             }
           }
         });
@@ -523,18 +550,18 @@
         }else{
           if(confirm("Are you sure you want to approve?")){
             $.ajax({
-          type: 'post',
-          url: '../php/waitlist/updateApproval.php',
-          data:{
-            list:list,
-          },
-          success:function(response){
-            alert(response);
-            if(response == 'Approved'){
-              location.reload();
+              type: 'post',
+              url: '../php/waitlist/updateApproval.php',
+              data:{
+                list:list,
+              },
+            success:function(response){
+              alert(response);
+              if(response == 'Approved'){
+                location.reload();
+              }
             }
-          }
-        });
+          });
         return false;
           }
         }
@@ -560,6 +587,15 @@
             xmlhttp.onreadystatechange=function() {
                 if (this.readyState==4 && this.status==200) {
                   window.location="../php/export.php";
+                  toastr.success("Exported List Successfully");
+                  $.ajax({
+                    type:'post',
+                    url:'../php/display/waitlist.php',
+                    success:function(response){
+                      document.getElementById("searchTable").innerHTML=response;
+                    }
+                  });
+                  document.getElementById("selectAll").checked=false;
                 }
             }
             xmlhttp.open("GET","../php/waitlist/exportWaitlist.php?list="+list,true);
@@ -573,6 +609,7 @@
             xmlhttp.onreadystatechange=function() {
                 if (this.readyState==4 && this.status==200) {
                   window.location="../php/export.php";
+                  toastr.success("Exported "+serv+" Successfully");
                 }
             }
             xmlhttp.open("GET","../php/waitlist/exportDataByService.php?service="+serv,true);
@@ -792,6 +829,8 @@
 <script src="../plugins/inputmask/jquery.inputmask.min.js"></script>
 <!-- date-range-picker -->
 <script src="../plugins/daterangepicker/daterangepicker.js"></script>
+<!-- TOASTR -->
+<script src="../plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->

@@ -38,6 +38,7 @@
             if(response == 'Success'){
                 toastr.success(response);
                 document.getElementById("clientForm").reset();
+                grecaptcha.reset();
             }else{
                 toastr.error(response);
             }

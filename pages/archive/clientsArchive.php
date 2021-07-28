@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -266,7 +267,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" onclick="selectAll(this)" style="margin-left:10px"> Select All
+        <input type="checkbox" value="" id="selectAll" onclick="selectAll(this)" style="margin-left:10px"> Select All
         <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px"  onclick="checkDelete()">Delete</button>
         <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:5px"  onclick="checkEnable()">Unarchive</button>
         <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
@@ -278,6 +279,7 @@
         <label style="float:right;margin-right:1rem;">Filter DND</label>
         <input type="date" id="dateCreated" class="form-control" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Date Created</label>
+        <div style="overflow-x:auto;">
         <table class="table" id="myTable">
           <thead>
             <tr>
@@ -300,6 +302,7 @@
           <button type="submit" id="delCli" style="display:none"></button>
           </form>
         </table>
+        </div>
       </div>
     </section>
     
@@ -359,9 +362,18 @@
               list:list,
           },
           success:function(response){
-            alert(response);
             if(response == "Enabled"){
-              location.reload();
+              toastr.success("Unarchived");
+              $.ajax({
+                type:'post',
+                url:'../../php/display/clientArchive.php',
+                success:function(response){
+                  document.getElementById("searchTable").innerHTML=response;
+                }
+              });
+              document.getElementById("selectAll").checked=false;
+            }else{
+              toastr.error(response);
             }
           }
 
@@ -380,9 +392,18 @@
               list:list,
           },
           success:function(response){
-            alert(response);
             if(response == "Enabled"){
-              location.reload();
+              toastr.success("Unarchived");
+              $.ajax({
+                type:'post',
+                url:'../../php/display/clientArchive.php',
+                success:function(response){
+                  document.getElementById("searchTable").innerHTML=response;
+                }
+              });
+              $('.modal').modal('hide');
+            }else{
+              toastr.error(response);
             }
           }
 
@@ -430,9 +451,16 @@
               dnd:cb,
             },
             success:function(response){
-              alert(response);
               if(response == 'Updated'){
-                  location.reload();
+                toastr.success("Information Updated");
+                $.ajax({
+                  type:'post',
+                  url:'../../php/display/clientArchive.php',
+                  success:function(response){
+                    document.getElementById("searchTable").innerHTML=response;
+                  }
+                });
+                $('.modal').modal('hide');
               }
             }
           });
@@ -474,9 +502,15 @@
               list:list,
             },
             success:function(response){
-              alert(response);
               if(response == 'Deleted'){
-                  location.reload();
+                  toastr.success("Row Deleted!");
+                  $.ajax({
+                    type:'post',
+                    url:'../../php/display/clientArchive.php',
+                    success:function(response){
+                      document.getElementById("searchTable").innerHTML=response;
+                    }
+                  });
               }
             }
           });
@@ -518,6 +552,16 @@
             xmlhttp.onreadystatechange=function() {
                 if (this.readyState==4 && this.status==200) {
                   window.location="../../php/export.php";
+                  toastr.success("Exported Successfully");
+                  $.ajax({
+                    type:'post',
+                    url:'../../php/display/clientArchive.php',
+                    success:function(response){
+                      document.getElementById("searchTable").innerHTML=response;
+                    }
+                  });
+                  document.getElementById("selectAll").checked=false;
+                  
                 }
             }
             xmlhttp.open("GET","../../php/client/exportClient.php?list="+list,true);
@@ -646,6 +690,7 @@
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
+<script src="../../plugins/toastr/toastr.min.js"></script>
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>

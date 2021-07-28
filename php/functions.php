@@ -1,6 +1,7 @@
 <?php
     require 'conn.php';
     $cred =$smtpSES;
+    $db=$db;
     $count = getNotificationCount($db);
     $countW = getNotificationCountWait($db);
     $countC = getNotificationCountClient($db);
