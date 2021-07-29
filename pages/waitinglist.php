@@ -22,9 +22,45 @@
   <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <style>
+    .loaderB {
+      border: 16px solid #f3f3f3;
+      background:white;
+      width: 100%;
+      height:100%;
+      overflow:hidden;
+      /* -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite; */
+      opacity:75%;
+    }
+    .loader {
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3c8dbc;
+      border-bottom: 16px solid #3c8dbc;
+      width: 200px;
+      height: 200px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+</style>
 </head>
 
 <body class="hold-transition sidebar-mini">
+    <div class="loaderB" id="logoloader" style="position:absolute;z-index:5;display:none">
+      <div class="loader" style="margin:20% 50%"></div>
+    </div>
+    
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -87,6 +123,11 @@
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
         </div>
+      </li>
+      <li>
+        <a class="nav-link" href="../accountSettings.php"> 
+          <i class="fas fa-cog"></i>
+        </a>
       </li>
     </ul>
   </nav>
@@ -394,7 +435,12 @@
       }
       
     }
+    function turnoffCheck(){
+      document.getElementById("canSpam").required=false;
+    }
       function sendEmail(){
+        $('.modal').modal('hide');
+        document.getElementById("logoloader").style.display="block";
         var list=[];
         var ctr=0;
         var tempName = document.getElementById("tempname").value;
@@ -411,7 +457,6 @@
         if(ctr == 0){
           waitIndId=document.getElementById("waitIndID").value;
         }
-        // alert(subject,message);
         $.ajax({
             type: 'post',
             url: '../php/waitlist/sendEmail.php',
@@ -432,7 +477,7 @@
                     document.getElementById("searchTable").innerHTML=response;
                   }
                 });
-                $('.modal').modal('hide');
+                document.getElementById("logoloader").style.display="none";
                 document.getElementById("selectAll").checked=false;
                 document.getElementById("sendEmailForm").reset();
                 document.getElementById("canSpam").checked=false;
@@ -525,11 +570,16 @@
             }
         }
         if(ctr==0){
-          alert("Nothing to Send");
+          toastr.warning("Nothing to Send");
           return;
         }else{
-          if(ctr>1)
+          if(ctr>1){
             w3.show("#warningBulk");
+          }else{
+            w3.hide("#warningBulk");
+            document.getElementById("canSpam").required=false;
+          }
+            
           $(document).ready(function(){
             $("#emailTemplate").modal();
           });
@@ -547,7 +597,7 @@
           }
         }
         if(ctr==0){
-            alert("Nothing to Approve");
+            toastr.warning("Nothing to Approve");
             return;
         }else{
           if(confirm("Are you sure you want to approve?")){
@@ -694,7 +744,10 @@
                 Sending bulk emails will likely get them tagged as spam. To eliminate bounce rate, ensure email quality and avoid potential spam triggers!  
               </p> 
             </div>
-            <input type="checkbox" id="canSpam" style="margin:3% 2%" required><span>I agree all statements in <a href="TermsAndConditions.php" target="_blank">TERMS AND CONDITIONS</a></span>
+            <div id="warningAgree">
+              <input type="checkbox" id="canSpam" style="margin:3% 2%" required><span>I agree all statements in <a href="TermsAndConditions.php" target="_blank">TERMS AND CONDITIONS</a></span>
+            </div>
+            
           </div>
           
             <br>

@@ -151,7 +151,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td>'.$tname.'</td>
+              <td>'.$tname.' ('.$temp['waitlist_notification_create_date'].')'.'</td>
               </tr>';
 
               $ctr++;
@@ -172,7 +172,7 @@
   <div class="modal-footer">
     <a href="#" style="padding-right:33%" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i>Edit</a>
     <a href="#" style="padding-right:2%" onclick="setStatus('.$data['client_id'].')">'.$setStatus.'</a>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailTemplate">Send Email</button>
+    <button type="button" class="btn btn-primary" onclick="turnoffCheck()" data-toggle="modal" data-target="#emailTemplate">Send Email</button>
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
   </div>';
 ?>

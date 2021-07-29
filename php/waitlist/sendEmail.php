@@ -32,8 +32,8 @@
                 $name = getListById($db,$id);
                 $forUrl=base64_encode($name['client_id']);
                 $forUrl=urlencode($forUrl);
-                // $links  = "<a href='https://waitlist.mauisnorkeling.com/php/unsubscribe.php?id=".$forUrl."'>Unsubscribe</a>";
-                $links  = "<a href='#'>Unsubscribe</a>";
+                // $links  = "If you don't want to receive these emails from Maui Snorkeling Lani Kai in the future, you can <a href='https://waitlist.mauisnorkeling.com/php/unsubscribe.php?id=".$forUrl."'>Unsubscribe</a>.";
+                $links  = "If you don't want to receive these emails from Maui Snorkeling Lani Kai in the future, you can <a href='#'>Unsubscribe</a>.";
                 $message = 'Aloha <b>'.$name['name'].','."</b>\n\n";
                 $message .=$Bodymessage;
                 $message .=$attachment;
@@ -69,8 +69,8 @@
             $name = getListById($db,$waitIndId);
             $forUrl=base64_encode($name['client_id']);
             $forUrl=urlencode($forUrl);
-            // $links  = "<a href='https://waitlist.mauisnorkeling.com/php/unsubscribe.php?id=".$forUrl."'>Unsubscribe</a>";
-            $links  = "<a href='#'>Unsubscribe</a>";
+            // $links  = "If you don't want to receive these emails from Maui Snorkeling Lani Kai in the future, you can <a href='https://waitlist.mauisnorkeling.com/php/unsubscribe.php?id=".$forUrl."'>Unsubscribe</a>.";
+            $links  = "If you don't want to receive these emails from Maui Snorkeling Lani Kai in the future, you can <a href='#'>Unsubscribe</a>.";
             $message = 'Aloha <b>'.$name['name'].','."</b>\n\n";
             $message .=$Bodymessage;
             $message .=$attachment;

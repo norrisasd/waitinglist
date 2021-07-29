@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -75,6 +76,11 @@
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
         </div>
+      </li>
+      <li>
+        <a class="nav-link" href="#"> 
+          <i class="fas fa-cog"></i>
+        </a>
       </li>
     </ul>
   </nav>
@@ -253,12 +259,13 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-        <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:400px;max-width:400px;width: expression(this.width > 500 ? 500: true);margin:0 0 0 auto" class="img-thumbmail" alt="User Image">
+          <div id="myTable" style="display:flex;margin:auto">
+        <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:400px;max-width:400px;width: expression(this.width > 500 ? 500: true);margin:0 0 0 auto" id="profPic" class="img-thumbmail" alt="User Image">
         <table class="table" style="width:300px;margin:6rem auto 6rem 3rem;">
             <thead>
                 <br><br>
             </thead>
-            <tbody>
+            <tbody >
             <br><br>
                 <tr>
                     <td>Username</td>
@@ -282,6 +289,7 @@
                 </tr> 
             </tbody>
             </table>
+            </div>
         </div>
         <!-- /.row -->
         <!-- Main row -->
@@ -298,9 +306,12 @@
               email:email,
             },
             success:function(response){
-              alert(response);
               if(response == 'Email Updated'){
-                  location.reload();
+                toastr.success(response);
+                $( "#myTable" ).load( "accountSettings.php #myTable" );
+                $('.modal').modal('hide');
+              }else{
+                toastr.error(data);
               }
             }
           });
@@ -315,9 +326,12 @@
               username:username,
             },
             success:function(response){
-              alert(response);
               if(response == 'Username Updated'){
-                  location.reload();
+                toastr.success(response);
+                $( "#myTable" ).load( "accountSettings.php #myTable" );
+                $('.modal').modal('hide');
+              }else{
+                toastr.error(data);
               }
             }
           });
@@ -332,9 +346,12 @@
               password:password,
             },
             success:function(response){
-              alert(response);
               if(response == 'Password Updated'){
-                  location.reload();
+                toastr.success(response);
+                $( "#myTable" ).load( "accountSettings.php #myTable" );
+                $('.modal').modal('hide');
+              }else{
+                toastr.error(data);
               }
             }
           });
@@ -353,9 +370,12 @@
             type: 'POST',
             data: formData,
             success: function (data) {
-                alert(data)
                 if(data == "File Sucessfully uploaded"){
-                  location.reload();
+                  toastr.success(data);
+                  $( "#myTable" ).load( "accountSettings.php #myTable" );
+                  $('.modal').modal('hide');
+                }else{
+                  toastr.error(data);
                 }
             },
             cache: false,
@@ -504,6 +524,7 @@
 <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
+<script src="plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

@@ -91,6 +91,11 @@
           <div class="dropdown-divider"></div>
         </div>
       </li>
+      <li>
+        <a class="nav-link" href="../../accountSettings.php"> 
+          <i class="fas fa-cog"></i>
+        </a>
+      </li>
     </ul>
   </nav>
   <!-- /.navbar -->

@@ -41,7 +41,7 @@
         }
     }
     function displayAllUser($db){
-        $query="SELECT * FROM user";
+        $query="SELECT * FROM user WHERE isAdmin is NULL OR isAdmin !=1";
         $result=mysqli_query($db,$query);
         if($result){
             while($data = mysqli_fetch_assoc($result)){
