@@ -2,8 +2,8 @@
     require '../functions.php';
     $id=$_GET['id'];
     $data=getEmailTemplateById($db,$id);
-    $message = 'Aloha <Full Name>, '."\n\n";
-    $attachment="\n\nBook Now\n
+    $message = 'Aloha (Full Name), '."\n\n";
+    $attachment="\n
 Maui Snorkeling Lani Kai
 mauisnorkeling.com
 888.983.8080
@@ -28,13 +28,13 @@ mauisnorkeling.com
         </div>
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Message</label>
-            <textarea class="form-control" rows="20" disabled>'.$message.$data['message'].$attachment.'</textarea>
+            <div style="border:1px solid;border-radius:15px;padding:1%">'.nl2br($message.$data['message'].$attachment).'</div>
         </div>     
     </div>
     
     <div class="modal-footer">
-        <a href="#" style="margin-right:63%" onclick="editTemplate('.$data['template_id'].')" data-toggle="modal" data-target="#editTemp"><i class="fas fa-edit"></i></a>
-        <a href="#" style="margin-right:1%" onclick="deleteTemplate()">Delete</a><input type="text" id="deleteIndividual" value="'.$data['template_id'].'">
+        <a href="#" style="margin-right:77%" onclick="editTemplate('.$data['template_id'].')" data-toggle="modal" data-target="#editTemp"><i class="fas fa-edit"></i></a>
+        <a href="#" style="margin-right:1%" onclick="deleteTemplate()">Delete</a><input type="text" style="display:none" id="deleteIndividual" value="'.$data['template_id'].'">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     </div>
         ';

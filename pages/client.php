@@ -693,6 +693,9 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 <script>
+  toastr.options.progressBar = true;
+  toastr.options.preventDuplicates = true;
+  toastr.options.closeButton = true;
 // $(document).ready(function(){
 //   $(document).on("click","#archiveBtn",function(){
 //     checkDelete();

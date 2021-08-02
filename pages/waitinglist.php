@@ -442,7 +442,7 @@
         var ctr=0;
         var tempName = document.getElementById("tempname").value;
         var subject = document.getElementById("subject1").value;
-        var message = document.getElementById("text1").value;
+        var message = $('#text1').summernote('code');
         var checkboxes = document.getElementsByName('list[]');
         var checkboxes1 = document.getElementsByName('waitlist_id[]');
         var waitIndId='';
@@ -486,6 +486,7 @@
                 document.getElementById("selectAll").checked=false;
                 document.getElementById("sendEmailForm").reset();
                 document.getElementById("canSpam").checked=false;
+                $('#text1').summernote('code','');
               }else{
                 toastr.error(response);
                 document.getElementById("logoloader").style.display="none";
@@ -548,14 +549,14 @@
         xmlhttp.send();
       }
       function copyToClip(){
-        str="https://waitinglist.klbsolutionsllc.com/forms/waitlistForm.php";
+        str="https://bit.ly/2WC0kMj";
         const el = document.createElement('textarea');
         el.value = str;
-        document.body.appendChild(el);
+        $("#confirmTemplate").append(el);
         el.select();
         document.execCommand('copy');
-        document.body.removeChild(el);
-        alert("Copied the text: " + el.value);
+        $("#confirmTemplate textarea").remove();
+        toastr.success("Copied the text: " + el.value);
       }
       function info(id){
         var xmlhttp=new XMLHttpRequest();
@@ -711,9 +712,9 @@
         var xmlhttp=new XMLHttpRequest();
         xmlhttp.onreadystatechange=function() {
             if (this.readyState==4 && this.status==200) {
-              document.getElementById("confirmTemplate").innerHTML=this.responseText;
-              document.getElementById("subject1").value =document.getElementById("emailsub").value;
-              document.getElementById("text1").value =document.getElementById("emailmes").value;
+              var template = JSON.parse(this.responseText);
+              document.getElementById("subject1").value=template.subject;
+              $('#text1').summernote('code',template.message);
             }
         }
         xmlhttp.open("GET","../php/emailTemplates/getTemplates.php?tempName="+str,true);
@@ -734,8 +735,8 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="emailTemplate" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade bd-example-modal-lg" id="emailTemplate" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-paper-plane" aria-hidden="true"></i> Send Email</h5>
@@ -762,6 +763,7 @@
                   <option value="" disabled selected>Select Template</option>
                   <?php displayTemplates($db)?>
               </select>
+              <a href="#" class="text-secondary" onclick="copyToClip()"  style="margin-left:45%;"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Link for Booking</a>
           </div>
           <div id="confirmTemplate">
           </div>
@@ -806,8 +808,8 @@
     </div>
   </div>
 
-  <div class="modal fade" id="addemailTemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade bd-example-modal-lg" id="addemailTemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add Email Template</h5>
@@ -825,7 +827,7 @@
               </div>
               <div class="form-group">
                   <label for="exampleFormControlTextarea1">Message</label>
-                  <textarea class="form-control" name="message" rows="3" required></textarea required>
+                  <textarea name="message" required></textarea required>
               </div>
           </div>
         <div class="modal-footer">
@@ -897,12 +899,32 @@
 <script src="../plugins/daterangepicker/daterangepicker.js"></script>
 <!-- TOASTR -->
 <script src="../plugins/toastr/toastr.min.js"></script>
+  <!-- SUMMERNOTE -->
+  <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+<!-- SUMMERNOTE -->
+<script src="../plugins/summernote/summernote-bs4.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 
 <script>
+  toastr.options.progressBar = true;
+  toastr.options.preventDuplicates = true;
+  toastr.options.closeButton = true;
+  $('#text1').summernote({
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'underline', 'clear']],
+      ['fontname', ['fontname']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['table', ['table']],
+      ['insert', ['link']],
+      ['view', ['fullscreen', 'codeview']],
+    ],
+});
   var startDate ='';
   var endDate = '';
   $(function() {

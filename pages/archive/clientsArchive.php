@@ -716,5 +716,10 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<script>
+  toastr.options.progressBar = true;
+  toastr.options.preventDuplicates = true;
+  toastr.options.closeButton = true;
+</script>
 </body>
 </html>

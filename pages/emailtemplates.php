@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <!-- SUMMERNOTE -->
+  <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -276,11 +278,37 @@
     </section>
     
     <script>
+      function copyToClip(){
+        str="https://bit.ly/2WC0kMj";
+        const el = document.createElement('textarea');
+        el.value = str;
+        $("#forCopy").append(el);
+        el.select();
+        document.execCommand('copy');
+        $("#forCopy textarea").remove();
+        toastr.success("Copied the text: " + el.value);
+      }
+      function copyToClip1(){
+        str="https://bit.ly/2WC0kMj";
+        const el = document.createElement('textarea');
+        el.value = str;
+        $("#forCopy1").append(el);
+        el.select();
+        document.execCommand('copy');
+        $("#forCopy1 textarea").remove();
+        toastr.success("Copied the text: " + el.value);
+      }
       function editTemplate(id){
         var xmlhttp=new XMLHttpRequest();
         xmlhttp.onreadystatechange=function() {
           if (this.readyState==4 && this.status==200) {
-            document.getElementById("editTempBody").innerHTML=this.responseText;
+            var template= JSON.parse(this.responseText);
+            // document.getElementById("editTempBody").innerHTML=template.message;
+            
+            document.getElementById("tempID").value=template.template_id;
+            document.getElementById("etname").value=template.TemplateName;
+            document.getElementById("esub").value=template.subject;
+            $('#emes').summernote('code',template.message);
           }
         }
         xmlhttp.open("GET","../php/emailTemplates/editTemplate.php?id="+id,true);
@@ -290,7 +318,7 @@
       function addTemplate(){
         var TemplateName=document.getElementById("TemplateName").value;
         var subject=document.getElementById("subject").value;
-        var message=document.getElementById("message").value;
+        var message=$('#message').summernote('code');
         $.ajax({
             type: 'post',
             url: '../php/emailTemplates/addTemplate.php',
@@ -398,16 +426,6 @@
         xmlhttp.open("GET","../php/emailTemplates/searchTemplates.php?name="+name+"&type="+type,true);
         xmlhttp.send();
     }
-      function setEmail(str){
-        var xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
-            if (this.readyState==4 && this.status==200) {
-                eval(this.responseText);
-            }
-        }
-        xmlhttp.open("GET","../php/emailTemplates/getTemplates.php?tempName="+str,true);
-        xmlhttp.send();
-    }
     document.addEventListener('DOMContentLoaded', function() {
     autosize(document.querySelectorAll('#notes'));
 }, false);
@@ -418,17 +436,24 @@
     </a>
   </div>
   <!-- /.MODAL -->
-  <div class="modal fade" id="addemailTemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade bd-example-modal-lg" id="addemailTemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-file" aria-hidden="true"></i> Add Email Template</h5>
           <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
         <div class="modal-body">
+        <div class="alert alert-info" role="alert">
+            <b>Info:</b><br>
+            <p style="text-align:justify;margin:0">
+              Email greetings and footer attachments are automatically added.  
+            </p> 
+          </div>
+          <div id="forCopy1"></div>
           <form action="" method="post" id="addTemplateModal" onsubmit="return addTemplate();">
           <div class="form-group">
-              <label for="exampleFormControlInput1">Template Name</label>
+              <label for="exampleFormControlInput1">Template Name</label><a href="#" class="text-secondary" onclick="copyToClip1()"  style="margin-left:60%;"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Link for Booking</a>
               <input type="text" class="form-control" id="TemplateName" placeholder="Template Name" required>
           </div>
               <div class="form-group">
@@ -437,7 +462,7 @@
               </div>
               <div class="form-group">
                   <label for="exampleFormControlTextarea1">Message</label>
-                  <textarea class="form-control" id="message" rows="3" required></textarea required>
+                  <textarea id="message" required></textarea>
               </div>
           </div>
         <div class="modal-footer">
@@ -448,19 +473,18 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade bd-example-modal-lg" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div id="templateInfo">
-        
-        
+          
         
         </div>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="editTemp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade bd-example-modal-lg" id="editTemp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel"> <i class="fas fa-edit"></i> Edit Email Template</h5>
@@ -470,12 +494,27 @@
         <div class="alert alert-info" role="alert">
             <b>Info:</b><br>
             <p style="text-align:justify;margin:0">
-              Email greetings and attachments are automatically added.  
+              Email greetings and footer attachments are automatically added.  
             </p> 
           </div>
         <form action="" method="post" onsubmit="return updateEmailTemplate();">
+        <div id="forCopy">
+        </div>
           <div id="editTempBody">
-
+            <input type="text" id="tempID" style="display:none">
+          <div class="form-group">
+              <label for="exampleFormControlInput1">Template Name</label><a href="#" class="text-secondary" onclick="copyToClip()"  style="margin-left:60%;"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Link for Booking</a>
+              <input type="text" class="form-control" id="etname" name="etname" required>
+              
+          </div>
+          <div class="form-group">
+              <label for="exampleFormControlInput1">Subject</label>
+              <input type="text" class="form-control" id="esub" name="esub" required>
+          </div>
+          <div class="form-group">
+              <label for="exampleFormControlTextarea1">Message Body</label>
+              <textarea id="emes" required></textarea>
+          </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -511,7 +550,7 @@
         var  id = document.getElementById("tempID").value;
         var  tname = document.getElementById("etname").value;
         var  sub = document.getElementById("esub").value;
-        var  mes = document.getElementById("emes").value;
+        var  mes = $('#emes').summernote('code');
         $.ajax({
             type: 'post',
             url: '../php/emailTemplates/updateEmailTemplate.php',
@@ -549,13 +588,43 @@
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- TOASTR -->
 <script src="../plugins/toastr/toastr.min.js"></script>
+<!-- SUMMERNOTE -->
+<script src="../plugins/summernote/summernote-bs4.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 
 <script>
-  
+  toastr.options.progressBar = true;
+  toastr.options.preventDuplicates = true;
+  toastr.options.closeButton = true;
+  $('#message').summernote({
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'underline', 'clear']],
+      ['fontname', ['fontname']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['table', ['table']],
+      ['insert', ['link']],
+      ['view', ['fullscreen', 'codeview']],
+    ],
+});
+  $('#emes').summernote({
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'underline', 'clear']],
+      ['fontname', ['fontname']],
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['table', ['table']],
+      ['insert', ['link']],
+      ['view', ['fullscreen', 'codeview']],
+    ],
+});
 </script>
 </body>
 </html>

@@ -45,7 +45,7 @@
         $result=mysqli_query($db,$query);
         if($result){
             while($data = mysqli_fetch_assoc($result)){
-                $access= $data['isAdmin']==NULL?"FALSE":"TRUE";
+                $access= $data['isAdmin']==NULL?"MODERATOR":"AGENT";
                 $edit=$data['isAdmin']==1 ?'':'';
                 echo'
                 <tr class="tableItem">

@@ -537,5 +537,10 @@
 <script src="dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+<script>
+  toastr.options.progressBar = true;
+  toastr.options.preventDuplicates = true;
+  toastr.options.closeButton = true;
+</script>
 </body>
 </html>

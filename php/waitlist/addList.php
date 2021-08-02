@@ -14,7 +14,7 @@
     $cAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$dbName' AND TABLE_NAME = 'clients';";
     $cAI=mysqli_query($db,$cAI);
     $cAI=mysqli_fetch_assoc($cAI);
-    $cAI=$cAI['AI'];//notification Auto Increment
+    $cAI=$cAI['AI'];//clients Auto Increment
 
         $name=$_POST['name'];
         $phone=$_POST['phone'];
@@ -31,6 +31,8 @@
         //     return;
         // }
         //SEND EMAIL
+        // $forUrl=base64_encode($cAI);
+        // $forUrl=urlencode($forUrl);
         $message = 'Aloha <b>'.$name.','."</b>\n\n";
         $message="Thank you for booking in our waitlist.\n
             Maui Snorkeling, formerly Friendly Charters, has been in business since 1995. Over that time, close to 1 million passengers have experienced what Maui Snorkeling is all about.

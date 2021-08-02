@@ -250,12 +250,13 @@
         <input type="checkbox" value="" style="margin-left:10px;" id="selectAll" onclick="selectAll(this)"> Select All
         <?php
           if($_SESSION['access'] == 1){
-            echo '<button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:10px;" onclick="exportDataModal()">Export</button>';
+            echo '<button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:10px;" onclick="exportDataModal()">Export</button>
+            <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="margin:0.2rem 0.5rem;margin-top:0.2rem">ADD USER</a>';
           }
         ?>
-        <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="margin:0.2rem 0.5rem;margin-top:0.2rem">ADD USER</a>
+        
          
-        <!--<a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
+        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
         
         <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="username">Username</option>
@@ -268,7 +269,7 @@
               <th scope="col"></th>
               <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Username</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Email</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Admin</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Access</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -300,6 +301,7 @@
         var username=document.getElementById('username').value;
         var password=document.getElementById('password').value;
         var cpassword=document.getElementById('cpassword').value;
+        var type = $("input[name=radioBtnType]:checked","#addUserModal").val();
         if(password != cpassword){
             toastr.error("Password not the same!");
             return false;
@@ -312,7 +314,8 @@
           data:{
             username:username,
             password:password,
-            email:email
+            email:email,
+            type:type
           },
           success:function(response){
             if(response == 'Success'){
@@ -490,6 +493,24 @@
                 <label for="exampleFormControlInput1">Email</label>
                 <input type="email" class="form-control" name="email" id="email" autocomplete="off" required>
             </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="radioBtnType" value="1" id="adminRadioBtn" required>
+              <label class="form-check-label" for="adminRadioBtn">
+                ADMIN
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="0" name="radioBtnType">
+              <label class="form-check-label" for="agentRadioBtn">
+                AGENT
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="NULL" name="radioBtnType">
+              <label class="form-check-label" for="moderatorRadioBtn">
+                MODERATOR
+              </label>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -564,5 +585,10 @@
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script>
+  toastr.options.progressBar = true;
+  toastr.options.preventDuplicates = true;
+  toastr.options.closeButton = true;
+</script>
 </body>
 </html>

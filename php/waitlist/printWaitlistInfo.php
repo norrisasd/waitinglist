@@ -5,7 +5,7 @@
     $notes = $data['waitlist_notes'] == ''?"None": $data['waitlist_notes'];
     $notes = nl2br($notes);
     $sent = $data['waitlist_approval_sent'] == 1?"Sent ":"Sent ";
-    $query = "SELECT * FROM `notification` INNER JOIN waitlist_notfication ON notification.notification_id = waitlist_notfication.notification_id WHERE waitlist_notfication.waitlist_id = $id";//waitlist notification 
+    $query = "SELECT * FROM `notification` INNER JOIN waitlist_notfication ON notification.notification_id = waitlist_notfication.notification_id WHERE waitlist_notfication.waitlist_id = $id ORDER BY waitlist_notification_create_date desc ";//waitlist notification 
     $status = $data['waitlist_enabled'] == 1 ?"Enabled":"Disabled";
     $setStatus = $data['waitlist_enabled'] == 1 ?"Archive":"Unarchive";
     $result=mysqli_query($db,$query);
@@ -17,7 +17,7 @@
     <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
   </div>
   <div class="modal-body" style="margin:0 auto">
-  <table>
+  <table style="display:block">
           <tr>
           <td>Waitlist ID</td>
           <td style="padding-right:5rem">:</td>
@@ -136,7 +136,8 @@
           <td></td>
           <td>'.$sent.mysqli_num_rows($result)." emails".'</td>
           </tr>';
-          if($result){
+          if($result && mysqli_num_rows($result) >0){
+            echo'<tbody style="border:1px solid;padding:1% 0;margin auto;display:block;max-height:150px;width:100%;overflow:auto;">';
             while($temp=mysqli_fetch_assoc($result)){
               $str =$ctr==0?"Template Name":"";
               if($temp['template_name']==''){
@@ -144,18 +145,19 @@
               }else{
                 $tname=$temp['template_name'];
               }
-              echo'<tr>
+              echo'<tr style="margin-right:5%">
               <td>'.$str.'</td>
+              <td style="padding-right:5rem"></td>
               <td></td>
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
-              <td>'.$tname.' ('.$temp['waitlist_notification_create_date'].')'.'</td>
+              <td style="">'.$tname.' ('.$temp['waitlist_notification_create_date'].')'.'</td>
               </tr>';
 
               $ctr++;
             }
+            echo'</tbody>';
           }        
           echo'<tr>
                 <td>DND</td>

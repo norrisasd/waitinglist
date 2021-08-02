@@ -2,7 +2,7 @@
     require '../functions.php';
     $id=$_GET['id'];
     $data=getUserByUsername($db,$id);
-    $access= $data['isAdmin']!=NULL?"Agent":"No Access";
+    $access= $data['isAdmin']!=NULL?"Agent":"Moderator";
     echo '<div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel"> <i class="fa fa-info-circle" aria-hidden="true"></i> Information</h5>
             <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>

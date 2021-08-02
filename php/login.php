@@ -10,22 +10,19 @@
             $_SESSION['countNotifW']=0;
             $_SESSION['countNotifC']=0;
             $_SESSION['countNotifU']=0;
-            if($data['isAdmin'] != NULL){
-                $_SESSION['login']=true;
-                $_SESSION['username']=$user;
-                $_SESSION['pass']=$pass;
-                $_SESSION['email']=$data['email'];
-                $_SESSION['access']=$data['isAdmin'];
-                $_SESSION['img']=$data['image_file'];
-                if($data['isAdmin'] == 0){
-                    $_SESSION['clientDeleted']='';
-                    $_SESSION['emailSent']='';
-                    $_SESSION['approvalSent']='';
-                    $_SESSION['dndUpdated']='';
-                }
-            }else{
-                echo 'Not an Admin';
+            $_SESSION['login']=true;
+            $_SESSION['username']=$user;
+            $_SESSION['pass']=$pass;
+            $_SESSION['email']=$data['email'];
+            $_SESSION['access']=$data['isAdmin'];
+            $_SESSION['img']=$data['image_file'];
+            if($data['isAdmin'] == 0){
+                $_SESSION['clientDeleted']='';
+                $_SESSION['emailSent']='';
+                $_SESSION['approvalSent']='';
+                $_SESSION['dndUpdated']='';
             }
+            
         }else{
             echo 'Invalid Password';
         }
