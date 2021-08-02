@@ -297,6 +297,7 @@
       </div><!-- /.container-fluid -->
     </section>
     <script>
+      //UPDATE EMAIL
       function updateEmail(){
         var email = document.getElementById("email").value;
           $.ajax({
@@ -317,6 +318,7 @@
           });
           return false;
       }
+      //UPDATE USERNAME
       function updateUsername(){
         var username = document.getElementById("username").value;
           $.ajax({
@@ -337,6 +339,7 @@
           });
           return false;
       }
+      //UPDATE PASSWORD
       function updatePassword(){
         var password = document.getElementById("password").value;
           $.ajax({
@@ -357,6 +360,7 @@
           });
           return false;
       }
+      //UPDATE PROFILE PICTURE
       function updateProfile(){
         var name = document.getElementById("file").value;
         name = name.split("\\").pop();
@@ -387,7 +391,8 @@
       }
     </script>
 
-    <!--MODAL-->
+    <!--MODAL FOR UPDATES-->
+<!-- MODAL FOR USERNAME -->
 <div class="modal fade" id="editUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -410,6 +415,7 @@
       </div>
     </div>
   </div>
+<!-- MODAL FOR PASSWORD -->
   <div class="modal fade" id="editPass" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -432,6 +438,7 @@
       </form>
     </div>
   </div>
+<!-- MODAL FOR EMAIL -->
   <div class="modal fade" id="editEmail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -454,6 +461,7 @@
       </form>
     </div>
   </div>
+<!-- MODAL FOR PROFILE -->
   <div class="modal fade" id="editImage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" >
       <div class="modal-content">

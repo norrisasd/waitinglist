@@ -98,6 +98,7 @@
         var passengers=document.getElementById('passengers').value;
         var aname=document.getElementById('aname').value;
         var notes=document.getElementById('notes').value;
+        document.getElementById("submitBtn").disabled=true;
 
         $.ajax({
           type: 'post',
@@ -117,6 +118,7 @@
                 toastr.success("Success! You are now added in the Waitlist!");
                 document.getElementById("myForm").reset();
                 grecaptcha.reset();
+                window.location.href="../pages/confirmation/WaitlistConfirmation.php";
             }  
             else{
                 toastr.error(response);

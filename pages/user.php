@@ -386,7 +386,7 @@
           }
         }
         if(ctr==0){
-          alert("Nothing to Export");
+          toastr.error("Nothing to Export");
         }else{
           if(confirm("Are you sure you want to export selected item/s?")){
             var xmlhttp=new XMLHttpRequest();

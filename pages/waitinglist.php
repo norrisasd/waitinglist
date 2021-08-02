@@ -29,8 +29,6 @@
       width: 100%;
       height:100%;
       overflow:hidden;
-      /* -webkit-animation: spin 2s linear infinite;
-      animation: spin 2s linear infinite; */
       opacity:75%;
     }
     .loader {
@@ -439,8 +437,7 @@
       document.getElementById("canSpam").required=false;
     }
       function sendEmail(){
-        $('.modal').modal('hide');
-        document.getElementById("logoloader").style.display="block";
+        
         var list=[];
         var ctr=0;
         var tempName = document.getElementById("tempname").value;
@@ -456,7 +453,15 @@
         }
         if(ctr == 0){
           waitIndId=document.getElementById("waitIndID").value;
+        }else if (ctr > 1){
+          if(confirm("You are about to send "+tempName+" to "+ctr+" clients. Would you like to proceed with sending the email?")){
+
+          }else{
+            return false;
+          }
         }
+        $('.modal').modal('hide');
+        document.getElementById("logoloader").style.display="block";
         $.ajax({
             type: 'post',
             url: '../php/waitlist/sendEmail.php',
@@ -483,6 +488,7 @@
                 document.getElementById("canSpam").checked=false;
               }else{
                 toastr.error(response);
+                document.getElementById("logoloader").style.display="none";
               }
             }
           });
@@ -570,7 +576,7 @@
             }
         }
         if(ctr==0){
-          toastr.warning("Nothing to Send");
+          toastr.error("Nothing to Send");
           return;
         }else{
           if(ctr>1){
@@ -745,7 +751,7 @@
               </p> 
             </div>
             <div id="warningAgree">
-              <input type="checkbox" id="canSpam" style="margin:3% 2%" required><span>I agree all statements in <a href="TermsAndConditions.php" target="_blank">TERMS AND CONDITIONS</a></span>
+              <input type="checkbox" id="canSpam" style="margin:3% 2%" required><span>I agree in <a href="TermsAndConditions.php" target="_blank"><u>TERMS AND CONDITIONS</u></a></span>
             </div>
             
           </div>

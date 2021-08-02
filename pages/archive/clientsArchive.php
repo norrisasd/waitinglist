@@ -312,6 +312,7 @@
     </section>
     
     <script>
+      //AUTO COPY TO CLIPBOARD -NOT USED
     function copyToClip(){
         str="https://waitinglist.klbsolutionsllc.com/forms/clientForm.php";
         const el = document.createElement('textarea');
@@ -322,6 +323,7 @@
         document.body.removeChild(el);
         alert("Copied the text: " + el.value);
       }
+    //UPDATE DND CHECKBOX AND DND STATUS IN DB
     function updateDND(id){
       var cb = document.getElementById(id);
       dnd = cb.checked?1:0;
@@ -350,16 +352,21 @@
       }
       
     }
+    //FOR BULK UNARCHIVING
     function checkEnable(){
       var list=[];
       var ctr = 0;
+      var checkboxes = document.getElementsByName('list[]');
+      for(var i=0, n=checkboxes.length;i<n;i++) {
+          if(checkboxes[i].checked == true){
+              list[ctr++]=checkboxes[i].value;
+          }
+      }
+      if(ctr == 0){
+        toastr.error("Nothing to Unarchive!");
+        return;
+      }
       if(confirm("Are you sure you want to enable this selected client?")){
-        var checkboxes = document.getElementsByName('list[]');
-        for(var i=0, n=checkboxes.length;i<n;i++) {
-            if(checkboxes[i].checked == true){
-                list[ctr++]=checkboxes[i].value;
-            }
-        }
         $.ajax({
           type:'post',
           url:'../../php/client/enableClient.php',
@@ -386,6 +393,7 @@
         return false;
       }
     }
+    //FOR INDIVIDUAL UNARCHIVING
     function setStatus(id){
       var list=[];
       list[0]=id;
@@ -417,6 +425,7 @@
       }
 
     }
+    //FOR MODAL ADDING CLIENT
     function addClient(){
         var name=document.getElementById('name').value;
         var phone=document.getElementById('phone').value;
@@ -438,6 +447,7 @@
         });
         return false;
       }
+      //UPDATING CLIENT INFO
       function editClientInfo(){
         var clientID=document.getElementById("clientID").value;
         var name=document.getElementById("name").value;
@@ -471,6 +481,7 @@
           });
           return false;
       }
+      //MODAL SETUP FOR UPDATE
       function editClient(id){
         var xmlhttp=new XMLHttpRequest();
         xmlhttp.onreadystatechange=function() {
@@ -481,6 +492,7 @@
         xmlhttp.open("GET","../../php/client/editClientInfo.php?id="+id,true);
         xmlhttp.send();
       }
+      //CLIENT INFO BOX
       function info(id){
         var xmlhttp=new XMLHttpRequest();
         xmlhttp.onreadystatechange=function() {
@@ -491,6 +503,7 @@
         xmlhttp.open("GET","../../php/client/printClientInfo.php?id="+id,true);
         xmlhttp.send();
       }
+      //FOR DELETING CLIENT 
       function deleteClient(){
         var list=[];
         var ctr=0;
@@ -521,6 +534,7 @@
           });
           return false;
       }
+      //FOR CHECKING IF THERE ARE CLIENTS TO BE DELETED
       function checkDelete(){
         checkboxes = document.getElementsByName('list[]');
         ctr=0;
@@ -530,7 +544,7 @@
             }
         }
         if(ctr==0){
-            alert("Nothing to Delete");
+            toastr.error("Nothing to Delete");
             return;
         }else{
           if(confirm("Are you sure you want to delete this clients?")){
@@ -538,6 +552,7 @@
           }
         }
       }
+      //CLIENTS THAT ARE DISABLED EXPORT
       function exportDataModal(){
         var list=[];
         var ctr = 0;
@@ -550,7 +565,7 @@
           }
         }
         if(ctr==0){
-          alert("Nothing to Export");
+          toastr.error("Nothing to Export");
         }else{
           if(confirm("Are you sure you want to export selected item?")){
             var xmlhttp=new XMLHttpRequest();
@@ -574,12 +589,14 @@
           } 
         }
       }
+      //SELECT ALL BOX
       function selectAll(source) {
         checkboxes = document.getElementsByName('list[]');
         for(var i=0, n=checkboxes.length;i<n;i++) {
           checkboxes[i].checked = source.checked;
         }
       }
+      //FOR FILTER AND SEARCH
       function searchBy(name){
         var type = document.getElementById("type").value;
         var dnd = document.getElementById("dndFilter").value;

@@ -524,7 +524,7 @@
             }
         }
         if(ctr==0){
-            alert("Nothing to Delete");
+            toastr.error("Nothing to Delete");
             return;
         }else{
           if(confirm("Are you sure you want to disable the selected clients?")){
@@ -544,7 +544,7 @@
           }
         }
         if(ctr==0){
-          alert("Nothing to Export");
+          toastr.error("Nothing to Export");
         }else{
           if(confirm("Are you sure you want to export selected item?")){
             var xmlhttp=new XMLHttpRequest();

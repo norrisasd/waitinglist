@@ -1,8 +1,10 @@
 <?php
     require '../functions.php';
+    require '../../phpmailer/PHPMailerAutoload.php';
     $qdate="SELECT CURDATE() as curdate;";
     $rdate=mysqli_query($db,$qdate);
     $curdate =mysqli_fetch_assoc($rdate);// currentdate
+    
     $dbName=$_SESSION['db'];
     $qAI="SELECT `AUTO_INCREMENT`as AI FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$dbName' AND TABLE_NAME = 'waitlist';";
     $rAI=mysqli_query($db,$qAI);
@@ -28,6 +30,19 @@
         //     echo 'Date Error';
         //     return;
         // }
+        //SEND EMAIL
+        $message = 'Aloha <b>'.$name.','."</b>\n\n";
+        $message="Thank you for booking in our waitlist.\n
+            Maui Snorkeling, formerly Friendly Charters, has been in business since 1995. Over that time, close to 1 million passengers have experienced what Maui Snorkeling is all about.
+            We are a small, family-owned business and our mission is to allow everyone to enjoy the beautiful people and places of Maui and Hawai'i.
+            \n\n
+            <b style='color:black'>Maui Snorkeling Lani Kai</b>
+                mauisnorkeling.com
+                <span style='color:black'>888.983.8080</span>
+                <span style='color:black'>395 Maalaea Rd Slip 76, Wailuku, HI 96793, United States</span>
+                <img src='cid:logo_image'>\n
+                If you don't want to receive these emails from Maui Snorkeling Lani Kai in the future, you can <a href='#'>Unsubscribe</a>.
+                ";
         $passengers=$_POST['passengers'];
         $aname=$_POST['aname'];
         $notes=$_POST['notes'];
@@ -40,6 +55,7 @@
             if($result){
                 $query="INSERT INTO `notification_added`( `notification_type`, `notification_status`,`waitlist_id`) VALUES ('waitlist','0',$ai)";
                 $result=mysqli_query($db,$query);
+                $retval=sendEmail($email,"Registration Success",$message,$cred);
             }else{
                 echo mysqli_error($db);
             }   

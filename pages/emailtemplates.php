@@ -318,7 +318,6 @@
           });
           return false;
       }
-      
       function deleteTemplate(){
         var list=[];
         var ctr=0;
@@ -327,6 +326,9 @@
             if(checkboxes[i].checked == true){
                 list[ctr++]=checkboxes[i].value;
             }
+        }
+        if(ctr==0){
+          list[0]=document.getElementById("deleteIndividual").value;
         }
         $.ajax({
             type: 'post',
@@ -344,6 +346,7 @@
                       document.getElementById("searchTable").innerHTML=response;
                     }
                   });
+                  $('.modal').modal('hide');
                   document.getElementById("selectAll").checked=false;
               }else{
                 toastr.error(response);
@@ -371,7 +374,7 @@
             }
         }
         if(ctr==0){
-            alert("Nothing to Delete");
+            toastr.error("Nothing to Delete");
             return;
         }
           if(confirm("are you sure you want to delete this template/s?")){

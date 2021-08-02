@@ -8,7 +8,7 @@
         echo 'Email is not Valid!';
         return;
     }
-    $query="INSERT INTO `user`(`username`, `password`, `email`) VALUES ('$user','$pass','$email')";
+    $query="INSERT INTO `user`(`username`, `password`, `email`,`isAdmin`) VALUES ('$user','$pass','$email',0)";
     $result=mysqli_query($db,$query);
     $nquery="INSERT INTO `notification_added`( `notification_type`, `notification_status`) VALUES ('user',0)";
     $nresult=mysqli_query($db,$nquery);
