@@ -530,9 +530,7 @@ new Chart("myChart", {
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
 <script>
-  toastr.options.progressBar = true;
-  toastr.options.preventDuplicates = true;
-  toastr.options.closeButton = true;
+
   var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
     var pieData = {
       labels: [
