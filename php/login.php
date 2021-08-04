@@ -7,10 +7,14 @@
     $data = mysqli_fetch_assoc($result);
     if(mysqli_num_rows($result) == 1){
         if($pass == $data['password']){
+            if($data['first_access']==0){
+                echo 'first';
+            }else{
+                $_SESSION['login']=true;
+            }
             $_SESSION['countNotifW']=0;
             $_SESSION['countNotifC']=0;
             $_SESSION['countNotifU']=0;
-            $_SESSION['login']=true;
             $_SESSION['username']=$user;
             $_SESSION['pass']=$pass;
             $_SESSION['email']=$data['email'];

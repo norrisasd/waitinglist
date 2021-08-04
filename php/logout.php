@@ -1,5 +1,5 @@
 <?php
-    require 'functions.php';
+    require_once 'functions.php';
     require '../phpmailer/PHPMailerAutoload.php';
     $email="info.mauisnorkeling@gmail.com";
     $subject="Updates During Session";
@@ -24,6 +24,7 @@
         
     }
     
-    session_destroy();
-    header("Location: ../loginPage.php");
+    session_unset();
+    session_destroy();  
+    echo "<script>window.location.href='../loginPage.php'</script>";
 ?>

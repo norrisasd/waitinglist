@@ -14,8 +14,11 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
   <!-- TOASTR -->
@@ -301,45 +304,17 @@
             </ol>
           </div>
         </div>
-        <div style="margin:0 0 15px auto">
-          <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="<?php echo isset($_SESSION['setDate'])?$_SESSION['setDate']:'';?>" style="float:right;margin-right:0.5rem;width:170px">
-          <label style="float:right;margin-right:0.5rem;margin-top:0.25rem;">Date Created</label>
-          <select id="displayType" class="form-control" onchange="searchBy('')" style="float:right;margin-right:0.4rem;width:170px;">
-              <option value="">All</option>
-              <option value="1">Sent</option>
-              <option value="0">Not Sent</option>
-          </select>
-          <label style="float:right;margin-right:0.5rem;margin-top:0.25rem">Display </label>
-          <select id="actName" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1.5rem;width:200px">
-            <option value="" selected>Select</option>
-            <?php getAllActivity($db);?>
-          </select>
-          <label style="float:right;margin-right:0.5rem;margin-top:0.25rem">Activity Name</label>
-          
-        </div>
-        <br>
       </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" id="selectAll" style="margin-left:10px" onclick="selectAll(this)"> Select All
-        <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:15px;"  onclick="checkSend()">Send</button>
-        <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
-        
         <!-- <button type="button" class="btn btn-primary" style="float:right;margin-bottom:5px"  onclick="checkApprove()">Approve</button> -->
         <!-- <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Waiting List Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
         
         
-        <input type="date" class="form-control" id="endDate" onchange="searchBy('')" value="" style="float:right;margin-right:0.5rem;width:170px">
-        <label style="float:right;margin-right:0.5rem;margin-top:0.25rem;">Last Date</label>
-        <!-- END DATE -->
-        <input type="date" class="form-control" id="startDate" onchange="searchBy('')" value="" style="float:right;margin-right:2rem;width:170px">
-        <label style="float:right;margin-right:0.5rem;margin-top:0.25rem;">First Date</label>
-        <!-- Start Date -->
-        <input type="text" class="form-control" id="actDate"  value="" style="float:right;margin-right:0.5rem;background:white;width:200px" readonly>
-        <label style="float:right;margin-right:0.5rem;margin-top:0.25rem;">Activity Date</label>
+        
         <!-- Activity Date -->
         <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="name">Name</option>
@@ -348,28 +323,77 @@
         </select>
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label> -->
         
-        <table class="table" id="myTable">
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Name</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Phone</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Email</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Activity Name</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">Date Created</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">First Date</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(8)')">Last Date</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(9)')">Passengers</th>
-            </tr>
-          </thead>
-          <form method="post" action="" id="sendEmailForm" onsubmit="return sendEmail();">
-          <tbody id="searchTable" style="color:gray">
-            <?php
-              displayAllList($db,'','');
-              updateNotificationStatusWait($db);
-            ?>
-          </tbody>
-        </table>
+              <div class="card-body">
+                <div class="row">
+                  <input type="checkbox" value="" id="selectAll" style="margin:5px 10px" onclick="selectAll(this)"> <span>Select All</span>
+                  <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:15px;"  onclick="checkSend()">Send</button>
+                  <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;margin-right:2%" onclick="exportDataModal()">Export</button>
+                  <label style="margin-right:0.5rem;margin-top:0.25rem;">Passengers</label>
+                  <input type="number" class="form-control" id="passengersNum" onchange="searchBy('')" style="margin-right:1.7%;width:70px" min="0" max="99">
+                  <label style="margin-right:0.5rem;margin-top:0.25rem;">Date Created</label>
+                  <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="<?php echo isset($_SESSION['setDate'])?$_SESSION['setDate']:'';?>" style="margin-right:1.7%;width:170px">
+                  <label style="margin-right:0.5rem;margin-top:0.25rem">Display </label>
+                  <select id="displayType" class="form-control" onchange="searchBy('')" style="margin-right:1.7%;width:170px;">
+                      <option value="">All</option>
+                      <option value="1">Sent</option>
+                      <option value="0">Not Sent</option>
+                  </select>
+                  
+                  <label style="margin-right:0.5rem;margin-top:0.25rem">Activity Name</label>
+                  <select id="actName" class="form-control" onchange="searchBy('')" style="margin-right:1.5rem;width:200px">
+                    <option value="" selected>Select</option>
+                    <?php getAllActivity($db);?>
+                  </select>
+                  
+                </div>
+                <div class="row" id="2ndRow" style="margin-top:0.2%;margin-bottom:0.5%;margin-left:0.5%">
+                  <div id="beforeLD" style="margin-right:20.4%">
+                  <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true"></i>
+                  </div>
+                  <label style="margin-right:0.5rem;margin-top:0.25rem;">Last Date</label>
+                  <input type="date" class="form-control" id="endDate" onchange="searchBy('')" value="" style="margin-right:0.5rem;width:170px">
+                  <!-- END DATE -->
+                  <label style="margin-right:0.5rem;margin-top:0.25rem;">First Date</label>
+                  <input type="date" class="form-control" id="startDate" onchange="searchBy('')" value="" style="margin-right:2rem;width:170px">
+                  <label style="margin-right:0.5rem;margin-top:0.25rem;">Activity Date</label>
+                  <!-- Start Date -->
+                  <input type="text" class="form-control" id="actDate"  value="" style="margin-right:0.5rem;background:white;width:200px" readonly>
+                </div>
+                <table id="myTable" class="table table-bordered table-hover" style="height:100%">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <th>Activity Name</th>
+                      <th>Date Created</th>
+                      <th>First Date</th>
+                      <th>Last Date</th>
+                      <th>Passengers</th>
+                    </tr>
+                  </thead>
+                  <tbody id="searchTable">
+                    <?php
+                      displayAllList($db,'','');
+                      updateNotificationStatusWait($db);
+                    ?>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <th>Activity Name</th>
+                      <th>Date Created</th>
+                      <th>First Date</th>
+                      <th>Last Date</th>
+                      <th>Passengers</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
       </div>
     </section>
     
@@ -391,7 +415,23 @@
                   type:'post',
                   url:'../php/display/waitlist.php',
                   success:function(response){
-                    document.getElementById("searchTable").innerHTML=response;
+                    $("#myTable").DataTable().destroy();
+                    $("#searchTable").html(response);
+                    $('#myTable').DataTable({
+                      "oLanguage": {
+                        "sLengthMenu": "Show Entries _MENU_",
+                      },
+                        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                        "pageLength":10,
+                        "paging": true,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "responsive": true,
+                        "buttons": ["excel", "pdf", "print"]
+                      }).buttons().container().appendTo('#beforeLD');
+                        
                   }
                 });
                 $('.modal').modal('hide');
@@ -437,7 +477,6 @@
       document.getElementById("canSpam").required=false;
     }
       function sendEmail(){
-        
         var list=[];
         var ctr=0;
         var tempName = document.getElementById("tempname").value;
@@ -479,14 +518,31 @@
                   type:'post',
                   url:'../php/display/waitlist.php',
                   success:function(response){
-                    document.getElementById("searchTable").innerHTML=response;
+                    $("#myTable").DataTable().destroy();
+                    $("#searchTable").html(response);
+                    $('#myTable').DataTable({
+                      "oLanguage": {
+                        "sLengthMenu": "Show Entries _MENU_",
+                      },
+                        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                        "pageLength":10,
+                        "paging": true,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "responsive": true,
+                        "buttons": ["excel", "pdf", "print"]
+                      }).buttons().container().appendTo('#beforeLD');
+                      
                   }
                 });
                 document.getElementById("logoloader").style.display="none";
                 document.getElementById("selectAll").checked=false;
-                document.getElementById("sendEmailForm").reset();
                 document.getElementById("canSpam").checked=false;
+                document.getElementById("subject1").value='';
                 $('#text1').summernote('code','');
+                document.getElementById("tempname").selectedIndex = "0";
               }else{
                 toastr.error(response);
                 document.getElementById("logoloader").style.display="none";
@@ -527,7 +583,23 @@
                 type:'post',
                 url:'../php/display/waitlist.php',
                 success:function(response){
-                  document.getElementById("searchTable").innerHTML=response;
+                  $("#myTable").DataTable().destroy();
+                  $("#searchTable").html(response);
+                  $('#myTable').DataTable({
+                    "oLanguage": {
+                      "sLengthMenu": "Show Entries _MENU_",
+                    },
+                      dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                      "pageLength":10,
+                      "paging": true,
+                      "searching": false,
+                      "ordering": true,
+                      "info": true,
+                      "autoWidth": false,
+                      "responsive": true,
+                      "buttons": ["excel", "pdf", "print"]
+                    }).buttons().container().appendTo('#beforeLD');
+                    
                 }
               });
               $('.modal').modal('hide');
@@ -651,7 +723,23 @@
                     type:'post',
                     url:'../php/display/waitlist.php',
                     success:function(response){
-                      document.getElementById("searchTable").innerHTML=response;
+                      $("#myTable").DataTable().destroy();
+                      $("#searchTable").html(response);
+                      $('#myTable').DataTable({
+                        "oLanguage": {
+                          "sLengthMenu": "Show Entries _MENU_",
+                        },
+                          dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                          "pageLength":10,
+                          "paging": true,
+                          "searching": false,
+                          "ordering": true,
+                          "info": true,
+                          "autoWidth": false,
+                          "responsive": true,
+                          "buttons": ["excel", "pdf", "print"]
+                        }).buttons().container().appendTo('#beforeLD');
+                        
                     }
                   });
                   document.getElementById("selectAll").checked=false;
@@ -687,6 +775,7 @@
         var edate = document.getElementById("endDate").value;
         var displayType = document.getElementById("displayType").value;
         var dateCreated = document.getElementById("dateCreated").value;
+        var passengers = document.getElementById("passengersNum").value;
         $.ajax({
           type: 'get',
           url: '../php/waitlist/searchWaitlist.php',
@@ -700,10 +789,28 @@
             endDate:endDate,
             displayType:displayType,
             dateCreated:dateCreated,
+            passengers:passengers,
 
           },
           success:function(response){
-            document.getElementById("searchTable").innerHTML=response;
+            
+            $("#myTable").DataTable().destroy();
+            $("#searchTable").html(response);
+            $('#myTable').DataTable({
+              "oLanguage": {
+                "sLengthMenu": "Show Entries _MENU_",
+              },
+                dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                "pageLength":10,
+                "paging": true,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "buttons": ["excel", "pdf", "print"]
+              }).buttons().container().appendTo('#beforeLD');
+                      
           }
         });
         return false;
@@ -777,11 +884,10 @@
               </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Send Email</button>
+          <button type="submit" onclick="sendEmail()" class="btn btn-primary">Send Email</button>
           <button type="button" class="btn btn-secondary" onclick="w3.hide('#warningBulk')" data-dismiss="modal">Close</button>
           
         </div>
-      </form>
       </div>
     </div>
   </div>
@@ -903,6 +1009,19 @@
   <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
 <!-- SUMMERNOTE -->
 <script src="../plugins/summernote/summernote-bs4.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../plugins/jszip/jszip.min.js"></script>
+<script src="../plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -936,7 +1055,22 @@
     searchBy('');
   });
 });
-
+$(function(){
+  $('#myTable').DataTable({
+    "oLanguage": {
+      "sLengthMenu": "Show Entries _MENU_",
+    },
+      dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+      "pageLength":10,
+      "paging": true,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "buttons": ["excel", "pdf", "print"]
+    }).buttons().container().appendTo('#beforeLD');
+});
 </script>
 </body>
 </html>

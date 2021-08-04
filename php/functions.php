@@ -6,25 +6,27 @@
     $countW = getNotificationCountWait($db);
     $countC = getNotificationCountClient($db);
     $countU = getNotificationCountUser($db);
-    if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 || $_SESSION['countNotifW'] !=$countW ){
-        if($_SESSION['countNotifW'] != $countW && $countW == 0){
-          $_SESSION['countNotifW']+=0;
-        }else{
-          $_SESSION['countNotifW']=$countW;
+    if(isset($_SESSION['login']) && $_SESSION['login']){
+        if(!isset($_SESSION['countNotifW']) || $_SESSION['countNotifW']==0 || $_SESSION['countNotifW'] !=$countW ){
+            if($_SESSION['countNotifW'] != $countW && $countW == 0){
+                $_SESSION['countNotifW']+=0;
+            }else{
+                $_SESSION['countNotifW']=$countW;
+            }
         }
-    }
-    if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 || $_SESSION['countNotifC'] !=$countC){
-        if($_SESSION['countNotifC'] != $countC&& $countC == 0){
-          $_SESSION['countNotifC']+=0;
-        }else{
-          $_SESSION['countNotifC']=$countC;
+        if(!isset($_SESSION['countNotifC']) || $_SESSION['countNotifC']==0 || $_SESSION['countNotifC'] !=$countC){
+            if($_SESSION['countNotifC'] != $countC&& $countC == 0){
+                $_SESSION['countNotifC']+=0;
+            }else{
+                $_SESSION['countNotifC']=$countC;
+            }
         }
-    }
-    if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 || $_SESSION['countNotifU'] !=$countU ){
-        if($_SESSION['countNotifU'] != $countU&& $countU == 0){
-          $_SESSION['countNotifU']+=0;
-        }else{
-          $_SESSION['countNotifU']=$countU;
+        if(!isset($_SESSION['countNotifU']) || $_SESSION['countNotifU']==0 || $_SESSION['countNotifU'] !=$countU ){
+            if($_SESSION['countNotifU'] != $countU&& $countU == 0){
+                $_SESSION['countNotifU']+=0;
+            }else{
+                $_SESSION['countNotifU']=$countU;
+            }
         }
     }
     function displayTemplates($db){

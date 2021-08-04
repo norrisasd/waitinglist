@@ -9,21 +9,23 @@
     $bedate=$_GET['endDate'];
     $displayType=$_GET['displayType'];
     $dateCreated = $_GET['dateCreated'];
+    $passengers=$_GET['passengers'];
+    $passengers=$passengers==''?'':'AND waitlist_num_passengers='.$passengers.'';
     $bcheck = $bsdate == '' && $bedate =='';
     if($displayType == "" && $dateCreated =="" ){
-        $query="SELECT * FROM waitlist WHERE waitlist_enabled = 1";
+        $query="SELECT * FROM waitlist WHERE waitlist_enabled = 1 $passengers";
     }else if($displayType !="" && $dateCreated == ""){
-        $query="SELECT * FROM waitlist WHERE waitlist_approval_sent = $displayType AND waitlist_enabled = 1 ";
+        $query="SELECT * FROM waitlist WHERE waitlist_approval_sent = $displayType AND waitlist_enabled = 1 $passengers";
     }else if($displayType =="" && $dateCreated !=""){
-        $query="SELECT * FROM waitlist WHERE waitlist_date_created = '$dateCreated' AND waitlist_enabled = 1";
+        $query="SELECT * FROM waitlist WHERE waitlist_date_created = '$dateCreated' AND waitlist_enabled = 1 $passengers";
     }else{
-        $query="SELECT * FROM waitlist WHERE waitlist_date_created = '$dateCreated' AND waitlist_approval_sent = $displayType AND waitlist_enabled = 1";
+        $query="SELECT * FROM waitlist WHERE waitlist_date_created = '$dateCreated' AND waitlist_approval_sent = $displayType AND waitlist_enabled = 1 $passengers";
     }
     $result=mysqli_query($db,$query);
     $str="";
     while($data=mysqli_fetch_assoc($result)){
         $text ='
-        <tr class="tableItem">
+        <tr class="tableItem" style="color:gray">
             <th scope="row"><input type="checkbox" name="list[]" value=""><input type="checkbox" name="waitlist_id[]" value="'.$data['waitlist_id'].'" style="display:none;"></th>
             <td><a href="#" onclick="info('.$data['waitlist_id'].')" data-toggle="modal" data-target="#info">'.$data['name'].'</a></td>
             <td>'.$data['phone'].'</td>
@@ -157,12 +159,12 @@
             }
         }else if(stristr($name,substr($data[$type],0,strlen($name))) && $sdate=="" && $edate=="" && $aname == ""){// search alone 15
             $str.=$text;
+        }else if($passengers != ""){
+            $str.=$text;
         }
     }  
-    if($name == "" && $str =="" && $sdate=="" && $edate=="" && $aname =="" && $bcheck ){
+    if($name == "" && $str =="" && $sdate=="" && $edate=="" && $aname =="" && $bcheck && $passengers=="" ){
         displayAllList($db,$displayType,$dateCreated);
-    }else if($str === ""){
-        echo  'No Results Found';
     }else{
         echo $str;
     }

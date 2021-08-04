@@ -263,14 +263,13 @@
                   <option value="email">email</option>
         </select> -->
         <!-- <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label> -->
-        <table class="table" id="myTable">
+        <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>
               <th scope="col"></th>
               <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Username</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Email</th>
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Access</th>
-              <th scope="col"></th>
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return deleteClient();">
@@ -282,6 +281,12 @@
           </tbody>
           <button type="submit" id="delCli" style="display:none"></button>
           </form>
+          <tfooter>
+            <th scope="col"></th>
+              <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Username</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Email</th>
+              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Access</th>
+          </tfooter>
         </table>
       </div>
     </section>

@@ -17,6 +17,10 @@
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -296,16 +300,19 @@
                   <option value="client_dnd">DND</option>
                   <option value="client_enabled">Enabled</option>
         </select> -->
-        <table class="table" id="myTable">
+        <div id="beforeLD">
+          <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true" style="margin-left:0.6%"></i>
+        </div>
+        <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>
-              <th scope="col"></th>
-              <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Name</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Phone</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Email</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Date Created</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">DND</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Status</th>
+              <th></th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Date Created</th>
+              <th>DND</th>
+              <th>Status</th>
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return disableClient();">
@@ -315,7 +322,18 @@
               updateNotificationStatusClient($db);
             ?>
           </tbody>
-          <button type="submit" id="delCli" style="display:none"></button>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Date Created</th>
+              <th>DND</th>
+              <th>Status</th>
+            </tr>
+          </tfoot>
+          <button type="button" id="delCli" onclick="disableClient()" style="display:none"></button>
           </form>
         </table>
       </div>
@@ -378,7 +396,22 @@
                   type:'post',
                   url:'../php/display/client.php',
                   success:function(response){
-                    document.getElementById("searchTable").innerHTML=response;
+                    $("#myTable").DataTable().destroy();
+                    $("#searchTable").html(response);
+                    $('#myTable').DataTable({
+                      "oLanguage": {
+                        "sLengthMenu": "Show Entries _MENU_",
+                      },
+                        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                        "pageLength":10,
+                        "paging": true,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "responsive": true,
+                        "buttons": ["excel", "pdf", "print"]
+                      }).buttons().container().appendTo('#beforeLD');
                   }
                 });
               $('.modal').modal('hide');
@@ -413,7 +446,22 @@
                   type:'post',
                   url:'../php/display/client.php',
                   success:function(response){
-                    document.getElementById("searchTable").innerHTML=response;
+                    $("#myTable").DataTable().destroy();
+                    $("#searchTable").html(response);
+                    $('#myTable').DataTable({
+                      "oLanguage": {
+                        "sLengthMenu": "Show Entries _MENU_",
+                      },
+                        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                        "pageLength":10,
+                        "paging": true,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "responsive": true,
+                        "buttons": ["excel", "pdf", "print"]
+                      }).buttons().container().appendTo('#beforeLD');
                   }
                 });
             }else{
@@ -449,7 +497,22 @@
                   type:'post',
                   url:'../php/display/client.php',
                   success:function(response){
-                    document.getElementById("searchTable").innerHTML=response;
+                    $("#myTable").DataTable().destroy();
+                    $("#searchTable").html(response);
+                    $('#myTable').DataTable({
+                      "oLanguage": {
+                        "sLengthMenu": "Show Entries _MENU_",
+                      },
+                        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                        "pageLength":10,
+                        "paging": true,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "responsive": true,
+                        "buttons": ["excel", "pdf", "print"]
+                      }).buttons().container().appendTo('#beforeLD');
                   }
                 });
               }else{
@@ -504,7 +567,22 @@
                   type:'post',
                   url:'../php/display/client.php',
                   success:function(response){
-                    document.getElementById("searchTable").innerHTML=response;
+                    $("#myTable").DataTable().destroy();
+                    $("#searchTable").html(response);
+                    $('#myTable').DataTable({
+                      "oLanguage": {
+                        "sLengthMenu": "Show Entries _MENU_",
+                      },
+                        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                        "pageLength":10,
+                        "paging": true,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "responsive": true,
+                        "buttons": ["excel", "pdf", "print"]
+                      }).buttons().container().appendTo('#beforeLD');
                   }
                 });
                 document.getElementById("selectAllBox").checked=false;
@@ -556,8 +634,23 @@
                     type:'post',
                     url:'../php/display/client.php',
                     success:function(response){
-                      document.getElementById("searchTable").innerHTML=response;
-                    }
+                      $("#myTable").DataTable().destroy();
+                      $("#searchTable").html(response);
+                      $('#myTable').DataTable({
+                        "oLanguage": {
+                          "sLengthMenu": "Show Entries _MENU_",
+                        },
+                          dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                          "pageLength":10,
+                          "paging": true,
+                          "searching": false,
+                          "ordering": true,
+                          "info": true,
+                          "autoWidth": false,
+                          "responsive": true,
+                          "buttons": ["excel", "pdf", "print"]
+                        }).buttons().container().appendTo('#beforeLD');
+                      }
                   });
                   document.getElementById("selectAllBox").checked=false;
                 }
@@ -588,7 +681,22 @@
 
           },
           success:function(response){
-            document.getElementById("searchTable").innerHTML=response;
+            $("#myTable").DataTable().destroy();
+            $("#searchTable").html(response);
+            $('#myTable').DataTable({
+              "oLanguage": {
+                "sLengthMenu": "Show Entries _MENU_",
+              },
+                dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                "pageLength":10,
+                "paging": true,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "buttons": ["excel", "pdf", "print"]
+              }).buttons().container().appendTo('#beforeLD');
           }
         });
         return false;
@@ -688,6 +796,19 @@
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Toastr -->
 <script src="../plugins/toastr/toastr.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../plugins/jszip/jszip.min.js"></script>
+<script src="../plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -696,11 +817,22 @@
   toastr.options.progressBar = true;
   toastr.options.preventDuplicates = true;
   toastr.options.closeButton = true;
-// $(document).ready(function(){
-//   $(document).on("click","#archiveBtn",function(){
-//     checkDelete();
-//   });
-// });
+  $(function(){
+    $('#myTable').DataTable({
+      "oLanguage": {
+        "sLengthMenu": "Show Entries _MENU_",
+      },
+        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+        "pageLength":10,
+        "paging": true,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+        "buttons": ["excel", "pdf", "print"]
+      }).buttons().container().appendTo('#beforeLD');
+  });
 </script>
 </body>
 </html>

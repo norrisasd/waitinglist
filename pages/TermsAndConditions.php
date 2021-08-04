@@ -1,7 +1,3 @@
-<?php
-//connection
-    require '../php/functions.php';
-?>
 <!DOCTYPE html>
 <html>
 <head>

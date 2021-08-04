@@ -258,7 +258,7 @@
                   <option value="message">Message</option>
         </select>
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label> -->
-        <table class="table" id="myTable">
+        <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>
               <th scope="col"></th>
