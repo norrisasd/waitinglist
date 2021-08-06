@@ -255,13 +255,16 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <section class="content">
+    <section class="content" id="myTable">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div id="myTable" style="display:flex;margin:auto">
-        <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:400px;max-width:400px;width: expression(this.width > 500 ? 500: true);margin:0 0 0 auto" id="profPic" class="img-thumbmail" alt="User Image">
-        <table class="table" style="width:300px;margin:6rem auto 6rem 3rem;">
+        <div class="row" >
+          <div class="col-6" style="text-align:right">
+            <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:400px;max-width:400px;width: expression(this.width > 500 ? 500: true)" id="profPic" class="img-thumbmail" alt="User Image">
+          </div>
+        
+        <div class="col-auto">
+          <table table class="table" style="width:300px;">
             <thead>
                 <br><br>
             </thead>
@@ -289,7 +292,7 @@
                 </tr> 
             </tbody>
             </table>
-            </div>
+        </div>
         </div>
         <!-- /.row -->
         <!-- Main row -->
@@ -311,6 +314,7 @@
                 toastr.success(response);
                 $( "#myTable" ).load( "accountSettings.php #myTable" );
                 $('.modal').modal('hide');
+                document.getElementById("email").value="";
               }else{
                 toastr.error(data);
               }
@@ -332,6 +336,7 @@
                 toastr.success(response);
                 $( "#myTable" ).load( "accountSettings.php #myTable" );
                 $('.modal').modal('hide');
+                document.getElementById("username").value="";
               }else{
                 toastr.error(data);
               }
@@ -353,6 +358,7 @@
                 toastr.success(response);
                 $( "#myTable" ).load( "accountSettings.php #myTable" );
                 $('.modal').modal('hide');
+                document.getElementById("password").value="";
               }else{
                 toastr.error(data);
               }
@@ -378,6 +384,7 @@
                   toastr.success(data);
                   $( "#myTable" ).load( "accountSettings.php #myTable" );
                   $('.modal').modal('hide');
+                  document.getElementById("file").value="";
                 }else{
                   toastr.error(data);
                 }

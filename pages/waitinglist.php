@@ -53,6 +53,10 @@
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    
+    }
+    @media only screen and (max-width: 600px){
+      
     }
 </style>
 </head>
@@ -169,7 +173,7 @@
       <!-- SidebarSearch Form -->
       <div class="form-inline">
         <div class="input-group">
-          <input class="form-control form-control-sidebar" type="search" oninput="w3.filterHTML('#myTable', '.tableItem', this.value)" placeholder="Search" aria-label="Search">
+          <input class="form-control form-control-sidebar" type="search" oninput="searchDatatable(this.value)" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -325,39 +329,61 @@
         
               <div class="card-body">
                 <div class="row">
-                  <input type="checkbox" value="" id="selectAll" style="margin:5px 10px" onclick="selectAll(this)"> <span>Select All</span>
-                  <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:15px;"  onclick="checkSend()">Send</button>
-                  <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;margin-right:2%" onclick="exportDataModal()">Export</button>
-                  <label style="margin-right:0.5rem;margin-top:0.25rem;">Passengers</label>
-                  <input type="number" class="form-control" id="passengersNum" onchange="searchBy('')" style="margin-right:1.7%;width:70px" min="0" max="99">
-                  <label style="margin-right:0.5rem;margin-top:0.25rem;">Date Created</label>
-                  <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="<?php echo isset($_SESSION['setDate'])?$_SESSION['setDate']:'';?>" style="margin-right:1.7%;width:170px">
-                  <label style="margin-right:0.5rem;margin-top:0.25rem">Display </label>
-                  <select id="displayType" class="form-control" onchange="searchBy('')" style="margin-right:1.7%;width:170px;">
-                      <option value="">All</option>
-                      <option value="1">Sent</option>
-                      <option value="0">Not Sent</option>
-                  </select>
-                  
-                  <label style="margin-right:0.5rem;margin-top:0.25rem">Activity Name</label>
-                  <select id="actName" class="form-control" onchange="searchBy('')" style="margin-right:1.5rem;width:200px">
-                    <option value="" selected>Select</option>
-                    <?php getAllActivity($db);?>
-                  </select>
-                  
-                </div>
-                <div class="row" id="2ndRow" style="margin-top:0.2%;margin-bottom:0.5%;margin-left:0.5%">
-                  <div id="beforeLD" style="margin-right:20.4%">
-                  <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true"></i>
+                  <div class="col-auto" style="padding-top:1%">
+                    <input type="checkbox" value="" id="selectAll" style="margin:5px 0.3%" onclick="selectAll(this)"> 
                   </div>
-                  <label style="margin-right:0.5rem;margin-top:0.25rem;">Last Date</label>
-                  <input type="date" class="form-control" id="endDate" onchange="searchBy('')" value="" style="margin-right:0.5rem;width:170px">
+                  <span style="padding-top:1%">Select All</span>
+                  <div class="col-auto" style="padding-top:1%">
+                    <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:0.5%;"  onclick="checkSend()">Send</button>
+                  </div>
+                  <div class="col-auto" style="padding-left:0;padding-top:1%">
+                    <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:0.3%;margin-right:1%" onclick="exportDataModal()">Export</button>
+                  </div>
+                  <div class="col-auto">
+                    <label for="passengersNum">Passengers</label>
+                    <input type="number" class="form-control" id="passengersNum" onchange="searchBy('')" style="margin-right:0.5%;width:70px;" min="0" max="99">
+                  </div>
+                  <div class="col-auto">
+                    <label for="dateCreated">Date Created</label>
+                    <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="<?php echo isset($_SESSION['setDate'])?$_SESSION['setDate']:'';?>" style="margin-right:0.5%;width:170px">
+                  </div>
+                  <div class="col-auto">
+                    <label for="displayType">Display </label>
+                    <select id="displayType" class="form-control" onchange="searchBy('')" style="margin-right:0.5%;width:170px;">
+                        <option value="">All</option>
+                        <option value="1">Sent</option>
+                        <option value="0">Not Sent</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <label for="actName">Activity Name</label>
+                    <select id="actName" class="form-control" onchange="searchBy('')" style="margin-right:0.5%;width:150px">
+                      <option value="" selected>Select</option>
+                      <?php getAllActivity($db);?>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <label for="endDate">Last Date</label>
+                    <input type="date" class="form-control" id="endDate" onchange="searchBy('')" value="" style="margin-right:0.5%;width:170px">
+                  </div>
+                  <div class="col-auto">
+                    <label for="startDate">First Date</label>
+                    <input type="date" class="form-control" id="startDate" onchange="searchBy('')" value="" style="margin-right:0.5%;width:170px">
+                  </div>
+                  <div class="col-auto">
+                  <label for="actDate">Activity Date</label>
+                    <!-- Start Date -->
+                  <input type="text" class="form-control" id="actDate"  value="" style="margin-right:0.5%;background:white;width:200px" readonly>
+                 </div>
+                </div>
+                <div class="row" id="2ndRow">
+                  <div class="col" id="beforeLD" style="margin-right:1%;">
+                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true"></i>
+                  </div>
+                  
+                  
                   <!-- END DATE -->
-                  <label style="margin-right:0.5rem;margin-top:0.25rem;">First Date</label>
-                  <input type="date" class="form-control" id="startDate" onchange="searchBy('')" value="" style="margin-right:2rem;width:170px">
-                  <label style="margin-right:0.5rem;margin-top:0.25rem;">Activity Date</label>
-                  <!-- Start Date -->
-                  <input type="text" class="form-control" id="actDate"  value="" style="margin-right:0.5rem;background:white;width:200px" readonly>
+                 
                 </div>
                 <table id="myTable" class="table table-bordered table-hover" style="height:100%">
                   <thead>
@@ -1063,7 +1089,7 @@ $(function(){
       dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
       "pageLength":10,
       "paging": true,
-      "searching": false,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": false,
@@ -1071,6 +1097,9 @@ $(function(){
       "buttons": ["excel", "pdf", "print"]
     }).buttons().container().appendTo('#beforeLD');
 });
+  function searchDatatable(name){
+    $('#myTable').DataTable().search(name).draw();
+  }
 </script>
 </body>
 </html>

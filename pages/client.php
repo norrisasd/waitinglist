@@ -135,8 +135,8 @@
 
       <!-- SidebarSearch Form -->
       <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" oninput="w3.filterHTML('#myTable', '.tableItem', this.value)" placeholder="Search" aria-label="Search">
+        <div class="input-group">
+          <input class="form-control form-control-sidebar" type="search" oninput="searchDatatable(this.value)" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -276,19 +276,31 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid" id="mainBox">
-        <input type="checkbox" value="" style="margin-left:10px;" id="selectAllBox" onclick="selectAll(this)"> Select All
-        <button type="button" class="btn btn-danger" id="archiveBtn" style="margin-bottom:5px;margin-left:10px;"  onclick="checkDelete()">Archive</button>
-        <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
+        <div class="row">
+          <div class="col-auto" style="padding-top:1%">
+            <input type="checkbox" value="" style="margin:5px 0.3%" id="selectAllBox" onclick="selectAll(this)">
+          </div>
+          <span style="padding-top:1%">Select All</span>
+          <div class="col-auto" style="padding-right:0;padding-top:1%">
+            <button type="button" class="btn btn-danger" id="archiveBtn" style="margin-bottom:5px;margin-left:10px;"  onclick="checkDelete()">Archive</button>
+          </div>
+          <div class="col-auto" style="padding-left:0;padding-top:1%">
+            <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
+          </div>
+          <div class="col-auto">
+            <label for="dndFilter" >Filter DND</label>
+            <select id="dndFilter" class="form-control" onchange="searchBy('')" style="margin-right:0.5%;width:170px">
+              <option value="" selected>Select</option>
+              <option value="1">Check</option>
+              <option value="0">Uncheck</option>
+            </select>
+          </div>
+          <div class="col-auto">
+            <label for="dateCreated">Date Created</label>
+            <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="" style="margin-right:0.5%;width:170px">
+          </div>
+        </div>
         
-        <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:120px">
-          <option value="" selected>Select</option>
-          <option value="1">Check</option>
-          <option value="0">Uncheck</option>
-        </select>
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Filter DND</label>
-        
-        <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:170px">
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Date Created</label>
         <!-- <a href="#" data-toggle="modal" data-target="#addClient" style="float:right;margin-right:1rem;margin-top:0.2rem"> FORM</a>
         <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy Client Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
         
@@ -300,9 +312,12 @@
                   <option value="client_dnd">DND</option>
                   <option value="client_enabled">Enabled</option>
         </select> -->
-        <div id="beforeLD">
-          <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true" style="margin-left:0.6%"></i>
+        <div class="col">
+          <div id="beforeLD">
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true" style="margin-left:0.6%"></i>
+          </div>
         </div>
+        
         <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>
@@ -825,7 +840,7 @@
         dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
         "pageLength":10,
         "paging": true,
-        "searching": false,
+        "searching": true,
         "ordering": true,
         "info": true,
         "autoWidth": false,
@@ -833,6 +848,9 @@
         "buttons": ["excel", "pdf", "print"]
       }).buttons().container().appendTo('#beforeLD');
   });
+  function searchDatatable(name){
+    $('#myTable').DataTable().search(name).draw();
+  }
 </script>
 </body>
 </html>
