@@ -18,6 +18,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+   <!-- DataTables -->
+  <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -134,8 +138,8 @@
 
       <!-- SidebarSearch Form -->
       <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" oninput="w3.filterHTML('#myTable', '.tableItem', this.value)" placeholder="Search" aria-label="Search">
+        <div class="input-group">
+          <input class="form-control form-control-sidebar" type="search" oninput="searchDatatable(this.value)" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -272,42 +276,71 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <input type="checkbox" value="" id="selectAll" onclick="selectAll(this)" style="margin-left:10px"> Select All
-        <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px"  onclick="checkDelete()">Delete</button>
-        <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:5px"  onclick="checkEnable()">Unarchive</button>
-        <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
-        <select id="dndFilter" class="form-control" onchange="searchBy('')" style="float:right;margin-right:1rem;width:100px">
-          <option value="" selected>Select</option>
-          <option value="1">Check</option>
-          <option value="0">Uncheck</option>
-        </select>
-        <label style="float:right;margin-right:1rem;">Filter DND</label>
-        <input type="date" id="dateCreated" class="form-control" onchange="searchBy('')" value="" style="float:right;margin-right:1rem;width:140px">
-        <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Date Created</label>
-        <div style="overflow-x:auto;">
-        <table class="table" id="myTable">
+        <div class="row">
+          <div class="col-auto" style="padding-top:1%">
+            <input type="checkbox" value="" id="selectAll" onclick="selectAll(this)" style="margin:5px 0.3%">
+          </div>
+          <span style="margin-top:1%">Select All</span>
+          <div class="col-auto" style="padding-right:0;padding-top:1%">
+            <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px;"  onclick="checkDelete()">Delete</button>
+          </div>
+          <div class="col-auto" style="padding-left:0;padding-right:0%;padding-top:1%">
+            <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:5px"  onclick="checkEnable()">Unarchive</button>
+          </div>
+          <div class="col-auto" style="padding-left:0;padding-top:1%">
+            <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:5px;" onclick="exportDataModal()">Export</button>
+          </div>
+          <div class="col-auto">
+            <label for="dndFilter">Filter DND</label>
+            <select id="dndFilter" class="form-control" onchange="searchBy('')" style="margin-right:0.5%;width:170px">
+              <option value="" selected>Select</option>
+              <option value="1">Check</option>
+              <option value="0">Uncheck</option>
+            </select>
+          </div>
+          <div class="col-auto">
+            <label for="dateCreated">Date Created</label>
+            <input type="date" id="dateCreated" class="form-control" onchange="searchBy('')" value="" style="margin-right:0.5%;width:170px">
+          </div>
+        
+        
+        
+        
+        
+        
+        </div>
+         
+        
+        <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>
-              <th scope="col"></th>
-              <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Name</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Phone</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Email</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(5)')">Date Created</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(6)')">DND</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(7)')">Status</th>
               <th></th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Date Created</th>
+              <th>DND</th>
+              <th>Status</th>
             </tr>
           </thead>
-          <form method="post" action="" onsubmit="return deleteClient();">
           <tbody id="searchTable">
             <?php 
               displayAllClientsDisabled($db);
             ?>
           </tbody>
-          <button type="submit" id="delCli" style="display:none"></button>
-          </form>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Date Created</th>
+              <th>DND</th>
+              <th>Status</th>
+            </tr>
+          </tfoot>
+          <button type="submit" id="delCli" onclick="deleteClient()" style="display:none"></button>
         </table>
-        </div>
       </div>
     </section>
     
@@ -380,7 +413,22 @@
                 type:'post',
                 url:'../../php/display/clientArchive.php',
                 success:function(response){
-                  document.getElementById("searchTable").innerHTML=response;
+                  $("#myTable").DataTable().destroy();
+                  $("#searchTable").html(response);
+                  $('#myTable').DataTable({
+                    "oLanguage": {
+                      "sLengthMenu": "Show Entries _MENU_",
+                    },
+                      dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                      "pageLength":10,
+                      "paging": true,
+                      "searching": false,
+                      "ordering": true,
+                      "info": true,
+                      "autoWidth": false,
+                      "responsive": true,
+                      "buttons": ["excel", "pdf", "print"]
+                    }).buttons().container().appendTo('#beforeLD');
                 }
               });
               document.getElementById("selectAll").checked=false;
@@ -411,7 +459,22 @@
                 type:'post',
                 url:'../../php/display/clientArchive.php',
                 success:function(response){
-                  document.getElementById("searchTable").innerHTML=response;
+                  $("#myTable").DataTable().destroy();
+                  $("#searchTable").html(response);
+                  $('#myTable').DataTable({
+                    "oLanguage": {
+                      "sLengthMenu": "Show Entries _MENU_",
+                    },
+                      dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                      "pageLength":10,
+                      "paging": true,
+                      "searching": false,
+                      "ordering": true,
+                      "info": true,
+                      "autoWidth": false,
+                      "responsive": true,
+                      "buttons": ["excel", "pdf", "print"]
+                    }).buttons().container().appendTo('#beforeLD');
                 }
               });
               $('.modal').modal('hide');
@@ -472,7 +535,22 @@
                   type:'post',
                   url:'../../php/display/clientArchive.php',
                   success:function(response){
-                    document.getElementById("searchTable").innerHTML=response;
+                    $("#myTable").DataTable().destroy();
+                    $("#searchTable").html(response);
+                    $('#myTable').DataTable({
+                      "oLanguage": {
+                        "sLengthMenu": "Show Entries _MENU_",
+                      },
+                        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                        "pageLength":10,
+                        "paging": true,
+                        "searching": false,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "responsive": true,
+                        "buttons": ["excel", "pdf", "print"]
+                      }).buttons().container().appendTo('#beforeLD');
                   }
                 });
                 $('.modal').modal('hide');
@@ -526,7 +604,22 @@
                     type:'post',
                     url:'../../php/display/clientArchive.php',
                     success:function(response){
-                      document.getElementById("searchTable").innerHTML=response;
+                      $("#myTable").DataTable().destroy();
+                      $("#searchTable").html(response);
+                      $('#myTable').DataTable({
+                        "oLanguage": {
+                          "sLengthMenu": "Show Entries _MENU_",
+                        },
+                          dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                          "pageLength":10,
+                          "paging": true,
+                          "searching": false,
+                          "ordering": true,
+                          "info": true,
+                          "autoWidth": false,
+                          "responsive": true,
+                          "buttons": ["excel", "pdf", "print"]
+                        }).buttons().container().appendTo('#beforeLD');
                     }
                   });
               }
@@ -577,7 +670,22 @@
                     type:'post',
                     url:'../../php/display/clientArchive.php',
                     success:function(response){
-                      document.getElementById("searchTable").innerHTML=response;
+                      $("#myTable").DataTable().destroy();
+                      $("#searchTable").html(response);
+                      $('#myTable').DataTable({
+                        "oLanguage": {
+                          "sLengthMenu": "Show Entries _MENU_",
+                        },
+                          dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                          "pageLength":10,
+                          "paging": true,
+                          "searching": false,
+                          "ordering": true,
+                          "info": true,
+                          "autoWidth": false,
+                          "responsive": true,
+                          "buttons": ["excel", "pdf", "print"]
+                        }).buttons().container().appendTo('#beforeLD');
                     }
                   });
                   document.getElementById("selectAll").checked=false;
@@ -612,7 +720,22 @@
 
           },
           success:function(response){
-            document.getElementById("searchTable").innerHTML=response;
+            $("#myTable").DataTable().destroy();
+            $("#searchTable").html(response);
+            $('#myTable').DataTable({
+              "oLanguage": {
+                "sLengthMenu": "Show Entries _MENU_",
+              },
+                dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                "pageLength":10,
+                "paging": true,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "buttons": ["excel", "pdf", "print"]
+              }).buttons().container().appendTo('#beforeLD');
           }
         });
         return false;
@@ -711,6 +834,19 @@
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../../plugins/jszip/jszip.min.js"></script>
+<script src="../../plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../../plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../plugins/toastr/toastr.min.js"></script>
 <script src="../../dist/js/adminlte.min.js"></script>
@@ -720,6 +856,25 @@
   toastr.options.progressBar = true;
   toastr.options.preventDuplicates = true;
   toastr.options.closeButton = true;
+  $(function(){
+    $('#myTable').DataTable({
+      "oLanguage": {
+        "sLengthMenu": "Show Entries _MENU_",
+      },
+        dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+        "pageLength":10,
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+        "buttons": ["excel", "pdf", "print"]
+      }).buttons().container().appendTo('#beforeLD');
+  });
+  function searchDatatable(name){
+    $('#myTable').DataTable().search(name).draw();
+  }
 </script>
 </body>
 </html>
