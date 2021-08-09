@@ -302,12 +302,11 @@
             <label for="dateCreated">Date Created</label>
             <input type="date" id="dateCreated" class="form-control" onchange="searchBy('')" value="" style="margin-right:0.5%;width:170px">
           </div>
-        
-        
-        
-        
-        
-        
+        </div>
+        <div class="col">
+          <div id="beforeLD">
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true" style="margin-left:0.6%"></i>
+          </div>
         </div>
          
         
@@ -810,10 +809,12 @@
   
 
   <footer class="main-footer">
-    <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
-    All rights reserved.
-    <a href="../PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-    <a href="../TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    <div class="row">
+      <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
+      All rights reserved.
+      <a href="../PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+      <a href="../TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    </div>
   </footer>
 
   <!-- Control Sidebar -->

@@ -20,6 +20,10 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- TOASTRS -->
   <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
@@ -107,7 +111,7 @@
       <!-- SidebarSearch Form -->
       <div class="form-inline">
         <div class="input-group">
-          <input class="form-control form-control-sidebar" oninput="w3.filterHTML('#myTable', '.tableItem', this.value)"  type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control form-control-sidebar" oninput="searchDatatable(this.value)"  type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -247,6 +251,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <div class="card-body">
         <input type="checkbox" value="" style="margin-left:10px;" id="selectAll" onclick="selectAll(this)"> Select All
         <?php
           if($_SESSION['access'] == 1){
@@ -254,9 +259,7 @@
             <a href="#" target="_blank" data-toggle="modal" data-target="#addUser" style="margin:0.2rem 0.5rem;margin-top:0.2rem">ADD USER</a>';
           }
         ?>
-        
-         
-        <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a>
+        <!-- <a href="#" onclick="copyToClip()" data-toggle="tooltip" title="Copy User Form URL"><i class="fas fa-clipboard" style="float:right;margin-right:1.5rem;margin-top:0.45rem"></i></a> -->
         
         <!-- <select id="type" style="float:right;margin-right:1rem;margin-top:0.25rem">
                   <option value="username">Username</option>
@@ -266,10 +269,10 @@
         <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>
-              <th scope="col"></th>
-              <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Username</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Email</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Access</th>
+              <th></th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Access</th>
             </tr>
           </thead>
           <form method="post" action="" onsubmit="return deleteClient();">
@@ -281,17 +284,42 @@
           </tbody>
           <button type="submit" id="delCli" style="display:none"></button>
           </form>
-          <tfooter>
-            <th scope="col"></th>
-              <th  scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(2)')">Username</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(3)')">Email</th>
-              <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Access</th>
-          </tfooter>
+          <tfoot>
+              <th></th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Access</th>
+          </tfoot>
         </table>
+        </div>
       </div>
     </section>
     
     <script>
+    function refreshTable(){
+      $.ajax({
+        type:'post',
+        url:'../php/display/user.php',
+        success:function(response){
+          $("#myTable").DataTable().destroy();
+          $("#searchTable").html(response);
+          $('#myTable').DataTable({
+            "oLanguage": {
+              "sLengthMenu": "Show Entries _MENU_",
+            },
+              dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+              "pageLength":10,
+              "paging": true,
+              "searching": false,
+              "ordering": true,
+              "info": true,
+              "autoWidth": false,
+              "responsive": true,
+              "buttons": ["excel", "pdf", "print"]
+            }).buttons().container().appendTo('#beforeLD');
+        }
+      });
+    }
     function info(id){
         var xmlhttp=new XMLHttpRequest();
         xmlhttp.onreadystatechange=function() {
@@ -301,6 +329,42 @@
         }
         xmlhttp.open("GET","../php/user/printUserInfo.php?id="+id,true);
         xmlhttp.send();
+    }
+    function setAccess(user,type){
+      document.getElementById("btnAccess").value=user;
+      document.getElementById("radAge").checked=false;
+      document.getElementById("radAdm").checked=false;
+      document.getElementById("radMod").checked=false;
+      if(type == null){//moderator
+        document.getElementById("radMod").checked=true;
+      }
+      if(type == 0){//agent
+        document.getElementById("radAge").checked=true;
+      }
+      if(type == 1){//admin
+        document.getElementById("radAdm").checked=true;
+      }
+    }
+    function updateAccess(){
+      var user = document.getElementById("btnAccess").value;
+      var type = $("input[name=caradioBtnType]:checked","#changeAccess").val();
+      $.ajax({
+         type:'get',
+         url: '../php/user/updateAccess.php',
+         data:{
+            type:type,
+            user:user,
+         },
+         success:function(response){
+           if(response == 'Success'){
+             toastr.success(user+"'s Access Updated");
+             $(".modal").modal("hide");
+             refreshTable();
+           }else{
+             toastr.error(response);
+           }
+         }
+      });
     }
     function addUser(){
         var username=document.getElementById('username').value;
@@ -325,13 +389,12 @@
           success:function(response){
             if(response == 'Success'){
               toastr.success("Registered Successfully");
-              $( "#myTable" ).load( "user.php #myTable" );
+              refreshTable();
               $('.modal').modal('hide');
               document.getElementById("addUserModal").reset();
             }else{
               toastr.error(response);
             }
-              
           }
         });
         return false;
@@ -343,7 +406,7 @@
               if (this.readyState==4 && this.status==200) {
                 if(this.responseText== 'Success'){
                   toastr.success(user+" has no access anymore");
-                  $( "#myTable" ).load( "user.php #myTable" );
+                  refreshTable();
                   $('.modal').modal('hide');
                 }else{
                   toastr.error(this.responseText);
@@ -361,7 +424,7 @@
               if (this.readyState==4 && this.status==200) {
                 if(this.responseText== 'Success'){
                   toastr.success(user+" can access now");
-                  $( "#myTable" ).load( "user.php #myTable" );
+                  refreshTable();
                   $('.modal').modal('hide');
                 }else{
                   toastr.error(this.responseText);
@@ -402,7 +465,7 @@
                 if (this.readyState==4 && this.status==200) {
                   window.location="../php/export.php";
                   toastr.success("Exported List Successfully");
-                  $( "#myTable" ).load( "user.php #myTable" );
+                  refreshTable();
                   document.getElementById("selectAll").checked=false;
                 }
             }
@@ -444,9 +507,9 @@
         },
         success:function(response){
           if(response == 'Updated'){
-              toastr.success("Information Updated");
-              $( "#myTable" ).load( "user.php #myTable" );
-              $('.modal').modal('hide');
+            toastr.success("Information Updated");
+            refreshTable();
+            $('.modal').modal('hide');
 
           }else{
             toast.error(response);
@@ -528,10 +591,7 @@
   <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        
-      <div id="informationBody">
-          
-            
+        <div id="informationBody">
           
         </div>
       </div>
@@ -558,18 +618,55 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="changeAccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Choose Access</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="margin:auto">
+        <div class="col">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="caradioBtnType" value="1" id="radAdm" required>
+              <label class="form-check-label" for="radAdm">
+                ADMIN
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="0" name="caradioBtnType" id="radAge">
+              <label class="form-check-label" for="radAge">
+                AGENT
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="NULL" name="caradioBtnType" id="radMod">
+              <label class="form-check-label" for="radMod">
+                MODERATOR
+              </label>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick="updateAccess()" class="btn btn-primary" id="btnAccess">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <footer class="main-footer">
-    <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
-    All rights reserved.
-    <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-    <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    <div class="row">
+      <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
+      All rights reserved.
+      <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+      <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    </div>
   </footer>
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
@@ -586,6 +683,19 @@
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- TOASTRS -->
 <script src="../plugins/toastr/toastr.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../plugins/jszip/jszip.min.js"></script>
+<script src="../plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -594,6 +704,25 @@
   toastr.options.progressBar = true;
   toastr.options.preventDuplicates = true;
   toastr.options.closeButton = true;
+  $(function(){
+  $('#myTable').DataTable({
+    "oLanguage": {
+      "sLengthMenu": "Show Entries _MENU_",
+    },
+      dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+      "pageLength":10,
+      "paging": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "buttons": ["excel", "pdf", "print"]
+    }).buttons().container().appendTo('#beforeLD');
+  });
+  function searchDatatable(name){
+    $('#myTable').DataTable().search(name).draw();
+  }
 </script>
 </body>
 </html>

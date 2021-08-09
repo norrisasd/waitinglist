@@ -17,6 +17,10 @@
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- SUMMERNOTE -->
   <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -108,8 +112,8 @@
 
       <!-- SidebarSearch Form -->
       <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" oninput="w3.filterHTML('#myTable', '.tableItem', this.value)" placeholder="Search" aria-label="Search">
+        <div class="input-group">
+          <input class="form-control form-control-sidebar" type="search" oninput="searchDatatable(this.value)" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-sidebar">
               <i class="fas fa-search fa-fw"></i>
@@ -249,6 +253,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <div class="card-body">
         <input type="checkbox" value="" style="margin-left:10px" id="selectAll" onclick="selectAll(this)"> Select All
         <button type="button" class="btn btn-danger" style="margin-bottom:5px;margin-left:10px" onclick="confirmDel()">Delete</button>
         <a href="#" style="margin-right:1.5rem;margin-top:0.2rem;margin-left:10px" data-toggle="modal" data-target="#addemailTemplate">Add Template</a>
@@ -267,13 +272,12 @@
               <th scope="col" onclick="w3.sortHTML('#myTable','.tableItem', 'td:nth-child(4)')">Message</th>
             </tr>
           </thead>
-          <form action="" method="post" onsubmit="return deleteTemplate();">
           <tbody id="searchTable">
             <?php displayAllTemplates($db)?>
-            <button type="submit" id="delTemp" name="delTemp" style="display:none"></button>
+            <button type="submit" id="delTemp" name="delTemp" onclick="deleteTemplate()" style="display:none"></button>
           </tbody>
-          </form>
         </table>
+        </div>
       </div>
     </section>
     
@@ -334,7 +338,22 @@
                     type:'post',
                     url:'../php/display/templates.php',
                     success:function(response){
-                      document.getElementById("searchTable").innerHTML=response;
+                      $("#myTable").DataTable().destroy();
+                      $("#searchTable").html(response);
+                      $('#myTable').DataTable({
+                        "oLanguage": {
+                          "sLengthMenu": "Show Entries _MENU_",
+                        },
+                          dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                          "pageLength":10,
+                          "paging": true,
+                          "searching": false,
+                          "ordering": true,
+                          "info": true,
+                          "autoWidth": false,
+                          "responsive": true,
+                          "buttons": ["excel", "pdf", "print"]
+                        }).buttons().container().appendTo('#beforeLD');
                     }
                   });
                   $('.modal').modal('hide');
@@ -371,7 +390,22 @@
                     type:'post',
                     url:'../php/display/templates.php',
                     success:function(response){
-                      document.getElementById("searchTable").innerHTML=response;
+                      $("#myTable").DataTable().destroy();
+                      $("#searchTable").html(response);
+                      $('#myTable').DataTable({
+                        "oLanguage": {
+                          "sLengthMenu": "Show Entries _MENU_",
+                        },
+                          dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+                          "pageLength":10,
+                          "paging": true,
+                          "searching": false,
+                          "ordering": true,
+                          "info": true,
+                          "autoWidth": false,
+                          "responsive": true,
+                          "buttons": ["excel", "pdf", "print"]
+                        }).buttons().container().appendTo('#beforeLD');
                     }
                   });
                   $('.modal').modal('hide');
@@ -530,10 +564,13 @@
   <!-- /.content-wrapper -->
 
   <footer class="main-footer">
-    <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
-    All rights reserved.
-    <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-    <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    <div class="row">
+      <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
+      All rights reserved.
+      <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+      <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    </div>
+    
   </footer>
 
   <!-- Control Sidebar -->
@@ -590,6 +627,19 @@
 <script src="../plugins/toastr/toastr.min.js"></script>
 <!-- SUMMERNOTE -->
 <script src="../plugins/summernote/summernote-bs4.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../plugins/jszip/jszip.min.js"></script>
+<script src="../plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -599,6 +649,25 @@
   toastr.options.progressBar = true;
   toastr.options.preventDuplicates = true;
   toastr.options.closeButton = true;
+  $(function(){
+  $('#myTable').DataTable({
+    "oLanguage": {
+      "sLengthMenu": "Show Entries _MENU_",
+    },
+      dom: "<'row d-flex flex-row align-items-end'>tr<'row d-flex flex-row align-items-end'<'col-md-8'l><'col-sm-2'i><'col-md-2'p>>",
+      "pageLength":10,
+      "paging": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "buttons": ["excel", "pdf", "print"]
+    }).buttons().container().appendTo('#beforeLD');
+  });
+  function searchDatatable(name){
+    $('#myTable').DataTable().search(name).draw();
+  }
   $('#message').summernote({
     toolbar: [
       ['style', ['style']],

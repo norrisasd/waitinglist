@@ -260,7 +260,7 @@
         <!-- Small boxes (Stat box) -->
         <div class="row" >
           <div class="col-6" style="text-align:right">
-            <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:400px;max-width:400px;width: expression(this.width > 500 ? 500: true)" id="profPic" class="img-thumbmail" alt="User Image">
+            <img src="dist/img/<?php echo $_SESSION['img'];?>" style="height:300px;max-width:300px;width: expression(this.width > 500 ? 500: true);margin-top:5%" id="profPic" class="img-thumbmail" alt="User Image">
           </div>
         
         <div class="col-auto">
@@ -269,7 +269,19 @@
                 <br><br>
             </thead>
             <tbody >
-            <br><br>
+                <tr>
+                    <td>Access</td>
+                    <td><?php 
+                         if($_SESSION['access'] == 1){
+                           echo 'Admin';
+                         }else if($_SESSION['access']==0){
+                           echo 'Agent';
+                         }else{
+                           echo 'Moderator';
+                         }                                 
+                        ?></td>
+                    <td><?php if($_SESSION['access'] == 1)echo '<a href="#" data-toggle="modal" data-target="#editAccess" ><i class="fas fa-edit"></i></a></td>';?>
+                </tr>
                 <tr>
                     <td>Username</td>
                     <td><?php echo $_SESSION['username']; ?></td>
@@ -491,14 +503,55 @@
       </form>
     </div>
   </div>
+  <!-- MODAL FOR CHANGING ACCESS -->
+<div class="modal fade" id="editAccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Choose Access</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="margin:auto">
+        <div class="col">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="caradioBtnType" value="1" id="radAdm" required>
+              <label class="form-check-label" for="radAdm">
+                ADMIN
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="0" name="caradioBtnType" id="radAge">
+              <label class="form-check-label" for="radAge">
+                AGENT
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="NULL" name="caradioBtnType" id="radMod">
+              <label class="form-check-label" for="radMod">
+                MODERATOR
+              </label>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick="updateAccess()" value="<?php echo $_SESSION['username'];?>" class="btn btn-primary" id="btnAccess">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- content end-->
 </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
-    All rights reserved.
-    <a href="./pages/PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-    <a href="./pages/PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    <div class="row">
+      <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
+      All rights reserved.
+      <a href="./pages/PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+      <a href="./pages/PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    </div>
   </footer>
 
   <!-- Control Sidebar -->
@@ -548,6 +601,27 @@
   toastr.options.progressBar = true;
   toastr.options.preventDuplicates = true;
   toastr.options.closeButton = true;
+  function updateAccess(){
+    var user = document.getElementById("btnAccess").value;
+    var type = $("input[name=caradioBtnType]:checked","#editAccess").val();
+    $.ajax({
+        type:'get',
+        url: './php/user/updateAccess.php',
+        data:{
+          type:type,
+          user:user,
+        },
+        success:function(response){
+          if(response == 'Success'){
+            toastr.success(user+"'s Access Updated");
+            $( "#myTable" ).load( "accountSettings.php #myTable" );
+            $(".modal").modal("hide");
+          }else{
+            toastr.error(response);
+          }
+        }
+    });
+  }
 </script>
 </body>
 </html>

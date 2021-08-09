@@ -276,6 +276,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid" id="mainBox">
+        <div class="card-body">
         <div class="row">
           <div class="col-auto" style="padding-top:1%">
             <input type="checkbox" value="" style="margin:5px 0.3%" id="selectAllBox" onclick="selectAll(this)">
@@ -314,7 +315,7 @@
         </select> -->
         <div class="col">
           <div id="beforeLD">
-            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true" style="margin-left:0.6%"></i>
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true" ></i>
           </div>
         </div>
         
@@ -351,6 +352,7 @@
           <button type="button" id="delCli" onclick="disableClient()" style="display:none"></button>
           </form>
         </table>
+        </div>
       </div>
     </section>
     
@@ -785,10 +787,13 @@
   </div>
   
   <footer class="main-footer">
-    <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
-    All rights reserved.
-    <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-    <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    <div class="row">
+      <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
+      All rights reserved.
+      <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+      <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+    </div>
+    
   </footer>
 
   <!-- Control Sidebar -->

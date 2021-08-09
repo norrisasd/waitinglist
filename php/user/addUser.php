@@ -16,6 +16,6 @@
     if($result == $nresult){
         echo "Success";
     }else{
-        echo mysqli_error($db);
+        echo 'Username already exist';
     }
 ?>
