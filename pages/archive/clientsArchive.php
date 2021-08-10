@@ -305,7 +305,7 @@
         </div>
         <div class="col">
           <div id="beforeLD">
-            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true" style="margin-left:0.6%"></i>
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true"></i>
           </div>
         </div>
          
