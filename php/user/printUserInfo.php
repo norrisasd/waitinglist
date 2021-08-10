@@ -8,42 +8,34 @@
             <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
           </div>
           <div class="modal-body">
-            <table style="margin-left:1rem">
+            <table style="margin:0 auto">
                 <tr>
                     <td style="padding-right:1rem">Username</td>
-                    <td style="padding-right:5rem">:</td>
+                    <td style="padding-right:1rem">:</td>
                     <td>'.$data['username'].'</td>
                 </tr>
                 <tr>
                     <td>Password:</td>
-                    <td style="padding-right:5rem">:</td>
+                    <td style="padding-right:1rem">:</td>
                     <td>'.$data['password'].'</td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td style="padding-right:5rem">:</td>
+                    <td style="padding-right:1rem">:</td>
                     <td>'.$data['email'].'</td>
                 </tr>
                 <tr>
                     <td>User Access</td>
-                    <td style="padding-right:5rem">:</td>
+                    <td style="padding-right:1rem">:</td>
                     <td>'.$access.'</td>
                 </tr>
             </table>
         </div>
         <div class="modal-footer">';
             if($_SESSION['access'] == 1){
-                if($data['isAdmin']== NULL ){
-                    echo '<a href="#" onclick="editUser(\''.$data['username'].'\')" style="padding-right:47%" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i>Edit</a>';
-                    echo '
-                   <a href="#" style="margin-right:1rem" onclick="setAccess(\''.$data['username'].'\','.$data['isAdmin'].')" data-toggle="modal" data-target="#changeAccess">Change Access</a>';
-               }else if($data['isAdmin'] == 0){
-                    echo '<a href="#" onclick="editUser(\''.$data['username'].'\')" style="padding-right:47%" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i>Edit</a>';
-                   echo '
-                   <a href="#" style="margin-right:1rem" onclick="setAccess(\''.$data['username'].'\','.$data['isAdmin'].')" data-toggle="modal" data-target="#changeAccess")">Change Access</a>';
-               }else{
-                echo '<a href="#" onclick="editUser(\''.$data['username'].'\')" style="padding-right:67%" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i>Edit</a>';
-               }
+                echo '
+                <a href="#" style="margin-left:7%" class="link-dark mr-auto" onclick="editUser(\''.$data['username'].'\')" data-toggle="modal" data-target="#userInfo"><i class="fas fa-edit"></i>Edit</a>
+                <a href="#" style="margin-right:1rem" onclick="setAccess(\''.$data['username'].'\','.$data['isAdmin'].')" data-toggle="modal" data-target="#changeAccess"><span>Change Access</span></a>';
             }
             
           echo '

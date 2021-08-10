@@ -5,30 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Maui Snorkeling</title>
     <link rel="icon" href="./dist/img/TURTLE.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
     <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="./css/style.css">
     <!-- jquery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="http://mymaplist.com/js/vendor/TweenLite.min.js"></script>
-    <style>
-        body{
-            background: url(http://mymaplist.com/img/parallax/back.png);
-            background-color: #444;
-            background: url(http://mymaplist.com/img/parallax/pinlayer2.png),url(http://mymaplist.com/img/parallax/pinlayer1.png),url(http://mymaplist.com/img/parallax/back.png);    
-        }
 
-        .vertical-offset-100{
-            padding-top:100px;
-        }
-    
-    </style>
 </head>
 <body>
     <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4 form login-form">
+                <form accept-charset="UTF-8" class="form-signin" role="form" action="" method="post" onsubmit="return setLogin();">
+                <img src="./php/logo-small.png" style="width:100%;max-width:100%;height: auto;margin: 0 auto" >
+                    <p class="text-center">Login with your username and password.</p>
+                    <div class="form-label-group">
+                        <input class="form-control" placeholder="Username" id="username" type="text">
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="form-label-group">
+                        <input class="form-control" placeholder="Password" id="password" type="password" value="">
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="link forget-pass text-right">
+                        <label>
+                            <input name="remember" type="checkbox" value="Remember Me"> Remember Me
+                        </label>
+                    </div>
+                    <div class="link forget-pass text-left"><a href="#" data-toggle="modal" data-target="#emailSending">Forgot password?</a></div>
+                    
+                    <div class="form-group">
+                        <input class="form-control btn btn-dark" type="submit" value="Login" name="login">
+                    </div>
+                    <!-- <div class="link login-link text-center">Not yet a member? <a href="signup-user.php">Signup now</a></div> -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="container">
         <div class="row vertical-offset-100">
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-sm-8" style="border:1px solid;padding:5%;margin:auto">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Please sign in</h3>
@@ -53,14 +71,10 @@
                         </fieldset>
                         </form>
                     </div>
-                </div><br><br><br>
-                <div style="padding-left:110%">
-                     <img src="./dist/img/logo-dark.png">
                 </div>
-                
             </div>
         </div>
-    </div>
+    </div> -->
         
     <!-- MODAL -->
     <div class="modal fade bd-example-modal-lg"  id="termsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -103,6 +117,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="submitBtn" value="" onclick="verify()">Verify</button>
             </div>
             </form>
@@ -124,6 +139,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="changeBtn" onclick="changePass()">Change Password</button>
             </div>
             </div>
@@ -269,18 +285,7 @@
           });
           return false;
     }
-    $(document).ready(function(){
-    $(document).mousemove(function(e){
-        TweenLite.to($('body'), 
-            .5, 
-            { css: 
-                {
-                    backgroundPosition: ""+ parseInt(event.pageX/8) + "px "+parseInt(event.pageY/'12')+"px, "+parseInt(event.pageX/'15')+"px "+parseInt(event.pageY/'15')+"px, "+parseInt(event.pageX/'30')+"px "+parseInt(event.pageY/'30')+"px"
-                }
-            });
-    });
-    });
-    toastr.options.progressBar = true;
+  toastr.options.progressBar = true;
   toastr.options.preventDuplicates = true;
   toastr.options.closeButton = true;
 </script>

@@ -1,8 +1,8 @@
 {
     "smtpSender":"info@mauisnorkeling.com",
     "senderName":"Maui Snorkeling Lani Kai",
-    "smtpUser":"AKIA3LKCDTEVTF5IAWTW",
-    "smtpPass":"BET1vf6zl3OyZ9n/1LgEMYiMhcQvf4Jo+OeusNdNi2ma",
+    "smtpUser":"AKIA3LKCDTEVWZ357LOD",
+    "smtpPass":"BL1ecVRgqFbKIwVkNDVCVSraEByeJljVWaXTc/O/6LQ8",
     "smtpHost":"email-smtp.us-east-2.amazonaws.com",
     "smtpPort":587,
     "dbHost":"localhost",

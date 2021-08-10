@@ -8,11 +8,12 @@
 <html>
 <head>
 <title>Waitinglist Form</title>
-<link rel="icon" href="../dist/img/TURTLE.png">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-<link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
-<script src='https://www.google.com/recaptcha/api.js'></script>
+    <link rel="icon" href="../dist/img/TURTLE.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 <style>
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -99,7 +100,7 @@
         var aname=document.getElementById('aname').value;
         var notes=document.getElementById('notes').value;
         document.getElementById("submitBtn").disabled=true;
-
+        toastr.info("We are processing your request. Please wait!");
         $.ajax({
           type: 'post',
           url: '../php/waitlist/addList.php',
@@ -227,14 +228,13 @@
     }
 </script>
 <body>
-<div class="container-fluid px-1 py-5 mx-auto" style="margin:0;padding:0">
+<div class="container" style="margin:0;padding:0">
     <div class="row d-flex justify-content-center">
-        <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+        <div class="col-xl-8 col-lg-8 col-md-9 col-11 text-center form login-form">
         <img src="../dist/img/logo-dark.png" style="height:auto;max-width:400px;padding:10px" class="img-thumbmail" alt="User Image">
             <h3>Maui Snorkeling Lani Kai</h3>
             <p class="blue-text">Was the activity you're looking for not available? <br> Fill out this waitlist and get notified when there is availability!</p>
-            <div class="card">  
-                <form method="post" action="" onsubmit="return addListInfo();" id="myForm" autocomplete="off">
+                <form method="post"  action="" onsubmit="return addListInfo();" id="myForm" autocomplete="off">
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Full Name<span class="text-danger"> *</span></label> 
@@ -275,31 +275,30 @@
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex"> 
                             <label class="form-control-label px-3">Notes</label> 
-                            <textarea class="form-control" name="notes" id="notes" autocomplete="off" placeholder="Additional Notes" ></textarea>
+                            <textarea class="form-control" style="height:45px" name="notes" id="notes" autocomplete="off" placeholder="Additional Notes" ></textarea>
                         </div>
                     </div>      
                     <br>
                     <div class="row justify-content-center"> 
                         <div class="form-group col-sm-6"> 
                             <div style="display:flex">
-                                <input class="form-check-input" type="checkbox" value="" style="margin: 0;" required>
-                                <p style="font-size:12px" >
+                                <input class="form-check-input" type="checkbox" value="" style="margin:0;" required>
+                                <p style="font-size:12px;margin-left:auto" >
                                 By checking this box, I agree that the Mauisnorkeling will contact me through my email or phone number regarding this matter. Also, I agree all statements in <a href="../pages/TermsAndConditions.php">Terms and Conditions</a>
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="g-recaptcha" style="margin-left:63%" data-sitekey="<?php echo $cred->recaptchaSiteKey;?>" data-callback="verify_captcha"></div>
+                    <div style="text-align:center">
+                        <div class="g-recaptcha" style="display:inline-block" data-sitekey="<?php echo $cred->recaptchaSiteKey;?>" data-callback="verify_captcha"></div>
                     </div>
                     <div class="row justify-content-center" style="margin-top:1%">
                         <div class="form-group col-sm-6"> 
-                            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>SUBMIT</button> 
+                            <button type="submit" class="form-control btn btn-dark" id="submitBtn" disabled>SUBMIT</button> 
                         </div>
                     </div>
                 </form>
                 
-            </div>
         </div>
     </div>
 </div>

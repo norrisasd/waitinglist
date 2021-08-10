@@ -263,6 +263,11 @@
                   <option value="message">Message</option>
         </select>
         <label style="float:right;margin-right:1rem;margin-top:0.25rem;">Search By</label> -->
+        <div class="col">
+          <div id="beforeLD">
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true" ></i>
+          </div>
+        </div>
         <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>

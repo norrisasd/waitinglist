@@ -16,11 +16,11 @@
     <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle" aria-hidden="true" style="margin-top:0.2rem"></i> Information</h5>
     <button type="button" class="btn btn-outline-dark" style="border:0;border-radius:50%" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>
   </div>
-  <div class="modal-body" style="margin:0 auto">
-  <table style="display:block">
+  <div class="modal-body" style="margin:0 auto;word-wrap:break-word">
+  <table style="margin:0 auto;display:block;border-collapse: collapse;">
           <tr>
           <td>Waitlist ID</td>
-          <td style="padding-right:5rem">:</td>
+          <td style="padding-right:1rem">:</td>
           <td></td>
           <td></td>
           <td></td>
@@ -52,7 +52,7 @@
           <td></td>
           <td></td>
           <td></td>
-          <td>'.$data['email'].'</td>
+          <td style="word-wrap:break-word">'.$data['email'].'</td>
           </tr>
           <tr>
           <td>Start Date</td>
@@ -147,7 +147,7 @@
               }
               echo'<tr style="margin-right:5%">
               <td>'.$str.'</td>
-              <td style="padding-right:5rem"></td>
+              <td style="padding-right:1rem"></td>
               <td></td>
               <td></td>
               <td></td>
@@ -172,8 +172,8 @@
       </table>
   </div>
   <div class="modal-footer">
-    <a href="#" style="padding-right:33%" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i>Edit</a>
-    <a href="#" style="padding-right:2%" onclick="setStatus('.$data['client_id'].')">'.$setStatus.'</a>
+    <a href="#" style="margin-left:6%" class="mr-auto" onclick="editList('.$data['waitlist_id'].')" data-toggle="modal" data-target="#waitInfo"><i class="fas fa-edit"></i>Edit</a>
+    <a href="#" style="padding-right:1%" onclick="setStatus('.$data['client_id'].')">'.$setStatus.'</a>
     <button type="button" class="btn btn-primary" onclick="turnoffCheck()" data-toggle="modal" data-target="#emailTemplate">Send Email</button>
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
   </div>';

@@ -33,7 +33,7 @@ mauisnorkeling.com
     </div>
     
     <div class="modal-footer">
-        <a href="#" style="margin-right:77%" onclick="editTemplate('.$data['template_id'].')" data-toggle="modal" data-target="#editTemp"><i class="fas fa-edit"></i></a>
+        <a href="#" class="mr-auto" style="margin-left:6%" onclick="editTemplate('.$data['template_id'].')" data-toggle="modal" data-target="#editTemp"><i class="fas fa-edit"></i></a>
         <a href="#" style="margin-right:1%" onclick="deleteTemplate()">Delete</a><input type="text" style="display:none" id="deleteIndividual" value="'.$data['template_id'].'">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     </div>
