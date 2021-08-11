@@ -11,6 +11,7 @@
 <link rel="icon" href="../dist/img/TURTLE.png">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 <link rel="stylesheet" href="../plugins/toastr/toastr.min.css">
+<link rel="stylesheet" href="../css/style.css">
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <style>
     input::-webkit-outer-spin-button,
@@ -39,6 +40,7 @@
                 toastr.success(response);
                 document.getElementById("clientForm").reset();
                 grecaptcha.reset();
+                document.getElementById("submitBtn").disabled=true;
             }else{
                 toastr.error(response);
             }
@@ -97,76 +99,49 @@
     }
 </script>
 <body>
-    <section class="vh-100" style="background-color: #eee;">
-    <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-12 col-xl-11">
-            <div class="card text-black" style="border-radius: 25px;">
-            <div class="card-body p-md-5">
-                <div class="row justify-content-center">
-                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-
-                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
-
-                    <form class="mx-1 mx-md-4" method="post" action="" onsubmit="return addClient();" id="clientForm" autocomplete="off">
-
-                    <div class="d-flex flex-row align-items-center mb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 form login-form">
+                <form class="form-signin" method="post" action="" onsubmit="return addClient();" id="clientForm" autocomplete="off">
+                    <img src="../php/logo-small.png" style="width:100%;max-width:100%;height: auto;margin: 0 auto" >
+                    <p class="text-center">Sign up now!</p>
+                    <div class="form-label-group">
                         <i class="fas fa-user fa-lg me-3 fa-fw" style="padding-bottom:25px" aria-hidden="true"></i>
-                        <div class="form-outline flex-fill mb-0">
-                        <input type="text" id="name" class="form-control" onblur="validate(1)" required/>
-                        <label class="form-label" for="form3Example1c">Name</label>
-                        </div>
+                        <input type="text" id="name" class="form-control" placeholder="Name" onblur="validate(1)" required/>
+                        <label for="name">Name</label>
                     </div>
-                    <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-user fa-lg me-3 fa-fw" style="padding-bottom:25px" aria-hidden="true"></i>
-                        <div class="form-outline flex-fill mb-0">
-                        <input type="phone" id="phone" class="form-control" onblur="validate(2)" required/>
-                        <label class="form-label" for="form3Example1c">Phone</label>
-                        </div>
+                    <div class="form-label-group">
+                        <input type="phone" id="phone" class="form-control" placeholder="Phone" onblur="validate(2)" required/>
+                        <label for="phone">Phone</label>
                     </div>
-
-                    <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-envelope fa-lg me-3 fa-fw" style="padding-bottom:25px"></i>
-                        <div class="form-outline flex-fill mb-0">
-                        <input type="email" id="email" class="form-control" onblur="validate(3)" required />
-                        <label class="form-label" for="form3Example3c">Email</label>
-                        </div>
+                    <div class="form-label-group">
+                        <input type="email" id="email" class="form-control" placeholder="Email" onblur="validate(3)" required />
+                        <label for="email">Email</label>
                     </div>
-
-                    <div class="form-check d-flex justify-content-center mb-5">
-                        <input
-                        class="form-check-input me-2"
-                        type="checkbox"
-                        value=""
-                        id="form2Example3c"
-                        required
-                        />
-                        <label class="form-check-label" for="form2Example3">
-                        I agree all statements in <a href="../pages/TermsAndConditions.php">Terms and Conditions</a>
+                    <div class="link forget-pass text-center">
+                        <label>
+                            <input class="form-check-input me-2" type="checkbox" value="" required/> I agree all statements in<br> <a href="../pages/TermsAndConditions.php">Terms and Conditions</a>
                         </label>
                     </div>
-                    <div class="d-flex flex-row align-items-center mb-4">
-                        <div class="g-recaptcha" style="margin-left:13%" data-sitekey="<?php echo $cred->recaptchaSiteKey;?>" data-callback="verify_captcha"></div>
+                    <div class="text-center">
+                        <div class="g-recaptcha" style="display:inline-block" data-sitekey="<?php echo $cred->recaptchaSiteKey;?>" data-callback="verify_captcha"></div>
+                    </div>    
+                    <div class="form-group">
+                        <button type="submit" class="form-control btn btn-dark" id="submitBtn" disabled>Register</button>
                     </div>
-                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn" disabled>Register</button>
-                    </div>
-
-                    </form>
-
-                </div>
-                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                    <img src="../dist/img/logo-dark.png" class="img-fluid" alt="Sample image">
-
-                </div>
-                </div>
-            </div>
+                </form>
             </div>
         </div>
+        <div class="row text-center" style="margin-top:2%">
+            <span>MAUI SNORKELING LANI KAI &copy; 2020. All rights reserved.</span>
+            <span>
+                <a href="../pages/PrivacyPolicy.php" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
+                <a href="../pages/TermsAndConditions.php" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
+            </span>
         </div>
     </div>
-    </section>
+    
+
 </body>
 <script src="https://www.w3schools.com/lib/w3.js"></script>
 <script src="../plugins/jquery/jquery.min.js"></script>

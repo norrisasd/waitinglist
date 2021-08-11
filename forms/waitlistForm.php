@@ -300,6 +300,13 @@
                 </form>
                 
         </div>
+        <div class="row text-center" style="margin-top:2%">
+            <span>MAUI SNORKELING LANI KAI &copy; 2020. All rights reserved.</span>
+            <span>
+                <a href="../pages/PrivacyPolicy.php" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
+                <a href="../pages/TermsAndConditions.php" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
+            </span>
+        </div>
     </div>
 </div>
 </body>

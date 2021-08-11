@@ -43,6 +43,14 @@
                 </form>
             </div>
         </div>
+        <div class="text-center" style="margin-top:2%">
+            <span>MAUI SNORKELING LANI KAI &copy; 2020. All rights reserved.</span>
+            <br>
+            <span>
+                <a href="./pages/PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
+                <a href="./pages/TermsAndCondition.php" target="_blank" class="text-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
+            </span>
+        </div>
     </div>
     <!-- <div class="container">
         <div class="row vertical-offset-100">
