@@ -47,8 +47,8 @@
             <span>MAUI SNORKELING LANI KAI &copy; 2020. All rights reserved.</span>
             <br>
             <span>
-                <a href="./pages/PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
-                <a href="./pages/TermsAndCondition.php" target="_blank" class="text-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
+                <a href="./pages/PrivacyPolicy" target="_blank" class="text-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
+                <a href="./pages/TermsAndConditions" target="_blank" class="text-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
             </span>
         </div>
     </div>
@@ -95,7 +95,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <iframe src="./pages/TermsAndConditions.php" id="agreement" title="Terms And Conditions" style="height:500px;width:100%"></iframe>
+                <iframe src="./pages/TermsAndConditions" id="agreement" title="Terms And Conditions" style="height:500px;width:100%"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="acceptBtn" onclick="updateStatus()">I Accept</button>
@@ -235,7 +235,7 @@
             url: './php/user/updateFirstAccess.php',
             success:function(response){
               if(response == ''){
-                  window.location.href="index.php";
+                  window.location.href="./";
               }else{
                   toastr.error(response);
               }
@@ -283,7 +283,7 @@
             success:function(response){
               
               if(response == ''){
-                  window.location.href="index.php";
+                  window.location.href="./";
               }else if(response == 'first'){
                 $("#termsModal").modal('show');
               }else{

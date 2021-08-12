@@ -1,7 +1,7 @@
 <?php
     require "../php/functions.php";
     if(!isset($_SESSION['login'])){
-        header("Location: ../loginPage.php");
+        header("Location: ../loginPage");
     }
 ?>
 <!DOCTYPE html>
@@ -119,10 +119,10 @@
           <a href="#" class="dropdown-item">
             <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotifW'] !=0 ?$_SESSION['countNotifW'].' Wait Added' :'No Notification'; ?>
           </a>
-          <a href="client.php" class="dropdown-item">
+          <a href="client" class="dropdown-item">
           <i class="nav-icon fas fa-user-tie"></i> <?php echo $_SESSION['countNotifC'] !=0 ?$_SESSION['countNotifC'].' Clients Added' :'No Notification'; ?>
           </a>
-          <a href="user.php" class="dropdown-item">
+          <a href="user" class="dropdown-item">
           <i class="nav-icon fas fa-user"></i> <?php echo $_SESSION['countNotifU'] !=0 ?$_SESSION['countNotifU'].' Users Added' :'No Notification'; ?>
           </a>
           <div class="dropdown-divider"></div>
@@ -130,7 +130,7 @@
         </div>
       </li>
       <li>
-        <a class="nav-link" href="../accountSettings.php"> 
+        <a class="nav-link" href="../accountSettings"> 
           <i class="fas fa-cog"></i>
         </a>
       </li>
@@ -153,7 +153,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../index.php" class="brand-link">
+    <a href="../" class="brand-link">
       <img src="../dist/img/TURTLE.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8;margin-top:7px">
       <span class="brand-text font-weight-bold" ><?php echo $businessName; ?></span>
     </a>
@@ -166,7 +166,7 @@
           <img src="../dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="../accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
+          <a href="../accountSettings" class="d-block"><?php echo $_SESSION['username'];?></a>
         </div>
       </div>
 
@@ -189,7 +189,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item ">
-            <a href="../index.php" class="nav-link">
+            <a href="../" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -197,7 +197,7 @@
             </a>
           </li>
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+            <a href="" class="nav-link active">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Waitlist
@@ -205,7 +205,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="client.php" class="nav-link">
+            <a href="client" class="nav-link">
                 <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Client List
@@ -213,7 +213,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="user.php" class="nav-link">
+            <a href="user" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
               <p>
                 User
@@ -221,7 +221,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="emailtemplates.php" class="nav-link">
+            <a href="emailtemplates" class="nav-link">
               <i class="nav-icon fa fa-file"></i>
               <p>
                 Email Templates
@@ -238,13 +238,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../forms/waitlistForm.php" target="_blank" class="nav-link">
+                <a href="../forms/waitlistForm" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Waitlist Form</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../forms/clientForm.php" target="_blank" class="nav-link">
+                <a href="../forms/clientForm" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Client Form</p>
                 </a>
@@ -269,7 +269,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./archive/clientsArchive.php" class="nav-link">
+                <a href="./archive/clientsArchive" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Clients Archive</p>
                 </a>
@@ -278,7 +278,7 @@
           </li>
           <?php }?>
           <li class="nav-item">
-            <a href="../php/logout.php" class="nav-link">
+            <a href="../php/logout" class="nav-link">
               <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>
                 Logout
@@ -329,24 +329,7 @@
         
               <div class="card-body">
                 <div class="row">
-                  <div class="col-auto" style="padding-top:1%">
-                    <input type="checkbox" value="" id="selectAll" style="margin:5px 0.3%" onclick="selectAll(this)"> 
-                  </div>
-                  <span style="padding-top:1%">Select All</span>
-                  <div class="col-auto" style="padding-top:1%">
-                    <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:0.5%;"  onclick="checkSend()">Send</button>
-                  </div>
-                  <div class="col-auto" style="padding-left:0;padding-top:1%">
-                    <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:0.3%;margin-right:1%" onclick="exportDataModal()">Export</button>
-                  </div>
-                  <div class="col-auto">
-                    <label for="passengersNum">Passengers</label>
-                    <input type="number" class="form-control" id="passengersNum" onchange="searchBy('')" style="margin-right:0.5%;width:70px;" min="0" max="99">
-                  </div>
-                  <div class="col-auto">
-                    <label for="dateCreated">Date Created</label>
-                    <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="<?php echo isset($_SESSION['setDate'])?$_SESSION['setDate']:'';?>" style="margin-right:0.5%;width:170px">
-                  </div>
+                  
                   <div class="col-auto">
                     <label for="displayType">Display </label>
                     <select id="displayType" class="form-control" onchange="searchBy('')" style="margin-right:0.5%;width:170px;">
@@ -363,27 +346,61 @@
                     </select>
                   </div>
                   <div class="col-auto">
-                    <label for="endDate">Last Date</label>
-                    <input type="date" class="form-control" id="endDate" onchange="searchBy('')" value="" style="margin-right:0.5%;width:170px">
+                    <label for="dateCreated">Date Created</label>
+                    <input type="date" class="form-control" id="dateCreated" onchange="searchBy('')" value="<?php echo isset($_SESSION['setDate'])?$_SESSION['setDate']:'';?>" style="margin-right:0.5%;width:170px">
                   </div>
                   <div class="col-auto">
                     <label for="startDate">First Date</label>
                     <input type="date" class="form-control" id="startDate" onchange="searchBy('')" value="" style="margin-right:0.5%;width:170px">
                   </div>
                   <div class="col-auto">
-                  <label for="actDate">Activity Date</label>
+                    <label for="endDate">Last Date</label>
+                    <input type="date" class="form-control" id="endDate" onchange="searchBy('')" value="" style="margin-right:0.5%;width:170px">
+                  </div>
+                  <div class="col-auto">
+                    <label for="actDate">Activity Date (Date Range)</label>
                     <!-- Start Date -->
-                  <input type="text" class="form-control" id="actDate"  value="" style="margin-right:0.5%;background:white;width:200px" readonly>
+                    <input type="text" class="form-control" id="actDate"  value="" style="margin-right:0.5%;background:white;width:200px" readonly>
+                 </div>
+                 <div class="col-auto">
+                    <label for="passengersNum">Passengers</label>
+                    <input type="number" class="form-control" id="passengersNum" onchange="searchBy('')" style="margin-right:0.5%;width:70px;" min="1" max="99">
                  </div>
                 </div>
-                <div class="row" id="2ndRow">
-                  <div class="col" id="beforeLD" style="margin-right:1%;">
+                <div class="row" style="margin-top:1%">
+                  <div class="col-auto" id="beforeLD" style="margin-right:1%;">
                     <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Export All Data shown in the Table" aria-hidden="true"></i>
+                  </div> 
+                  <div class="col-auto" >
+                    <div class="btn-group dropright">
+                      <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" style="width:auto" aria-expanded="false">
+                        Clear Search
+                      </button>
+                      <div class="dropdown-menu">
+                        <button class="dropdown-item" type="button" onclick="clearSearch(7)">All</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" type="button" onclick="clearSearch(1)">Activity Name</button>
+                        <button class="dropdown-item" type="button" onclick="clearSearch(2)">Date Created</button>
+                        <button class="dropdown-item" type="button" onclick="clearSearch(3)">First Date</button>
+                        <button class="dropdown-item" type="button" onclick="clearSearch(4)">Last Date</button>
+                        <button class="dropdown-item" type="button" onclick="clearSearch(5)">Activity Date</button>
+                        <button class="dropdown-item" type="button" onclick="clearSearch(6)">Passengers</button>
+                      </div>
+                    </div>
+                 </div>
+                </div>
+                <div class="row" style="margin-top:1%">
+                  <div class="col-auto" style="margin-left:0.8%;padding-top:0.5%" >
+                    <input type="checkbox" value="" id="selectAll" style="margin:5px 0.3%" onclick="selectAll(this)"> 
                   </div>
-                  
-                  
-                  <!-- END DATE -->
-                 
+                  <span style="padding-top :0.5%">Select All</span>
+                  <div class="col-auto" >
+                    <button type="button" class="btn btn-primary" style="margin-bottom:5px;margin-left:0.5%;"  onclick="checkSend()">Send</button>
+                  </div>
+                  <div class="col-auto" >
+                    <button type="button" class="btn btn-success" style="margin-bottom:5px;margin-left:0.3%;margin-right:1%" onclick="exportDataModal()">Export</button>
+                  </div>
+                       
                 </div>
                 <table id="myTable" class="table table-bordered table-hover" style="height:100%">
                   <thead>
@@ -424,6 +441,42 @@
     </section>
     
     <script>
+      function clearSearch(type){
+        switch(type){
+          case 1:
+            $("#actName").prop('selectedIndex',0);
+            break;
+          case 2:
+            document.getElementById("dateCreated").valueAsDate = null;
+            break;
+          case 3:
+            document.getElementById("startDate").valueAsDate = null;
+            break;
+          case 4:
+            document.getElementById("endDate").valueAsDate = null;
+            break;
+          case 5:
+            $('#actDate').val('');
+            startDate ='';
+            endDate='';
+            break;
+          case 6:
+            document.getElementById("passengersNum").value='';
+            break;
+          case 7:
+            $("#actName").prop('selectedIndex',0);
+            document.getElementById("dateCreated").valueAsDate = null;
+            document.getElementById("startDate").valueAsDate = null;
+            document.getElementById("endDate").valueAsDate = null;
+            $('#actDate').val('');
+            startDate ='';
+            endDate='';
+            document.getElementById("passengersNum").value='';
+            break;
+        }
+        searchBy('');
+
+      }
       function setStatus(id){
         var list=[];
         list[0]=id;
@@ -885,7 +938,7 @@
               </p> 
             </div>
             <div id="warningAgree">
-              <input type="checkbox" id="canSpam" style="margin:3% 2%" required><span>I agree in <a href="TermsAndConditions.php" target="_blank"><u>TERMS AND CONDITIONS</u></a></span>
+              <input type="checkbox" id="canSpam" style="margin:3% 2%" required><span>I agree in <a href="TermsAndConditions" target="_blank"><u>TERMS AND CONDITIONS</u></a></span>
             </div>
             
           </div>
@@ -1000,8 +1053,8 @@
     <div class="row">
       <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
       <span>All rights reserved.</span>
-      <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-      <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+      <a href="./PrivacyPolicy" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+      <a href="./TermsAndConditions" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
     </div>
     
   </footer>
@@ -1075,7 +1128,6 @@
 });
   var startDate ='';
   var endDate = '';
-  $(function() {
   $('#actDate').daterangepicker({
     opens: 'left',
   }, function(start, end, label) {
@@ -1083,7 +1135,8 @@
     endDate = end.format('YYYY-MM-DD');
     searchBy('');
   });
-});
+$('#actDate').val('');
+$('#actDate').attr("placeholder","Between First & Last Date");
 $(function(){
   $('#myTable').DataTable({
     "oLanguage": {

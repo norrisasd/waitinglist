@@ -119,7 +119,7 @@
                 toastr.success("Success! You are now added in the Waitlist!");
                 document.getElementById("myForm").reset();
                 grecaptcha.reset();
-                window.location.href="../pages/confirmation/WaitlistConfirmation.php";
+                window.location.href="../pages/confirmation/WaitlistConfirmation";
             }  
             else{
                 toastr.error(response);
@@ -284,7 +284,7 @@
                             <div style="display:flex">
                                 <input class="form-check-input" type="checkbox" value="" style="margin:0;" required>
                                 <p style="font-size:12px;margin-left:auto" >
-                                By checking this box, I agree that the Mauisnorkeling will contact me through my email or phone number regarding this matter. Also, I agree all statements in <a href="../pages/TermsAndConditions.php">Terms and Conditions</a>
+                                By checking this box, I agree that the Mauisnorkeling will contact me through my email or phone number regarding this matter. Also, I agree all statements in <a href="../pages/TermsAndConditions">Terms and Conditions</a>
                                 </p>
                             </div>
                         </div>
@@ -303,8 +303,8 @@
         <div class="row text-center" style="margin-top:2%">
             <span>MAUI SNORKELING LANI KAI &copy; 2020. All rights reserved.</span>
             <span>
-                <a href="../pages/PrivacyPolicy.php" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
-                <a href="../pages/TermsAndConditions.php" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
+                <a href="../pages/PrivacyPolicy" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
+                <a href="../pages/TermsAndConditions" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
             </span>
         </div>
     </div>

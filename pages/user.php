@@ -1,7 +1,7 @@
 <?php 
     include '../php/functions.php';
     if(!isset($_SESSION['login'])){
-      header("Location: ../loginPage.php");
+    header("Location: ../loginPage");
     }
 ?>
 <!DOCTYPE html>
@@ -54,10 +54,10 @@
           <span class="dropdown-item dropdown-header">Notifications</span>
           <div class="dropdown-divider"></div>
           <div class="dropdown-divider"></div>
-          <a href="waitinglist.php" class="dropdown-item">
+          <a href="waitinglist" class="dropdown-item">
             <i class="fas fa-users mr-2"></i> <?php echo $_SESSION['countNotifW'] !=0 ?$_SESSION['countNotifW'].' Wait Added' :'No Notification'; ?>
           </a>
-          <a href="client.php" class="dropdown-item">
+          <a href="client" class="dropdown-item">
           <i class="nav-icon fas fa-user-tie"></i> <?php echo $_SESSION['countNotifC'] !=0 ?$_SESSION['countNotifC'].' Clients Added' :'No Notification'; ?>
           </a>
           <a href="#" class="dropdown-item">
@@ -68,7 +68,7 @@
         </div>
       </li>
       <li>
-        <a class="nav-link" href="../accountSettings.php"> 
+        <a class="nav-link" href="../accountSettings"> 
           <i class="fas fa-cog"></i>
         </a>
       </li>
@@ -91,7 +91,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../index.php" class="brand-link">
+    <a href="../" class="brand-link">
       <img src="../dist/img/TURTLE.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8;margin-top:7px">
       <span class="brand-text font-weight-bold" ><?php echo $businessName; ?></span>
     </a>
@@ -104,7 +104,7 @@
           <img src="../dist/img/<?php echo $_SESSION['img'];?>" style="height:35px;max-width:500px;width: expression(this.width > 500 ? 500: true);" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="../accountSettings.php" class="d-block"><?php echo $_SESSION['username'];?></a>
+          <a href="../accountSettings" class="d-block"><?php echo $_SESSION['username'];?></a>
         </div>
       </div>
 
@@ -126,7 +126,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item ">
-            <a href="../index.php" class="nav-link">
+            <a href="../" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -134,7 +134,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="waitinglist.php" class="nav-link">
+            <a href="waitinglist" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Waitlist
@@ -142,7 +142,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="client.php" class="nav-link">
+            <a href="client" class="nav-link">
                 <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Client List
@@ -158,7 +158,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="emailtemplates.php" class="nav-link">
+            <a href="emailtemplates" class="nav-link">
               <i class="nav-icon fa fa-file"></i>
               <p>
                 Email Templates
@@ -175,13 +175,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../forms/waitlistForm.php" target="_blank" class="nav-link">
+                <a href="../forms/waitlistForm" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Waitlist Form</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../forms/clientForm.php" target="_blank" class="nav-link">
+                <a href="../forms/clientForm" target="_blank" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Client Form</p>
                 </a>
@@ -206,7 +206,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./archive/clientsArchive.php" class="nav-link">
+                <a href="./archive/clientsArchive" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Clients Archive</p>
                 </a>
@@ -215,7 +215,7 @@
           </li>
           <?php }?>
           <li class="nav-item">
-            <a href="../php/logout.php" class="nav-link">
+            <a href="../php/logout" class="nav-link">
               <i class="nav-icon fas fa-sign-out-alt"></i>
               <p>
                 Logout
@@ -661,8 +661,8 @@
     <div class="row">
       <strong>MAUI SNORKELING LANI KAI &copy; 2020.</strong>
       All rights reserved.
-      <a href="./PrivacyPolicy.php" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
-      <a href="./TermsAndConditions.php" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
+      <a href="./PrivacyPolicy" target="_blank" class="text-secondary" style="margin-left:45%;border:none;padding:0;">Privacy Policy</a>
+      <a href="./TermsAndConditions" target="_blank" class="text-secondary" style="margin-left:2%;border:none;padding:0;">Terms of Use</a>
     </div>
   </footer>
 

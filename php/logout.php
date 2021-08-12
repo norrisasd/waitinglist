@@ -26,5 +26,5 @@
     
     session_unset();
     session_destroy();  
-    echo "<script>window.location.href='../loginPage.php'</script>";
+    echo "<script>window.location.href='../loginPage'</script>";
 ?>

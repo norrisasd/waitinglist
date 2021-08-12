@@ -120,7 +120,7 @@
                     </div>
                     <div class="link forget-pass text-center">
                         <label>
-                            <input class="form-check-input me-2" type="checkbox" value="" required/> I agree all statements in<br> <a href="../pages/TermsAndConditions.php">Terms and Conditions</a>
+                            <input class="form-check-input me-2" type="checkbox" value="" required/> I agree all statements in<br> <a href="../pages/TermsAndConditions">Terms and Conditions</a>
                         </label>
                     </div>
                     <div class="text-center">
@@ -135,8 +135,8 @@
         <div class="row text-center" style="margin-top:2%">
             <span>MAUI SNORKELING LANI KAI &copy; 2020. All rights reserved.</span>
             <span>
-                <a href="../pages/PrivacyPolicy.php" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
-                <a href="../pages/TermsAndConditions.php" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
+                <a href="../pages/PrivacyPolicy" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Privacy Policy</a>
+                <a href="../pages/TermsAndConditions" target="_blank" class="link-secondary" style="margin:1%;text-decoration:none">Terms of Use</a>
             </span>
         </div>
     </div>

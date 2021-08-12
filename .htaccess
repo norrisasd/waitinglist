@@ -1,4 +1,8 @@
 AddHandler application/x-httpd-php80 .php .php5 .php4 .php3
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [NC,L] 
 
 <IfModule mod_expires.c>
     ExpiresActive on
@@ -41,11 +45,4 @@ AddHandler application/x-httpd-php80 .php .php5 .php4 .php3
     ExpiresByType application/vnd.ms-fontobject         "access plus 1 year"
     ExpiresByType application/x-font-ttf                "access plus 1 year"
     ExpiresByType font/opentype                         "access plus 1 year"
-</IfModule>
-<IfModule mod_rewrite.c>
-    RewriteEngine on
-    RewriteBase /
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME}\.php -f
-    RewriteRule ^(.*)$ $1.php [NC,L] 
 </IfModule>
